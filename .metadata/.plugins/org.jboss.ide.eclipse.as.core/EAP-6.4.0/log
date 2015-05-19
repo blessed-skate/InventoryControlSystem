@@ -1,0 +1,10 @@
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-05-19 14:31:26.390
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 0 2015-05-19 14:31:35.436
+!MESSAGE Module InventoryControlSystemPortal on EAP-6.4.0 not yet fully deployed. Waiting...
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-05-19 14:31:35.544
+!MESSAGE Server Startup Succeeded
