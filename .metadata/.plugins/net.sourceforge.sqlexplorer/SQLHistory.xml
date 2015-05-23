@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<history>
+  <element execution-count="1" last-execution-time="1432312952597" alias="ROOT" user-name="root">select * from user where user in ('root', 'CIS_PORTAL_USER') and host = 'localhost'</element>
+  <element execution-count="1" last-execution-time="1432312925299" alias="ROOT" user-name="root">select * from user where user in ('root') and host = 'localhost'</element>
+  <element execution-count="1" last-execution-time="1432312907774" alias="ROOT" user-name="root">select * from user where user in ('root')</element>
+  <element execution-count="1" last-execution-time="1432312877648" alias="ROOT" user-name="root">select * from user</element>
+</history>

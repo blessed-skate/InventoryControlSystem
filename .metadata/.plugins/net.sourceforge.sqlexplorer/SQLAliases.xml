@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aliases>
+  <alias auto-logon="false" connect-at-startup="false" driver-id="-6" has-no-user-name="false">
+    <name>ROOT</name>
+    <url>jdbc:mysql://localhost:3306/CISDB</url>
+    <folder-filter-expression></folder-filter-expression>
+    <name-filter-expression></name-filter-expression>
+    <schema-filter-expression></schema-filter-expression>
+    <users>
+      <user auto-commit="false" commit-on-close="false">
+        <user-name>CIS_PORTAL_USER</user-name>
+        <password></password>
+      </user>
+      <user auto-commit="false" commit-on-close="false">
+        <user-name>root</user-name>
+        <password></password>
+      </user>
+    </users>
+    <default-user>root</default-user>
+  </alias>
+</aliases>

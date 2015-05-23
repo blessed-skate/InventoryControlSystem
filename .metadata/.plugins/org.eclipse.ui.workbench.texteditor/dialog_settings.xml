@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="centerOnScreen" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="centerOnScreen"/>
+			<item value="setmodal"/>
+			<item value="myForm"/>
+			<item value="windowLogin"/>
+			<item value="window_1"/>
+			<item value="home_tabbar"/>
+			<item value="my_tabbar"/>
+			<item value="calendar"/>
+		</list>
+		<list key="replacehistory">
+			<item value="login_form"/>
+			<item value="login_window"/>
+			<item value="windowLogin"/>
+			<item value="home_tabbar"/>
+			<item value=""/>
+			<item value="&quot;"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="265" key="DIALOG_WIDTH"/>
+		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
+		<item value="399" key="DIALOG_HEIGHT"/>
+		<item value="850" key="DIALOG_X_ORIGIN"/>
+		<item value="102" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+		<filter-chain-map path-type="ant">
+			<filter-chain pattern="/**"
+				filters="
+           securityContextPersistenceFilterWithASCTrue,
+           formLoginFilter,
+           exceptionTranslationFilter,
+           filterSecurityInterceptor" />
+		</filter-chain-map>
+	</bean>
+</beans>

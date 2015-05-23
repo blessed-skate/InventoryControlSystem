@@ -1,0 +1,20 @@
+package mx.com.icsp.action;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+public class ErrorAction extends Action{
+	
+	@Override
+	public ActionForward execute(ActionMapping arg0, ActionForm arg1,
+			ServletRequest arg2, ServletResponse arg3) throws Exception {
+		// TODO Auto-generated method stub
+		return super.execute(arg0, arg1, arg2, arg3);
+	}
+
+}

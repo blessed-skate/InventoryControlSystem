@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="130"
+		inputWidth="120" />
+	<item type="fieldset" name="data" inputWidth="340"
+		label="Sistema de Control de Inventarios">
+		<item type="radio" name="type" labelWidth="auto" position="label-right"
+			checked="true" label="Already have account">
+			<item type="input" value="" label="Usuario" name="username"/>
+			<item type="password" value="" label="Contrseña" name="password"/>
+			<item type="checkbox" checked="false" label="Recordarme" />
+		</item>
+		<item type="label" label="errores" name="error_msg" />
+		<item type="button" name="login" value="Ingresar" />
+	</item>
+</items>

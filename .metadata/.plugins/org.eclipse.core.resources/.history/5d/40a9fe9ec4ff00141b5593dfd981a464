@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item id="new" type="buttonSelect" img="new.gif" imgdis="new_dis.gif"
+		text="Nuevo reporte" action="showNewDocumentSelect">
+		<item type="button" id="new_text" text="XML" img="text_document.gif"
+			action="doOnNewDocument" />
+		<item type="button" id="new_excel" text="Excel" img="stylesheet.gif"
+			action="doOnNewDocument" />
+		<item type="button" id="new_pdf" text="Pdf" img="ico_pdf_18.gif"
+			action="doOnNewDocument" />
+	</item>
+	<item id="sep1" type="separator" />
+	<item id="new" type="buttonSelect" img="open.gif" imgdis="open_dis.gif" 
+		text="Nuevo reporte" action="importDocumentSelect">
+		<item type="button" id="open" text="Importar" img="open.gif"
+			imgdis="open_dis.gif" />
+	</item>
+</toolbar>

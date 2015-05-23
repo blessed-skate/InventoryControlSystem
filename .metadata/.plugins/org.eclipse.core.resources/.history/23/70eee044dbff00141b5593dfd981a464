@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item type="button" id="new_item" text="Nuevo registro" img="new.gif" action="doOnNewItem" />
+	<item type="button" id="update_item" text="Modificar" img="cut.gif" action="doOnNewItem" />
+	<item type="input" id="query_item" text="Pdf" img="ico_pdf_18.gif" action="doOnQueryItem" />
+
+	<item id="sep1" type="separator" />
+	<item id="new" type="buttonSelect" img="open.gif" imgdis="open_dis.gif"
+		text="Importar" action="importDocumentSelect">
+		<item type="button" id="import_xml" text="XML" img="database.gif"
+			action="importNewDocument" />
+		<item type="button" id="import_excel" text="Excel" img="stylesheet.gif"
+			action="importNewDocument" />
+		<item type="button" id="import_text" text="Texto delimitado" img="text_document.gif"
+			action="importNewDocument" />
+	</item>
+</toolbar>

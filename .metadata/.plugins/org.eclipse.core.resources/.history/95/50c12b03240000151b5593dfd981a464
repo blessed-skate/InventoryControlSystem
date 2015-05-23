@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sistema de control de Inventarios</title>
+<script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/skins/web/dhtmlx.css" />
+	
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxForm/codebase/dhtmlxform.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
+<script>
+	var myForm;
+	var dhxWins;
+	function doOnLoad() {
+		dhxWins = new dhtmlXWindows();
+		var window_1 = dhxWins.createWindow("loginForm", 0, 0, 300, 400);
+		window_1.setText('Ingreso');
+		window_1.centerOnScreen();
+		window_1.button('park').hide();
+		window_1.button('minmax').hide();
+		window_1.button('close').hide();
+
+		
+		myForm = window_1.attachForm();
+		myForm.loadStruct("xml/login_form.xml");
+		myForm.attachEvent("onButtonClick", function(id){
+		    //alert("Button with name "+id+" was clicked");
+		    if(id == "login"){
+		    	login_form.submit();
+		    }
+		});
+	}
+</script>
+<style>
+
+body{
+	background-color: #003748;
+}
+</style>
+</head>
+<body onload="doOnLoad();">
+<!-- 	<div id="loginWindow" align="center"></div> -->
+	
+	
+	
+	<form action="Home.do" method="post" name="login_form">
+		<input name="username" type="hidden" id="username" /> <input
+			name="password" type="hidden" id="password" />
+	</form>
+</body>
+</html>
