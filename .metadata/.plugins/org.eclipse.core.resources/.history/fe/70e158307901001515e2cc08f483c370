@@ -1,0 +1,11 @@
+package mx.com.icsp.service;
+
+import com.mx.icsc.common.Asset;
+
+public class AssetServiceImpl implements AssetService{
+
+	public Asset[] getAsset(){
+		
+		return null;
+	}
+}

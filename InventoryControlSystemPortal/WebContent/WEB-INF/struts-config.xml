@@ -16,9 +16,17 @@
 	</global-forwards>
 	<!-- Action Mappings -->
 	<action-mappings>
-		<action path="/Login" forward="/jsp/login.jsp" />
-		<action path="/Home" forward="/jsp/home.jsp" />
-		<action path="/Error" forward="/jsp/login.jsp" />
+		<action path="/Welcome" forward="/jsp/login.jsp" />
+		
+		<action path="/myHome" type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+			<forward name="home" path="/jsp/home.jsp" />
+		</action>
+		
+<!-- 		<action path="/myHome" forward="/jsp/home.jsp" /> -->
+		
+		<action path="/Error" type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+			<forward name="login" path="/jsp/login.jsp" />
+		</action>
 		<!-- <action path="/submitDetailForm" type="mybank.example.CustomerAction" -->
 		<!-- name="CustomerForm" scope="request" validate="true" -->
 		<!-- input="/CustomerDetailForm.jsp"> -->

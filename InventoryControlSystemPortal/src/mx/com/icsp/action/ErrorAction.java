@@ -28,7 +28,7 @@ public class ErrorAction extends Action{
 			break;
 		}
 		saveErrors(request, errors);
-		return mapping.findForward("LoginError");
+		return mapping.findForward("login");
 	}
 
 }

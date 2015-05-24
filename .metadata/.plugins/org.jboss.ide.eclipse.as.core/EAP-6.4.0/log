@@ -137,3 +137,16 @@
 
 !ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-05-22 21:46:34.287
 !MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842776 2015-05-23 20:42:22.823
+!MESSAGE Server shutting down
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842785 2015-05-23 20:42:23.004
+!MESSAGE Server Shutdown Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-05-23 20:42:26.695
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-05-23 20:42:43.231
+!MESSAGE Server Startup Succeeded

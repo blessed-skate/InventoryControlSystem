@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?> 
+<!DOCTYPE struts-config PUBLIC 
+"-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" 
+"http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+	<!-- Form bean Definitions -->
+	<form-beans>
+		<!-- <form-bean name="CustomerForm" type="mybank.example.CustomerForm" 
+			/> -->
+		<!-- <form-bean name="LogonForm" type="mybank.example.LogonForm" /> -->
+	</form-beans>
+	<!-- Global Forward Definitions -->
+	<global-forwards>
+		<!-- <forward name="logon" path="/logon.jsp" /> -->
+		<!-- <forward name="logoff" path="/logoff.do" /> -->
+	</global-forwards>
+	<!-- Action Mappings -->
+	<action-mappings>
+		<action path="/Login" type="com.mx.cisp.action.LoginAction" scope="request">
+			<forward name="home" path="/jsp/home.jsp" />
+		</action>
+		
+		<action path="/Home" forward="/jsp/home.jsp" />
+		<action path="/Error" forward="/jsp/login.jsp" />
+		<!-- <action path="/submitDetailForm" type="mybank.example.CustomerAction" -->
+		<!-- name="CustomerForm" scope="request" validate="true" -->
+		<!-- input="/CustomerDetailForm.jsp"> -->
+		<!-- <forward name="success" path="/ThankYou.jsp" redirect="true"/> -->
+		<!-- <forward name="failure" path="/Failure.jsp" /> -->
+		<!-- </action> -->
+		<!-- <action path="/logoff" parameter="/logoff.jsp" -->
+		<!-- type="org.apache.struts.action.ForwardAction" /> -->
+	</action-mappings>
+	<message-resources parameter="ApplicationResources" />
+	<!-- Controller Configuration -->
+	<!-- <controller processorClass="org.apache.struts.action.RequestProcessor" 
+		/> -->
+	<!-- <message-resources parameter="mybank.ApplicationResources" /> -->
+</struts-config>

@@ -1,0 +1,5 @@
+package mx.com.icsp.service;
+
+public interface AssetService {
+
+}

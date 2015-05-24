@@ -5,3 +5,12 @@
 1432245934922	Copy file
 1432269261908	Copy file
 1432338220973	Rename resource 'db.xml'
+1432405025048	Delete element
+1432487318127	Copy compilation unit
+1432487333786	Delete element
+1432488838716	Delete element
+1432488847119	Move compilation units
+1432488853560	Delete element
+1432491258635	Copy file
+1432493399622	Rename package 'mx.com.icsp.action.persistence.dao'
+1432493408203	Rename package 'mx.com.icsp.action.persistence.xml'

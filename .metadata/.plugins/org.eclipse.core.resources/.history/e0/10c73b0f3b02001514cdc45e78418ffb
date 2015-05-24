@@ -1,0 +1,8 @@
+package mx.com.icsp.action.persistence.dao;
+
+public class Snippet {
+	public static void main(String[] args) {
+		userDao.getUSer()
+	}
+}
+

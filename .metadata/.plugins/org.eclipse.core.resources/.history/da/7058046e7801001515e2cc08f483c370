@@ -1,0 +1,23 @@
+package mx.com.icsp.action.persistence.dao;
+
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.mapping.StatementType;
+
+public interface AssetDao {
+
+	static final String SPCISSELASSET = "{CALL SPCISSELASSET()}";
+	
+	static final String OPER_INS_PETICION = "CALL SCSMPT360.PASMPSELFMANAGEMENT.SPSMPINSPETITION ("
+			+ "#{mdn, mode=IN, jdbcType=INTEGER}, "
+			+ "#{date, mode=IN, jdbcType=DATE}, "
+			+ "#{nip, mode=IN, jdbcType=VARCHAR}, "
+			+ "#{type, mode=IN, jdbcType=INTEGER})";
+
+	@Insert(SPCISSELASSET)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract void insNuevaPeticion(Map<String, Object> params);
+
+}

@@ -47,12 +47,12 @@
 
 		login_form.attachEvent("onButtonClick", function(id) {
 			if (id == "login") {
-				document.getElementById("username").value = login_form
+				document.getElementById("j_username").value = login_form
 						.getItemValue("username");
-				document.getElementById("password").value = login_form
+				document.getElementById("j_password").value = login_form
 						.getItemValue("password");
-				alert("Set " + document.getElementById("username").value
-						+ document.getElementById("password").value);
+// 				alert("Set " + document.getElementById("j_username").value
+// 						+ document.getElementById("j_password").value);
 				login_form_hidden.submit();
 			}
 		});
@@ -65,10 +65,10 @@ body {
 </style>
 </head>
 <body onload="doOnLoad();">
-	<form action="j_acegi_security_check" method="post"
+	<form action="j_acegi_security_check" method="get"
 		name="login_form_hidden">
-		<input name="username" type="hidden" id="username" /> <input
-			name="password" type="hidden" id="password" />
+		<input name="j_username" type="hidden" id="j_username" /> <input
+			name="j_password" type="hidden" id="j_password" />
 	</form>
 </body>
 </html>

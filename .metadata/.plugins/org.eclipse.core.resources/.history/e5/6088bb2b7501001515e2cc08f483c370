@@ -1,0 +1,14 @@
+package com.mx.icsc.common;
+
+public class Asset {
+	private long id;
+	
+	private long idLedger;
+	private String ledger;
+	
+	private int idAssetType;
+	private String assetType;
+	
+	private String description; 
+
+}

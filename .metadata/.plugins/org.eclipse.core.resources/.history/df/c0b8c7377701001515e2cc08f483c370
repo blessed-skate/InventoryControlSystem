@@ -1,0 +1,13 @@
+package mx.com.icsp.action.dao;
+
+import java.util.Map;
+
+public interface AssetDao {
+
+	static final String SPCISSELASSET = "{CALL SPCISSELASSET()}";
+	
+	 @Insert(OPER_INS_PETICION)
+	 @Options(statementType = StatementType.CALLABLE)
+	 public abstract void insNuevaPeticion(Map<String, Object> params);
+	
+}

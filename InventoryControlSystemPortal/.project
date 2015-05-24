@@ -3,6 +3,7 @@
 	<name>InventoryControlSystemPortal</name>
 	<comment></comment>
 	<projects>
+		<project>InventoryControlSystemCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -44,6 +44,12 @@ public class Encoder {
 						+ "@" + time, staticChain + dinamicChain));
 	}
 
+	/**
+	 * 
+	 */
+	/**
+	 * 
+	 */
 	private static void test() {
 		ConfigurablePasswordEncryptor passwordEncryptor4 = new ConfigurablePasswordEncryptor();
 		passwordEncryptor4.setAlgorithm("MD5");

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<bean class="org.acegisecurity.util.FilterChainProxy" id="filterChainProxy">
+		
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=httpSessionIntegrationFilter,logoutFilter,concurrentSessionFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterSecurityInterceptor
+			</value>
+		</property>
+	</bean>
+
+	<bean class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"
+		id="httpSessionIntegrationFilter" />
+
+	<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter"
+		id="authenticationProcessingFilter">
+		<property name="filterProcessesUrl" value="/j_acegi_security_check" />
+		<property name="authenticationFailureUrl" value="/Error.do?code=1" />
+		<property name="defaultTargetUrl" value="/Home.do" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+	
+	<bean name="/Error" class="mx.com.icsp.action.ErrorAction">
+<!-- 		<property name="authenticationProcessingFilter" ref="authenticationProcessingFilter"/> -->
+	</bean>
+
+	<bean id="accessDeniedHandlerImpl" class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+<!-- 		<property name="errorPage" value="/Error.do?method=errorProcess&amp;code=2" /> -->
+	</bean>
+
+	<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"
+		id="authenticationEntryPoint">
+		<property name="loginFormUrl" value="/Error.do?method=errorProcess&amp;code=3" />
+		<property name="forceHttps" value="false" />
+		<property name="serverSideRedirect" value="true" />
+	</bean>
+
+	<bean class="org.acegisecurity.ui.ExceptionTranslationFilter" id="exceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+		<property name="accessDeniedHandler" ref="accessDeniedHandlerImpl" />
+		<property name="createSessionAllowed" value="false" />
+	</bean>
+
+	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+		<constructor-arg value="/Error.do?code=4" />
+		<constructor-arg>
+			<list>
+				<ref bean="securityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+		<property name="filterProcessesUrl" value="/j_acegi_logout" />
+	</bean>
+
+	<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"
+		id="securityContextLogoutHandler" />
+
+	<bean class="org.acegisecurity.concurrent.ConcurrentSessionFilter"
+		id="concurrentSessionFilter">
+		<property name="expiredUrl" value="/Error.do?method=errorProcess&amp;code=5" />
+		<property name="sessionRegistry">
+			<ref local="sessionRegistry" />
+		</property>		 
+	</bean>
+	
+	<bean id="concurrentSessionController" 
+          class="org.acegisecurity.concurrent.ConcurrentSessionControllerImpl">
+      <property name="maximumSessions" value="1"/>
+      <property name="sessionRegistry" ref="sessionRegistry"/>
+      <!-- <property name="exceptionIfMaximumExceeded" value="true"/> -->
+    </bean>
+	
+	<bean class="org.acegisecurity.concurrent.SessionRegistryImpl" id="sessionRegistry" />
+	
+	<bean class="org.acegisecurity.event.authentication.LoggerListener" id="loggerListener" />
+
+	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key" value="T360TestWeb" />
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+	</bean>
+
+	<bean id="filterSecurityInterceptor"
+		class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/admin**=ROLE_ADMIN
+				/my**=ROLE_USER,ROLE_QUERY
+				/**=IS_AUTHENTICATED_ANONYMOUSLY
+			</value>
+		</property>
+		<!-- More properties of the interceptor filter -->
+	</bean>
+	
+	<bean id="accessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions" value="false" />
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.acegisecurity.vote.RoleVoter" />
+				<bean class="org.acegisecurity.vote.AuthenticatedVoter" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

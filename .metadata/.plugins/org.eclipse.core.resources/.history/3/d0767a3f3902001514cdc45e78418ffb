@@ -1,0 +1,21 @@
+package mx.com.icsp.service;
+
+import mx.com.icsp.action.dao.UserDao;
+
+import com.mx.icsc.common.User;
+
+public class UserServiceImpl implements UserService{
+
+	
+	UserDao userDao;
+	public void setUserDao(UserDao userDao){
+		this.userDao = userDao;
+	}
+	
+	@Override
+	public User getUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

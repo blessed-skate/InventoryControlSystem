@@ -1,0 +1,36 @@
+package com.mx.icsc.common;
+
+import java.util.Date;
+
+public class Asset {
+	private long id;
+	
+	private long idLedger;
+	private String ledger;
+	
+	private int idAssetType;
+	private String assetType;
+	
+	private String description;
+	private String brand;
+	private String model;
+	private String serialNumber;
+	
+	private int idMaterial;
+	private String material;
+	
+	private String color;
+	private String supplier;
+	private String generalManager;
+	private String directlyResponsible;
+	private long tag;
+	private String bill;
+	private Date billDate;
+	private String location;
+	private Date useDate;
+	private float price;
+	private String generalLocation;
+	private String secure;
+	
+
+}

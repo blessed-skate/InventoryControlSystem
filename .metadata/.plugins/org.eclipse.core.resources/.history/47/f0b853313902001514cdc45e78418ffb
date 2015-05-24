@@ -1,0 +1,15 @@
+package mx.com.icsp.service;
+
+import com.mx.icsc.common.User;
+
+public class UserServiceImpl implements UserService{
+
+	
+	
+	@Override
+	public User getUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

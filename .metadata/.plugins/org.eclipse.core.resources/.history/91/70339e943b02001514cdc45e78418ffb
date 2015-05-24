@@ -1,0 +1,17 @@
+package mx.com.icsp.action.persistence.dao;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.mapping.StatementType;
+
+import com.mx.icsc.common.User;
+
+public interface UserDao {
+
+	static final String SPCISSELUSER = "{CALL SPCISSELUSER()}";
+	
+	@Insert(SPCISSELUSER)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract User getUser(String username);
+
+}

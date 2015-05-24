@@ -1,0 +1,12 @@
+package mx.com.icsp.util;
+
+public class Constants {
+
+	//LOG PROPERTIES
+	public static final String domainCode = "HROJAS";
+	public static final String solutioNameCode = "ICSPortal";
+	public static final String platform = "Java Web";
+	public static final String tower = "PORTAL_MVNO";
+	public static final String componentCode = "010";
+	
+}

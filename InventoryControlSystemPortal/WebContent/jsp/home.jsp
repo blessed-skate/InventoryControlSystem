@@ -13,6 +13,10 @@
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxLayout/codebase/dhtmlxlayout.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="js/dhtmlx/sources/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_web.css" />
+	
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxMenu/codebase/dhtmlxmenu.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxMenu/codebase/skins/dhtmlxmenu_dhx_web.css" />
 
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxTabbar/codebase/dhtmlxtabbar.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -55,12 +59,22 @@ div#homeTabbar {
 	height: 600px;
 }
 
+div#mainDiv {
+	position: relative;
+	margin-top: 20px;
+	margin-left: 20px;
+	width: 900px;
+	height: 600px;
+}
+
 body{
 	background-color: #003748;
 }
 
 </style>
 <script>
+	var main_div;
+	var main_menu;
 	var home_tabbar;
 	var query_grid;
 	var insert_layout;
@@ -99,8 +113,13 @@ body{
 					{type: "calendar", dateFormat: "%Y-%m-%d %H:%i", name: "start_date", label: "Start Date", value:"2011-06-20 14:38", enableTime: true, calendarPosition: "right"},
 					{type: "calendar", name: "end_date", label: "End Date", dateFormat: "%Y-%m-%d", serverDateFormat: "%d.%m.%Y", value: "20.06.2011", calendarPosition: "right"}
 				];
-		
-		home_tabbar = new dhtmlXTabBar("homeTabbar");
+		main_div = new dhtmlXLayoutObject("mainDiv", "1C");
+		main_menu = main_div.cells("a").attachMenu({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/main_menu.xml"
+		});
+		home_tabbar = main_div.cells("a").attachTabbar();
+// 		home_tabbar = new dhtmlXTabBar("homeTabbar");
 		
 		home_tabbar.addTab("a1", "Alta", null, null, true);
 		home_tabbar.addTab("a2", "Consulta");
@@ -138,7 +157,7 @@ body{
 		    pattern: "2E",
 		    cells: [
 		        {id: "a", text: "Filtro", header: true, height: 200},
-		        {id: "b", text: "Resultado"}
+		        {id: "b", text: "Resultado", header: false}
 		    ]
 		});
 		
@@ -146,6 +165,11 @@ body{
 		query_form.load("xml/query_form.xml");
 		query_form.attachEvent("onButtonClick", function(name){
 			window[name]();
+		});
+		
+		query_layout.cells("b").attachToolbar({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/query_toolbar.xml"
 		});
 		
 		//Reports
@@ -161,6 +185,6 @@ body{
 </script>
 </head>
 <body onload="doOnLoad();">
-	<div id="homeTabbar"></div>
+	<div id="mainDiv"></div>
 </body>
 </html>

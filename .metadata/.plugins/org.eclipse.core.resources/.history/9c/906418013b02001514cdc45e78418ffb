@@ -1,0 +1,9 @@
+package mx.com.icsp.action.dao;
+
+import com.mx.icsc.common.User;
+
+public interface UserDao {
+
+	User getUser(String username);
+
+}
