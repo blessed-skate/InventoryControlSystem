@@ -1,0 +1,71 @@
+package mx.com.icsp.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.persistence.dao.AssetDao;
+import mx.com.icsp.util.Constants;
+
+public class AssetServiceImpl implements AssetService{
+	
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+	
+	AssetDao assetDao;
+	public void setAssetDao(AssetDao assetDao){
+		this.assetDao = assetDao;
+	}
+
+	public Asset[] getAsset(String idTransaction, ){
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		List<Asset> list = null;
+		Asset[] assetArray = null;
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			list = assetDao.getAsset(params);
+			if(list != null && list.size() > 0){
+				log.info("La lista tiene valores " + list.size());
+			}
+			assetArray = list.toArray(new Asset[list.size()]);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return assetArray;
+	}
+	
+	public int insertAsset(String idTransaction, Asset asset){
+		int reponseCode = -1;
+		try{
+			reponseCode = assetDao.insertAsset(asset);
+			log.info("reponseCode: " + reponseCode);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
+	}
+
+	@Override
+	public Asset getAssetById(String idTransaction, String idAsset) {
+		
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		Asset asset = null;
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("idAsset", idAsset);
+			asset = assetDao.getAssetById(params);					
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return asset;
+	}
+	
+}

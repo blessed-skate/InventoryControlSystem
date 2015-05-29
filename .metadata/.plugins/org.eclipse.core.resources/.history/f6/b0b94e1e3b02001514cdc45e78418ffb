@@ -1,9 +1,0 @@
-package mx.com.icsp.action.persistence.dao;
-
-import com.mx.icsc.common.User;
-
-public interface UserDao {
-
-	public User getUser(String username);
-
-}

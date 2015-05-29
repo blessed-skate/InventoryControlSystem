@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="200"
+		inputWidth="200" />
+	<item type="input" label="No. de cuenta contable" required="true" name="idLedger"/>
+	<item type="input" label="Tipo de bien" required="true" name="idAssetType"/>
+	<item type="editor" label="Descripciòn" inputHeigth="80" required="true" name="description"/>
+	<item type="input" label="Marca" required="true" name="brand"/>
+	<item type="input" label="Modelo" required="true" name="model"/>
+	<item type="input" label="No. de serie" required="true" name="serialNumber"/>
+	<item type="select" label="Material" name="idMaterial">
+		<option text="Otro" value="1" selected="true" />
+		<option text="Madera" value="2" />
+		<option text="Metal" value="3" />
+		<option text="Plastico" value="4" />
+	</item>
+	<item type="select" label="Color" name="idColor">
+		<option text="Otro" value="1" selected="true" />
+		<option text="Rojo" value="2" />
+		<option text="Azul" value="3" />
+		<option text="Verde" value="4" />
+	</item>
+	<item type="input" label="Proveedor" required="true" name="supplier"/>
+	<item type="input" label="Responsable general" required="true" name="generalManager"/>
+	<item type="input" label="Responsable directo" name="directlyResponsible"/>
+	<item type="input" label="No. de etiqueta" />
+	<item type="input" label="No. de factura" />
+	<item type="calendar" dateFormat="%Y-%m-%d %H:%i" name="date1" label="Fecha" readonly="true"/>
+	<item type="input" label="Localizaciòn" />
+	<item type="calendar" dateFormat="%Y-%m-%d" name="date2" label="Fecha de uso" readonly="true" />
+	<item type="input" label="Valor estimado" />
+	<item type="input" label="Ubicacion" required="true" />
+	<item type="input" label="Seguro" />
+	<item type="block" inputWidth="auto">
+		<item type="button" name="doInsertFormValidate" value="Validar" />
+		<item type="newcolumn" />
+		<item type="button" name="doInsertFormSave" value="Guardar" />
+		<item type="newcolumn" />
+		<item type="button" name="doInsertFormCancel" value="Cancelar" />
+	</item>
+</items>

@@ -36,11 +36,11 @@
 		var login_window = dhxWins
 				.createWindow("loginWindow", 0, 100, 400, 280);
 		login_window.setText("Sistema de Control de Inventarios");
-		// 		login_window.centerOnScreen();
-		login_window.setModal(true);
+// 		login_window.setModal(true);
 		login_window.button('park').hide();
 		login_window.button('minmax').hide();
 		login_window.button('close').hide();
+		login_window.centerOnScreen();
 
 		login_form = login_window.attachForm();
 		login_form.loadStruct("xml/login_form.xml");
@@ -60,12 +60,12 @@
 </script>
 <style>
 body {
-	background-color: #003748;
+	background-color: #deefff;
 }
 </style>
 </head>
 <body onload="doOnLoad();">
-	<form action="j_acegi_security_check" method="get"
+	<form action="j_acegi_security_check" method="post"
 		name="login_form_hidden">
 		<input name="j_username" type="hidden" id="j_username" /> <input
 			name="j_password" type="hidden" id="j_password" />

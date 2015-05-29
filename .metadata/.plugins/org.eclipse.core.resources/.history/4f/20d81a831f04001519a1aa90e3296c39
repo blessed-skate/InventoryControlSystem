@@ -1,0 +1,28 @@
+package mx.com.icsp.service;
+
+import java.util.List;
+
+import mx.com.icsc.common.AssetType;
+import mx.com.icsc.common.Color;
+import mx.com.icsc.common.Material;
+import mx.com.icsp.persistence.dao.CatalogDao;
+
+public class CatalogServiceImpl implements CatalogService{
+
+	CatalogDao catalogDao;
+	public void setCatalogDao(CatalogDao catalogDao){
+		this.catalogDao = catalogDao;
+	}
+	
+	public List<Material> getMaterial(){
+		return catalogDao.getMaterial();		
+	}
+
+	public List<Color> getColor(){
+		return catalogDao.getColor();		
+	}
+
+	public List<AssetType> getAssetType(){
+		return catalogDao.getAssetType();
+	}
+}

@@ -20,17 +20,22 @@ public class Asset {
 	private String material;
 	
 	private String color;
+	private int idColor;
+	
 	private String supplier;
 	private String generalManager;
 	private String directlyResponsible;
 	private long tag;
 	private String bill;
-	private Date billDate;
+	private Date billingDate;
 	private String location;
 	private Date useDate;
 	private float price;
 	private String generalLocation;
 	private String secure;
+	private Date registerDate;
+	private Date lastUpdate;
+	
 	public long getId() {
 		return id;
 	}
@@ -103,6 +108,12 @@ public class Asset {
 	public void setColor(String color) {
 		this.color = color;
 	}
+	public int getIdColor() {
+		return idColor;
+	}
+	public void setIdColor(int idColor) {
+		this.idColor = idColor;
+	}
 	public String getSupplier() {
 		return supplier;
 	}
@@ -133,11 +144,11 @@ public class Asset {
 	public void setBill(String bill) {
 		this.bill = bill;
 	}
-	public Date getBillDate() {
-		return billDate;
+	public Date getBillingDate() {
+		return billingDate;
 	}
-	public void setBillDate(Date billDate) {
-		this.billDate = billDate;
+	public void setBillingDate(Date billingDate) {
+		this.billingDate = billingDate;
 	}
 	public String getLocation() {
 		return location;
@@ -169,4 +180,16 @@ public class Asset {
 	public void setSecure(String secure) {
 		this.secure = secure;
 	}
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}	
 }

@@ -1,6 +1,0 @@
-package mx.com.icsp.action.dao;
-
-public interface AssetDao {
-
-	private static final String SPCISSELASSET = "{CALL TEST()}";
-}

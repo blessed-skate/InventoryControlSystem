@@ -1,0 +1,39 @@
+package mx.com.icsp.service;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import mx.com.icsc.common.AssetType;
+import mx.com.icsc.common.Color;
+import mx.com.icsc.common.Material;
+import mx.com.icsp.persistence.dao.CatalogDao;
+
+public class CatalogServiceImpl implements CatalogService{
+
+	Logger log = Logger.getLogger(this.getClass());
+	
+	CatalogDao catalogDao;
+	public void setCatalogDao(CatalogDao catalogDao){
+		this.catalogDao = catalogDao;
+	}
+	
+	public List<Material> getMaterial(){
+		return catalogDao.getMaterial();		
+	}
+
+	public List<Color> getColor(){
+		return catalogDao.getColor();		
+	}
+
+	public List<AssetType> getAssetType(){
+		AssetType[] assetTypeArray = null;
+		try{
+			catalogDao.getAssetType();
+		}catch(Exception e){
+			log.error(e.getMessage(), e);
+		}
+		
+		return assetTypeArray;
+	}
+}

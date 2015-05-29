@@ -1,0 +1,44 @@
+package mx.com.icsp.service;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import mx.com.icsc.common.User;
+import mx.com.icsp.persistence.dao.UserDao;
+
+public class UserServiceImpl implements UserService{
+
+	Logger log = Logger.getLogger(this.getClass());
+	
+	UserDao userDao;
+	public void setUserDao(UserDao userDao){
+		this.userDao = userDao;
+	}
+	
+	@Override
+	public User getUser(String username) {
+		// TODO Auto-generated method stub
+		try{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("username", username);
+		userDao.getUser(map);
+		Collection<Object> col = map.values();
+		Iterator<Object> it = col.iterator();
+		if(it.hasNext()){
+			log.info(it.next().getClass());
+		}
+//		List<User> list = (List<User>)map.get("cur");
+//		if(list != null && list.size() > 0)
+//			return list.get(0);
+//		else
+		}catch(Exception e){
+			log.error(e.getMessage(), e);
+		}
+			return null;
+	}
+
+}

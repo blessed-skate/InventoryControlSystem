@@ -1,0 +1,67 @@
+//dhtmlxError.catchError("LoadXML", function(a, b, data) {
+//	showError('${loading_err}' + '\n' + '${reload_msg}');
+//});
+
+function showResponseXmlAlertError(msg) {
+	dhtmlx.alert({
+		title : "Error",
+		type : "alert-error",
+		text : msg
+	});
+}
+
+function showResponseXmlAlertWarning(msg) {
+	dhtmlx.alert({
+		title : "Warning",
+		type : "alert-warning",
+		text : msg
+	});
+}
+function showResponseXmlAlert(msg) {
+	dhtmlx.alert({
+		title : "Alert",
+		type : "alert",
+		text : msg
+	});
+}
+
+function showResponseWarning(msg) {
+	dhtmlx.alert({
+		title : "Warning",
+		type : "confirm-warning",
+		text : msg,
+		callback : function(result) {
+			dhtmlx.message("Result: " + result)
+		}
+	});
+}
+
+function showConfirmError(title, question) {
+	dhtmlx.alert({
+		title : title,
+		type : "confirm-error",
+		text : question,
+		callback : function(result) {
+			dhtmlx.message("Result: " + result)
+		}
+	});
+}
+
+function showConfirm(msg) {
+	dhtmlx.alert({
+		title : "Confirm",
+		type : "confirm",
+		text : msg,
+		callback : function(result) {
+			dhtmlx.message("Result: " + result)
+		}
+	});
+}
+
+function showError(msg) {
+	dhtmlx.alert({
+		title : "Error",
+		type : "alert-error",
+		text : msg
+	});
+}

@@ -1,0 +1,3 @@
+function refreshQueryGrid(){
+	query_grid.loadXML("myAsset.do?method=getAsset");
+}

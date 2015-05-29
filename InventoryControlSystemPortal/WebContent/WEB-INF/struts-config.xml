@@ -17,14 +17,22 @@
 	<!-- Action Mappings -->
 	<action-mappings>
 		<action path="/Welcome" forward="/jsp/login.jsp" />
-		
-		<action path="/myHome" type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+
+		<action path="/myHome"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
 			<forward name="home" path="/jsp/home.jsp" />
 		</action>
+
+		<action path="/myAsset"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
 		
-<!-- 		<action path="/myHome" forward="/jsp/home.jsp" /> -->
-		
-		<action path="/Error" type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+		<action path="/myCatalog"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+
+		<action path="/Error"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
 			<forward name="login" path="/jsp/login.jsp" />
 		</action>
 		<!-- <action path="/submitDetailForm" type="mybank.example.CustomerAction" -->

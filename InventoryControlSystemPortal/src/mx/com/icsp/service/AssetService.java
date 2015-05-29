@@ -4,5 +4,7 @@ import mx.com.icsc.common.Asset;
 
 public interface AssetService {
 
-	public Asset[] getAsset();
+	public Asset[] getAsset(String idTransaction);
+	public int insertAsset(String idTransaction, Asset asset);
+	public Asset getAssetById(String idTransaction, String idAsset);
 }

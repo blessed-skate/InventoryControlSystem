@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="200"
+		inputWidth="200" />
+	<item type="input" label="No. de cuenta contable" required="true" name="idLedger" maxLength="10" validate="NotEmpty,ValidNumeric"/>
+	<item type="input" label="Tipo de bien" required="true" name="idAssetType" maxLength="3" validate="NotEmpty,ValidInteger"/>
+	<item type="editor" label="Descripciòn" inputHeigth="80" required="true" name="description" maxLength="100" validate="NotEmpty"/>
+	<item type="input" label="Marca" required="true" name="brand" maxLength="50" validate="NotEmpty"/>
+	<item type="input" label="Modelo" required="true" name="model" maxLength="50" validate="NotEmpty"/>
+	<item type="input" label="No. de serie" required="true" name="serialNumber" maxLength="50" validate="NotEmpty"/>
+	<item type="select" label="Material" name="idMaterial">
+		<option text="Otro" value="1" selected="true" />
+		<option text="Madera" value="2" />
+		<option text="Metal" value="3" />
+		<option text="Plastico" value="4" />
+	</item>
+	<item type="select" label="Color" name="idColor">
+		<option text="Otro" value="1" selected="true" />
+		<option text="Rojo" value="2" />
+		<option text="Azul" value="3" />
+		<option text="Verde" value="4" />
+	</item>
+	<item type="input" label="Proveedor" required="true" name="supplier" maxLength="50" validate="NotEmpty"/>
+	<item type="input" label="Responsable general" name="generalManager" maxLength="100"/>
+	<item type="input" label="Responsable directo" name="directlyResponsible" maxLength="100"/>
+	<item type="input" label="No. de etiqueta" required="true" name="tag" maxLength="19" validate="NotEmpty,ValidInteger"/>
+	<item type="input" label="No. de factura" name="bill" maxLength="30"/>
+	<item type="calendar" dateFormat="%Y-%m-%d %H:%i" name="billingDate" label="Fecha de factura" readonly="true"/>
+	<item type="input" label="Localizaciòn" name="location" maxLength="50"/>
+	<item type="calendar" dateFormat="%Y-%m-%d" name="useDate" label="Fecha de uso" readonly="true" />
+	<item type="input" label="Valor estimado" required="true" name="price" numberFormat="$ 0,000.00" groupSep="'" decSep="." maxLength="10" validate="NotEmpty,ValidNumeric"/>
+	<item type="input" label="Ubicacion" name="generalLocation" maxLength="50"/>
+	<item type="input" label="Seguro" name="secure" maxLength="50"/>
+	<item type="newcolumn" />
+	<item type="block" inputWidth="auto">
+		<item type="button" name="doInsertFormValidate" value="Validar" width="80"/>
+<!-- 		<item type="newcolumn" /> -->
+		<item type="button" name="doInsertFormSave" value="Guardar" width="80"/>
+<!-- 		<item type="newcolumn" /> -->
+		<item type="button" name="doInsertFormCancel" value="Cancelar" width="80"/>
+	</item>
+</items>

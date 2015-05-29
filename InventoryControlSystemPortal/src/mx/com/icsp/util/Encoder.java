@@ -55,8 +55,8 @@ public class Encoder {
 		passwordEncryptor4.setAlgorithm("MD5");
 		passwordEncryptor4.setPlainDigest(true);
 
-		String user = "hrojas";
-		String password = "hrojas";
+		String user = "mercado";
+		String password = "mercado";
 
 		// Jasypt
 		String encryptedPasswordJasypt = passwordEncryptor4

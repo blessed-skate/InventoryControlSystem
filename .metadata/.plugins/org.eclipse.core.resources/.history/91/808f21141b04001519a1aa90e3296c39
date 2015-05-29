@@ -1,0 +1,28 @@
+package mx.com.icsp.action;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import mx.com.icsp.service.CatalogService;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.actions.DispatchAction;
+
+public class CatalogAction extends DispatchAction {
+
+	CatalogService catalogService;
+
+	public void setCatalogService(CatalogService catalogService) {
+		this.catalogService = catalogService;
+	}
+
+	String struct = "<data>" + "<item value=\"value_a\" label=\"text\"/>"
+			+ "<item value=\"value_b\" label=\"new text\" selected=\"true\"/>"
+			+ "</data>";
+
+	public void getAsset(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response){
+		
+	}
+}

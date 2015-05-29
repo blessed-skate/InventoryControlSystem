@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;InventoryControlSystemScripts/mySql/tables/TACISCOLOR.sql&apos; to &apos;CTCISCOLOR.sql&apos;" description="Rename resource &apos;TACISCOLOR.sql&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="mySql/tables/TACISCOLOR.sql" name="CTCISCOLOR.sql" stamp="1432654872767" updateReferences="true"/>
+</session>

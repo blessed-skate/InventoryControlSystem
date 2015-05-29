@@ -5,7 +5,8 @@
                      
 <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
 	<param name ="datePattern" value="'.'yyyy-MM-dd" />
-	<param name="file" value="/jboss_logs/ICSPortal.log" />
+<!-- 	<param name="file" value="/jboss_logs/ICSPortal.log" /> -->
+	<param name="file" value="/Users/IvanXVI/server/EAP-6.4.0/standalone/log/ICSPortal.log"/>
 	<param name="maxFileSize" value="30MB" />
 	<param name="maxBackupIndex" value="20" />
 	<layout class="org.apache.log4j.PatternLayout" >
@@ -19,8 +20,8 @@
     </layout> 
   </appender>                    
 <root>
-	<priority value="DEBUG" />
+	<priority value="INFO" />
 	<appender-ref ref="fileAppender" />
-	<appender-ref ref="console" /> 
+<!-- 	<appender-ref ref="console" />  -->
 </root>                     
 </log4j:configuration>

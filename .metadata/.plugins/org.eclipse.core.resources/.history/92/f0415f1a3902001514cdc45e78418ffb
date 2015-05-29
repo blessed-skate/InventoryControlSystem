@@ -1,5 +1,0 @@
-package mx.com.icsp.service;
-
-public class UserServiceImpl implements UserService{
-
-}

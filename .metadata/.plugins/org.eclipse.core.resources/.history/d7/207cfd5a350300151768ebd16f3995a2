@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	body {
+		font: 75% georgia, sans-serif;
+		line: 1.88889;
+		color: #555753;
+		backgroud: #fff;
+		margin: 0;
+		padding: 0;		
+	}
+	
+	
+</style>
+</head>
+<body>
+
+<h2>Instituto tecnologico de Huaichinango, Pue.</h2>
+</body>
+</html>

@@ -1,0 +1,25 @@
+//dhtmlxError.catchError("LoadXML", function(a, b, data) {
+//	alert('${loading_err}' + '\n' + '${reload_msg}');
+//});
+
+function doInsertFormSave(){
+	insert_form.send("myAsset.do?method=insertAsset","post",function(loader, response){
+	  showAlert("Saved|"+loader+"|"+response);
+	});
+}
+
+function doInsertFormValidate(){
+	insert_form.validate();
+}
+
+function doInsertFormCancel(){
+	insert_form.resetValidateCss();
+	insert_form.reset();
+	insert_form.lock();
+}
+
+function doOnNewItem(){
+	insert_form.unlock();
+	insert_form.resetValidateCss();
+	insert_form.reset();
+}

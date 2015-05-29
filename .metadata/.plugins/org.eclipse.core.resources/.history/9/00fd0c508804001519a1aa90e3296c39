@@ -1,0 +1,57 @@
+package mx.com.icsp.service;
+
+import java.util.List;
+
+import mx.com.icsc.common.AssetType;
+import mx.com.icsc.common.Color;
+import mx.com.icsc.common.Material;
+import mx.com.icsp.persistence.dao.CatalogDao;
+
+import org.apache.log4j.Logger;
+
+public class CatalogServiceImpl implements CatalogService {
+
+	Logger log = Logger.getLogger(this.getClass());
+
+	CatalogDao catalogDao;
+
+	public void setCatalogDao(CatalogDao catalogDao) {
+		this.catalogDao = catalogDao;
+	}
+
+	public Material[] getMaterial(String idTransaction) {
+		Material[] materialArray = null;
+		try {
+			List<Material> list = catalogDao.getMaterial();
+			materialArray = list.toArray(new Material[list.size()]);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return materialArray;
+	}
+
+	public Color[] getColor(String idTransaction) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		Color[] colorArray = null;
+		try {
+			List<Color> list = catalogDao.getColor();
+			colorArray = list.toArray(new Color[list.size()]);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return colorArray;
+	}
+
+	public AssetType[] getAssetType(String idTransaction) {
+		AssetType[] assetTypeArray = null;
+		try {
+			List<AssetType> list = catalogDao.getAssetType();
+			assetTypeArray = list.toArray(new AssetType[list.size()]);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+
+		return assetTypeArray;
+	}
+}

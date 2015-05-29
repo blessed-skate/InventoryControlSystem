@@ -1,0 +1,8 @@
+package mx.com.icsc.common;
+
+public class AssetType {
+	private int id;
+	private String description;
+	
+	
+}

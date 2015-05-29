@@ -1,0 +1,31 @@
+package mx.com.icsp.service;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import mx.com.icsc.common.User;
+import mx.com.icsp.persistence.dao.UserDao;
+
+public class UserServiceImpl implements UserService{
+
+	UserDao userDao;
+	public void setUserDao(UserDao userDao){
+		this.userDao = userDao;
+	}
+	
+	@Override
+	public User getUser(String username) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("username", username);
+		userDao.getUser(map);
+		Collection col = map.values();
+//		List<User> list = (List<User>)map.get("cur");
+//		if(list != null && list.size() > 0)
+//			return list.get(0);
+//		else
+//			return null;
+	}
+
+}

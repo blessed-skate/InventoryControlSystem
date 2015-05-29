@@ -16,7 +16,7 @@
 		<property name="assetService" ref="assetService"/>
 	</bean>
 	
-	<bean name="/adminCatalog" class="mx.com.icsp.action.CatalogAction">
+	<bean name="/myCatalog" class="mx.com.icsp.action.CatalogAction">
 		<property name="catalogService" ref="catalogService"/>
 	</bean>
 	

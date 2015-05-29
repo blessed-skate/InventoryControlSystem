@@ -11,7 +11,7 @@ public class User {
 	private String lastName;
 	private char sex;
 	private Date birth;
-	private Date registarDate;
+	private Date registerDate;
 	private Date lastUpdate;
 	public int getId() {
 		return id;
@@ -61,11 +61,11 @@ public class User {
 	public void setBirth(Date birth) {
 		this.birth = birth;
 	}
-	public Date getRegistarDate() {
-		return registarDate;
+	public Date getRegisterDate() {
+		return registerDate;
 	}
-	public void setRegistarDate(Date registarDate) {
-		this.registarDate = registarDate;
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
 	}
 	public Date getLastUpdate() {
 		return lastUpdate;

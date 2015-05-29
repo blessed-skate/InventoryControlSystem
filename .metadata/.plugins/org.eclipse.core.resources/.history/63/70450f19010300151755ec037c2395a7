@@ -1,0 +1,33 @@
+package mx.com.icsp.persistence.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import mx.com.icsc.common.Asset;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.mapping.StatementType;
+
+public interface AssetDao {
+
+	static final String SPCISSELASSET = "SELECT FIIDASSET 'id',	FIIDLEDGER idLedger, FIIDASSETTYPE idAssetType, FCDESCRIPTION description, "
+			+ " FCBRAND brand, FCMODEL model, FCSERIALNUMBER serialNumber, FIIDMATERIAL idMaterial, FCCOLOR color, FCSUPPLIER supplier, "
+			+ " FCGENERALMANAGER generalManager, FCDIRECTLYRESPONSIBLE directlyResponsible, FITAG tag, FCBILL bill, FDBILLINGDATE billDate, FCLOCATION location, "
+			+ " FDUSEDATE useDate, FNPRICE price, FCGENERALLOCATION generalLocation, FCSECURE secure, FDREGISTERDATE registerDate, FDLASTUPDATE lastUpdate "
+			+ " FROM CISDB.TACISASSET";
+
+	static final String SPCISSELASSETBYID = "SELECT FIIDASSET 'id',	FIIDLEDGER idLedger, FIIDASSETTYPE idAssetType, FCDESCRIPTION description, "
+			+ " FCBRAND brand, FCMODEL model, FCSERIALNUMBER serialNumber, FIIDMATERIAL idMaterial, FCCOLOR color, FCSUPPLIER supplier, "
+			+ " FCGENERALMANAGER generalManager, FCDIRECTLYRESPONSIBLE directlyResponsible, FITAG tag, FCBILL bill, FDBILLINGDATE billDate, FCLOCATION location, "
+			+ " FDUSEDATE useDate, FNPRICE price, FCGENERALLOCATION generalLocation, FCSECURE secure, FDREGISTERDATE registerDate, FDLASTUPDATE lastUpdate "
+			+ " FROM CISDB.TACISASSET WHERE FIIDASSET = #{idAsset}";
+
+	@Select(SPCISSELASSET)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getAsset(Map<String, Object> params);
+
+	@Select(SPCISSELASSETBYID)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract Asset getAssetById(Map<String, Object> params);
+}

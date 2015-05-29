@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item type="button" id="new_item" text="Nuevo registro" img="new.gif"
+		action="doOnNewItem" />
+	<item type="separator" />
+	<item type="button" id="query_item_button" text="Buscar" img="redo.gif"
+		action="" />
+	<item type="buttonInput" id="query_item_input" 
+		action="doOnQueryItem" />
+	<item type="separator" />
+	<item type="button" id="update_item" text="Modificar" img="cut.gif"
+		action="doOnUpdateItem" />
+</toolbar>

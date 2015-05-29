@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="com.mx.icsc.common.User"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="org.apache.log4j.Logger"/>
+<fullyQualifiedTypeName name="java.lang.Long"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.annotations.Param"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang.builder.ToStringBuilder"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.annotations.ResultMap"/>
+<fullyQualifiedTypeName name="mx.com.icsc.common.Material"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="mx.com.icsc.common.Color"/>
+<fullyQualifiedTypeName name="java.text.ParseException"/>
+<fullyQualifiedTypeName name="mx.com.icsc.common.util.LogPattern"/>
+<fullyQualifiedTypeName name="mx.com.icsp.util.Constants"/>
+<fullyQualifiedTypeName name="java.lang.Throwable"/>
+</qualifiedTypeNameHistroy>
