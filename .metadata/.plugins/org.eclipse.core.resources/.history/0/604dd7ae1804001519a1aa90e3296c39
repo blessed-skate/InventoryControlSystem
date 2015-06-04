@@ -1,8 +1,0 @@
-package mx.com.icsc.common;
-
-public class Color {
-	private int id;
-	private String description;
-	
-	
-}

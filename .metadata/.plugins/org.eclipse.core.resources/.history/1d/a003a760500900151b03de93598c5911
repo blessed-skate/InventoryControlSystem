@@ -1,0 +1,3 @@
+function exportExcel(){
+	window.dhx4.ajax.post("/myReport.do","method=getAssetXml");
+}

@@ -69,5 +69,20 @@ public class AssetServiceImpl implements AssetService{
 		}
 		return asset;
 	}
-	
+
+	@Override
+	public long getTag(String idTransaction, long idLedger, String idSubclass) {
+		
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		long tag = -1;
+		Asset asset = null;
+		try{
+			asset = assetDao.getTag(idLedger, idSubclass);
+			tag = asset.getTag();
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return tag;
+	}
 }

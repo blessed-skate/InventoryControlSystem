@@ -1,7 +1,0 @@
-package mx.com.icsp.action;
-
-import org.apache.struts.actions.DispatchAction;
-
-public class LoginAction extends Action{
-
-}

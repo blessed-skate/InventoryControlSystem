@@ -1,5 +1,0 @@
-function refreshQueryGrid(){
-	query_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
-		alert("La tabla se ha refrescado");
-	});
-}

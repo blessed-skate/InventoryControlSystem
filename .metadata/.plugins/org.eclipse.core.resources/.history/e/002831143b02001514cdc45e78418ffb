@@ -1,5 +1,0 @@
-package mx.com.icsp.action.dao;
-
-public interface CatalogDao {
-
-}

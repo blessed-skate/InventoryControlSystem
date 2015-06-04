@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="120"
+		inputWidth="120" />
+	<item type="checkbox" label="Header" required="true" name="isHeader">
+		<note width="120">Seleccionar si se desea exportar el titulo de las columnas</note>
+	</item>
+	<item type="template" label="Descargar" name="download" format="doLink"/>
+<!-- 	<item type="select" label="Subclase" name="idSubclass" required="true"/> -->
+	
+</items>

@@ -1,0 +1,57 @@
+package mx.com.icsp.persistence.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import mx.com.icsc.common.Asset;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.StatementType;
+
+public interface AssetDao {
+
+	static final String SELASSET = "SELECT FIIDASSET 'id', TAAT.FIIDLEDGER idLedger, CTLE.FCSUBCLASS IDSUBCLASS,"
+			+ " CTLE.FCDESCRIPTION SUBCLASS, TAAT.FCDESCRIPTION description, IF(TAAT.FCBRAND IS NOT NULL, TAAT.FCBRAND, '') brand,"
+			+ " IF(TAAT.FCMODEL IS NOT NULL, TAAT.FCMODEL, '') model, IF(TAAT.FCSERIALNUMBER IS NOT NULL, TAAT.FCSERIALNUMBER, '') serialNumber, IF(FCMATERIAL IS NOT NULL, FCMATERIAL, '') material, FCCOLOR color,"
+			+ " TAAT.FCSUPPLIER supplier, IF(TAAT.FCGENERALMANAGER IS NOT NULL, TAAT.FCGENERALMANAGER, '') generalManager, IF(TAAT.FCDIRECTLYRESPONSIBLE IS NOT NULL, TAAT.FCDIRECTLYRESPONSIBLE, '') directlyResponsible,"
+			+ " IF(TAAT.FITAG IS NOT NULL, TAAT.FITAG, 0) tag, TAAT.FCBILL bill, TAAT.FDBILLINGDATE billingDate, IF(TAAT.FCLOCATION IS NOT NULL, TAAT.FCLOCATION, '') location,"
+			+ " TAAT.FDUSEDATE useDate, TAAT.FNPRICE price, IF(TAAT.FCGENERALLOCATION IS NOT NULL, TAAT.FCGENERALLOCATION, '') generalLocation,"
+			+ " IF(TAAT.FCSECURE IS NOT NULL, TAAT.FCSECURE, '') secure, TAAT.FDREGISTERDATE registerDate, TAAT.FDLASTUPDATE lastUpdate"
+			+ " FROM" + " CISDB.TACISASSET TAAT "
+			+ " INNER JOIN CISDB.CTCISLEDGER CTLE ON"
+			+ " TAAT.FIIDLEDGER = CTLE.FIIDLEDGER AND"
+			+ " TAAT.FCSUBCLASS = CTLE.FCSUBCLASS";
+	
+	static final String ORDERBY = " ORDER BY FIIDASSET ASC";
+
+	static final String SELASSETBYID = " WHERE FIIDASSET = #{idAsset}";
+	
+	static final String SELTAG = "SELECT CONCAT(#{idLedger}, #{idSubclass}, IF( MAX(FITAG) IS NULL, '00001', LPAD(SUBSTR(MAX(FITAG), 6) + 1, 5, '0'))) tag FROM CISDB.TACISASSET"
+			+ " WHERE FIIDLEDGER = #{idLedger} AND FCSUBCLASS = #{idSubclass}";
+
+	static final String INSASSET = "Insert into CISDB.TACISASSET (FIIDLEDGER,FCSUBCLASS,FCDESCRIPTION,FCBRAND,FCMODEL,FCSERIALNUMBER,FCMATERIAL,FCCOLOR,"
+			+ "FCSUPPLIER,FCGENERALMANAGER,FCDIRECTLYRESPONSIBLE,FITAG,FCBILL,FDBILLINGDATE,FCLOCATION,FDUSEDATE,FNPRICE,FCGENERALLOCATION,FCSECURE) "
+			+ "values "
+			+ "(#{idLedger}, #{idSubclass}, #{description}, #{brand}, #{model}, #{serialNumber}, #{material}, #{color},"
+			+ "#{supplier}, #{generalManager}, #{directlyResponsible}, #{tag},"
+			+ "#{bill}, #{billingDate}, #{location}, #{useDate}, #{price}, #{generalLocation}, #{secure})";
+
+	@Select(SELASSET+ORDERBY)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getAsset(Map<String, Object> params);
+
+	@Select(SELTAG)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract Asset getTag(@Param(value = "idLedger") long idLedger, @Param(value = "idSubclass") String idSubclass);
+	
+	@Select(SELASSET+SELASSETBYID)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract Asset getAssetById(Map<String, Object> params);
+
+	@Insert(INSASSET)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract int insertAsset(Asset asset);
+}

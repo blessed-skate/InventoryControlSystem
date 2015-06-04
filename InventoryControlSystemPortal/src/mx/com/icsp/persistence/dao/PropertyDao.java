@@ -1,0 +1,25 @@
+package mx.com.icsp.persistence.dao;
+
+import java.util.Map;
+
+import mx.com.icsc.common.Property;
+
+import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.StatementType;
+
+public interface PropertyDao {
+
+	// static final String SPCISSELUSER = "{CALL CISDB.SPCISSELUSER("
+	// + "#{username, mode=IN, jdbcType=VARCHAR}"
+	// + ")}";
+
+	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value' from CISDB.CTCISPROPERTY";
+
+	@Select(SELPROPERTY)
+	@Options(statementType=StatementType.PREPARED)
+	@MapKey(value = "key")
+	public abstract Map<String, Property> getProperty();
+
+}

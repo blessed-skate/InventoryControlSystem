@@ -1,0 +1,100 @@
+package mx.com.icsp.action;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.service.AssetService;
+import mx.com.icsp.util.Constants;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
+
+public class ReportAction {
+	
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+	
+	public static final String CONTENT_TYPE_EXCEL = "application/ms-excel";
+	public static final String HEADER_1 = "Content-Disposition";
+	public static final String HEADER_2 = "attachment; filename=";
+	
+	AssetService assetService;
+	public void setAssetService(AssetService assetService) {
+		this.assetService = assetService;
+	}
+	
+	public void getAssetXml(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		Asset[] assetArray = assetService.getAsset(idTransaction);
+		if(assetArray != null && assetArray.length > 0){
+			try{
+				Workbook wb = new HSSFWorkbook();
+				
+				CellStyle style = wb.createCellStyle();
+				style.setBorderBottom(CellStyle.BORDER_THIN);
+				style.setBorderLeft(CellStyle.BORDER_THIN);
+				style.setBorderRight(CellStyle.BORDER_THIN);
+				style.setBorderTop(CellStyle.BORDER_THIN);
+				
+				Sheet sheet1 = wb.createSheet("Activo");
+				Row row = sheet1.createRow(0);
+				row.createCell(1).setCellValue("Columna 1");
+				row.createCell(2).setCellValue("Columna 2");
+				row.createCell(3).setCellValue("Columna 3");
+				row.createCell(4).setCellValue("Columna 4");
+				row.setRowStyle(style);
+				
+				int i=1;
+				for(Asset asset : assetArray){
+					Row rowData = sheet1.createRow(i++);
+					rowData.createCell(1).setCellValue(asset.getIdLedger());
+					rowData.createCell(2).setCellValue(asset.getIdSubclass());
+					rowData.createCell(3).setCellValue(asset.getTag());
+					rowData.createCell(4).setCellValue(asset.getDescription());
+					rowData.setRowStyle(style);
+				}
+			}catch(Exception e){
+				log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			}
+		}
+		
+		
+	}
+	
+	public void setResponse(HttpServletRequest request, HttpServletResponse response, String contentType, String fileName, Workbook wb){
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+		response.setContentType(contentType);
+		response.setHeader(HEADER_1, HEADER_2+fileName);// set HTTP/1.0 no-cache
+
+		PrintWriter out;
+
+		try {
+			out = response.getWriter();
+			out.println(sb.toString());
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+	}
+}

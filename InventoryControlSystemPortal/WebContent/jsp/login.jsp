@@ -13,6 +13,8 @@
 <!-- <link rel="stylesheet" type="text/css" -->
 <!-- 	href="js/dhtmlx/skins/web/dhtmlx.css" /> -->
 
+<link rel="icon" href="imgs/icon.png" type="image/png" />
+
 <script type="text/javascript"
 	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
 <script type="text/javascript"
@@ -33,8 +35,8 @@
 	var dhxWins;
 	function doOnLoad() {
 		dhxWins = new dhtmlXWindows();
-		var login_window = dhxWins
-				.createWindow("loginWindow", 0, 100, 400, 280);
+		dhxWins.attachViewportTo("winVP");
+		var login_window = dhxWins.createWindow("loginWindow", 0, 100, 400, 280);
 		login_window.setText("Sistema de Control de Inventarios");
 // 		login_window.setModal(true);
 		login_window.button('park').hide();
@@ -62,9 +64,15 @@
 body {
 	background-color: #deefff;
 }
+
+div#winVP {
+	position: relative;
+	height: 450px;	
+}
 </style>
 </head>
 <body onload="doOnLoad();">
+	<div id="winVP"></div>
 	<form action="j_acegi_security_check" method="post"
 		name="login_form_hidden">
 		<input name="j_username" type="hidden" id="j_username" /> <input

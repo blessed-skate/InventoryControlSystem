@@ -1,8 +1,0 @@
-package com.mx.icsc.common;
-
-public class Asset {
-	private long id;
-	private long idLedgar;
-	
-
-}

@@ -7,17 +7,57 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
+<title>Sistema de control de Inventarios</title>
 
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxLayout/codebase/dhtmlxlayout.js"></script>
+<link rel="icon" href="imgs/icon.png" type="image/png" />
+
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
+<script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
+
+<script type="text/javascript" src="js/asset.js"></script>
+<script type="text/javascript" src="js/query.js"></script>
+<script type="text/javascript" src="js/report.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/import.js"></script>
+
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />
+	
 <link rel="stylesheet" type="text/css"
 	href="js/dhtmlx/sources/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_web.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxMenu/codebase/skins/dhtmlxmenu_dhx_web.css" />
 
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxTabbar/codebase/skins/dhtmlxtabbar_dhx_web.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxToolbar/codebase/skins/dhtmlxtoolbar_dhx_web.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_web.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
+	
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxCalendar/codebase/dhtmlxcalendar.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_web.css" />	
+
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxEditor/codebase/skins/dhtmlxeditor_dhx_web.css" />
+
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxMessage/codebase/skins/dhtmlxmessage_dhx_terrace.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxVault/codebase/skins/dhtmlxvault_dhx_web.css" />
+	
 <style type="text/css">
 div#headerDiv {
 	position: relative;

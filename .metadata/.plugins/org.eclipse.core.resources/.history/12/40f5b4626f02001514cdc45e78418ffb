@@ -1,3 +1,0 @@
-dhtmlxError.catchError("LoadXML",function(a,b,data){
-         alert('${loading_err}' + '\n' + '${reload_msg}');
-});

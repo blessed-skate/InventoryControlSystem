@@ -1,9 +1,0 @@
-package mx.com.icsp.service;
-
-public class CatalogServiceImpl implements CatalogService{
-
-	CatalogDao catalogDao;
-	public void setCatalogDao(){
-		
-	}
-}

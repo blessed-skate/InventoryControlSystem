@@ -27,6 +27,14 @@
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
 			parameter="method" />
 		
+		<action path="/myReport"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+		
+		<action path="/myImport"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
 		<action path="/myCatalog"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
 			parameter="method" />

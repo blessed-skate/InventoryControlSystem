@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import mx.com.icsc.common.User;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.service.AssetService;
+import mx.com.icsp.service.PropertyService;
 import mx.com.icsp.service.UserService;
 import mx.com.icsp.util.Constants;
 
@@ -33,6 +34,11 @@ public class LoginAction extends Action{
 	public void setUserService(UserService userService){
 		this.userService = userService;
 	}
+	
+	PropertyService propertyService;
+	public void setPropertyService(PropertyService propertyService){
+		this.propertyService = propertyService;
+	}
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -40,6 +46,8 @@ public class LoginAction extends Action{
 			throws Exception {
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		propertyService.getProperty(idTransaction);
 		
 		String username = (String) request.getSession().getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY);
 		User user = userService.getUser(idTransaction, username);

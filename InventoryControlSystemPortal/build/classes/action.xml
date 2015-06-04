@@ -6,6 +6,7 @@
 	<bean name="/myHome" class="mx.com.icsp.action.LoginAction">
 		<property name="userService" ref="userService"/>
 		<property name="assetService" ref="assetService"/>
+		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
 	<bean name="/adminUser" class="mx.com.icsp.action.UserAction">
@@ -18,6 +19,14 @@
 	
 	<bean name="/myCatalog" class="mx.com.icsp.action.CatalogAction">
 		<property name="catalogService" ref="catalogService"/>
+	</bean>
+	
+	<bean name="/myReport" class="mx.com.icsp.action.ReportAction">
+		<property name="assetService" ref="assetService"/>
+	</bean>
+	
+	<bean name="/myImport" class="mx.com.icsp.action.ImportAction">
+		<property name="assetService" ref="assetService"/>
 	</bean>
 	
 	<bean name="/Error" class="mx.com.icsp.action.ErrorAction"/>
@@ -35,6 +44,11 @@
     <bean id="catalogService" class="mx.com.icsp.service.CatalogServiceImpl">
         <property name="catalogDao" ref="catalogDao" />
     </bean>
+    
+    <bean id="propertyService" class="mx.com.icsp.service.PropertyServiceImpl">
+        <property name="propertyDao" ref="propertyDao" />
+    </bean>
+
 
     <!--  DAO  -->
     <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
@@ -49,6 +63,11 @@
     
     <bean id="assetDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
       <property name="mapperInterface" value="mx.com.icsp.persistence.dao.AssetDao" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    
+    <bean id="propertyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+      <property name="mapperInterface" value="mx.com.icsp.persistence.dao.PropertyDao" />
       <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
     

@@ -79,7 +79,7 @@ public class AssetAction extends DispatchAction {
 					sb.append("<row id=\"" + asset.getId() + "\">");
 					sb.append("<cell type=\"sub_row_grid\">").append("xml/query_sgrid.xml").append("</cell>");
 					sb.append("<cell>").append(asset.getIdLedger()).append("</cell>");
-					sb.append("<cell>").append(asset.getAssetType()).append("</cell>");
+					sb.append("<cell>").append(asset.getIdSubclass()).append("</cell>");
 					sb.append("<cell>").append(asset.getTag()).append("</cell>");
 					sb.append("<cell>").append(asset.getBill()).append("</cell>");
 					sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
@@ -121,13 +121,13 @@ public class AssetAction extends DispatchAction {
 			if (asset != null) {
 				sb.append("<data>");
 				sb.append("<idLedger>").append(asset.getIdLedger()).append("</idLedger>");
-				sb.append("<idAssetType>").append(asset.getAssetType()).append("</idAssetType>");
-				sb.append("<description>").append(asset.getTag()).append("</description>");
+				sb.append("<idSubclass>").append(asset.getIdSubclass()).append("</idSubclass>");
+				sb.append("<description>").append(asset.getDescription()).append("</description>");
 				sb.append("<brand>").append(asset.getBrand()).append("</brand>");
 				sb.append("<model>").append(asset.getModel()).append("</model>");
 				sb.append("<serialNumber>").append(asset.getSerialNumber()).append("</serialNumber>");
-				sb.append("<idMaterial>").append(asset.getMaterial()).append("</idMaterial>");
-				sb.append("<idColor>").append(asset.getColor()).append("</idColor>");
+				sb.append("<material>").append(asset.getMaterial()).append("</material>");
+				sb.append("<color>").append(asset.getColor()).append("</color>");
 				sb.append("<supplier>").append(asset.getSupplier()).append("</supplier>");
 				sb.append("<generalManager>").append(asset.getGeneralManager()).append("</generalManager>");
 				sb.append("<directlyResponsible>").append(asset.getDirectlyResponsible()).append("</directlyResponsible>");
@@ -141,10 +141,9 @@ public class AssetAction extends DispatchAction {
 				sb.append("<secure>").append(asset.getSecure()).append("</secure>");
 				sb.append("</data>");
 			} else {
-				sb.append("<response>");
-				sb.append("<responseCode>").append(100).append("</responseCode>");
-				sb.append("<responseMsg>").append("No se encontro registro").append("</responseMsg>");
-				sb.append("</response>");
+				sb.append("<data>");
+//				sb.append("<idLedger>").append("-1").append("</idLedger>");
+				sb.append("</data>");
 			}
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
@@ -166,82 +165,100 @@ public class AssetAction extends DispatchAction {
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		try {
-			Date date = sdf.parse("01/06/2015");
 			
-			long idLedger = gerParameterLong(request,"idLedger");
-			int idAssetType = gerParameterInt(request,"idAssetType");
-			
-			String description = gerParameterString(request, "description");
-			String brand = gerParameterString(request, "brand", "Sin marca");
-			String model = gerParameterString(request, "model", "Sin modelo");
-			String serialNumber = gerParameterString(request, "serialNumber", "Sin numero de serie");
-			
-			int idMaterial = gerParameterInt(request,"idMaterial");
-			int idColor = gerParameterInt(request,"idColor");
-			
-			String supplier = gerParameterString(request, "supplier", "Proveedor no identificado");
-			String generalManager = gerParameterString(request, "generalManager");
-			String directlyResponsible = gerParameterString(request, "directlyResponsible");
-			
-			long tag = gerParameterLong(request,"tag");
-			
-			String bill = gerParameterString(request, "bill", "Sin factura");
-			Date billingDate = getParameterDate(request, "billingDate", date);
-			String location = gerParameterString(request, "location");
-			Date useDate = getParameterDate(request, "useDate", date);
-			
-			float price = gerParameterFloat(request, "price");
-			
-			String generalLocation = gerParameterString(request, "generalLocation");
-			String secure = gerParameterString(request, "secure");
-
-			Asset asset = new Asset();
-			asset.setIdLedger(idLedger);
-			asset.setIdAssetType(idAssetType);
-			asset.setDescription(description);
-			asset.setBrand(brand);
-			asset.setModel(model);
-			asset.setSerialNumber(serialNumber);
-			asset.setIdMaterial(idMaterial);
-			asset.setIdColor(idColor);
-			asset.setSupplier(supplier);
-			asset.setGeneralManager(generalManager);
-			asset.setDirectlyResponsible(directlyResponsible);
-			asset.setTag(tag);
-			asset.setBill(bill);
-			asset.setBillingDate(billingDate);
-			asset.setLocation(location);
-			asset.setUseDate(useDate);
-			asset.setPrice(price);
-			asset.setGeneralLocation(generalLocation);
-			asset.setSecure(secure);
-			
-			log.info(logPattern.buildPattern(methodName, idTransaction, "Asset", ToStringBuilder.reflectionToString(asset)));
-
-			int responseCode = assetService.insertAsset(idTransaction,asset);
-			if (responseCode == 1) {
+			String idSubclass = gerParameterString(request,"idSubclass");
+			if(idSubclass == null || idSubclass.equals("-1")){
 				sb.append("<response>");
-				sb.append("<responseCode>").append(0).append("</responseCode>");
-				sb.append("<responseMsg>").append("Exito al insertar registro").append("</responseMsg>");
+				sb.append("<responseCode>").append(99).append("</responseCode>");
+				sb.append("<responseMsg>").append("La subclase no puede ser nula, por favor seleccione un valor valido").append("</responseMsg>");
 				sb.append("</response>");
-			} else {
-				sb.append("<response>");
-				sb.append("<responseCode>").append(100).append("</responseCode>");
-				sb.append("<responseMsg>").append("Error en la BD al insertar registro").append("</responseMsg>");
-				sb.append("</response>");
+			}else{
+				Date date = sdf.parse("01/06/2015");
+				
+				long idLedger = gerParameterLong(request,"idLedger");
+				
+				
+				String description = gerParameterString(request, "description");
+				String brand = gerParameterString(request, "brand", "Sin marca");
+				String model = gerParameterString(request, "model", "Sin modelo");
+				String serialNumber = gerParameterString(request, "serialNumber", "Sin numero de serie");
+				
+				String material = gerParameterString(request,"material");
+				String color = gerParameterString(request,"mColor");
+				
+				String supplier = gerParameterString(request, "supplier", "Proveedor no identificado");
+				String generalManager = gerParameterString(request, "generalManager");
+				String directlyResponsible = gerParameterString(request, "directlyResponsible");
+				
+	//			long tag = gerParameterLong(request,"tag");
+				
+				String bill = gerParameterString(request, "bill", "Sin factura");
+				Date billingDate = getParameterDate(request, "billingDate", date);
+				String location = gerParameterString(request, "location");
+				Date useDate = getParameterDate(request, "useDate", date);
+				
+				float price = gerParameterFloat(request, "price");
+				
+				String generalLocation = gerParameterString(request, "generalLocation");
+				String secure = gerParameterString(request, "secure");
+	
+				long tag = assetService.getTag(idTransaction, idLedger, idSubclass);
+				if (tag == -1) {
+					sb.append("<response>");
+					sb.append("<responseCode>").append(100).append("</responseCode>");
+					sb.append("<responseMsg>").append("Error al obtener el consecutivo de la etiqueta, por favor intente de nuevo").append("</responseMsg>");
+					sb.append("</response>");
+				}else{			
+					Asset asset = new Asset();
+					asset.setIdLedger(idLedger);
+					asset.setIdSubclass(idSubclass);
+					asset.setTag(tag);
+					asset.setDescription(description);
+					asset.setBrand(brand);
+					asset.setModel(model);
+					asset.setSerialNumber(serialNumber);
+					asset.setMaterial(material);
+					asset.setColor(color);
+					asset.setSupplier(supplier);
+					asset.setGeneralManager(generalManager);
+					asset.setDirectlyResponsible(directlyResponsible);
+					asset.setBill(bill);
+					asset.setBillingDate(billingDate);
+					asset.setLocation(location);
+					asset.setUseDate(useDate);
+					asset.setPrice(price);
+					asset.setGeneralLocation(generalLocation);
+					asset.setSecure(secure);
+					
+					log.info(logPattern.buildPattern(methodName, idTransaction, "Asset", ToStringBuilder.reflectionToString(asset)));
+		
+					int responseCode = assetService.insertAsset(idTransaction,asset);
+					if (responseCode == 1) {
+						sb.append("<response>");
+						sb.append("<responseCode>").append(0).append("</responseCode>");
+						sb.append("<responseMsg>").append("Se inserto registro con la etiqueta").append(" ").append(tag);
+						sb.append("</responseMsg>");
+						sb.append("</response>");
+					} else {
+						sb.append("<response>");
+						sb.append("<responseCode>").append(101).append("</responseCode>");
+						sb.append("<responseMsg>").append("Error en la BD al insertar registro").append("</responseMsg>");
+						sb.append("</response>");
+					}
+				}
 			}
 
 		} catch (ParseException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "ParseException", e.getMessage()), e);
 			sb.append("<response>");
-			sb.append("<responseCode>").append(101).append("</responseCode>");
+			sb.append("<responseCode>").append(102).append("</responseCode>");
 			sb.append("<responseMsg>").append("Error al interpretar la fecha")
 					.append("</responseMsg>");
 			sb.append("</response>");
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 			sb.append("<response>");
-			sb.append("<responseCode>").append(102).append("</responseCode>");
+			sb.append("<responseCode>").append(103).append("</responseCode>");
 			sb.append("<responseMsg>").append("Error al insertar registro")
 					.append("</responseMsg>");
 			sb.append("</response>");
@@ -278,15 +295,15 @@ public class AssetAction extends DispatchAction {
 	}
 	
 	public int gerParameterInt(HttpServletRequest request, String name){
-		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Integer.parseInt(request.getParameter(name)) : null;
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Integer.parseInt(request.getParameter(name)) : -1;
 	}
 	
 	public long gerParameterLong(HttpServletRequest request, String name){
-		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Long.parseLong(request.getParameter(name)) : null;
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Long.parseLong(request.getParameter(name)) : -1;
 	}
 	
 	public float gerParameterFloat(HttpServletRequest request, String name){
-		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Float.parseFloat(request.getParameter(name)) : null;
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Float.parseFloat(request.getParameter(name)) : -1;
 	}
 	
 	public Date getParameterDate(HttpServletRequest request, String name) throws ParseException{

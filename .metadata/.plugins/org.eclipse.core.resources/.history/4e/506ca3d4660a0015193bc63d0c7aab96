@@ -1,0 +1,228 @@
+package mx.com.icsp.action;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.service.AssetService;
+import mx.com.icsp.service.PropertyServiceImpl;
+import mx.com.icsp.util.Constants;
+import mx.com.icsp.util.CreateXML;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.actions.DispatchAction;
+
+public class ImportAction extends DispatchAction {
+	
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode, Constants.solutioNameCode, 
+			Constants.platform, Constants.tower, this.getClass().getName());
+
+	
+	static int cont = 0;
+	
+	AssetService assetService;
+	public void setAssetService(AssetService assetService) {
+		this.assetService = assetService;
+	}
+	
+	public void validExcel(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		StringBuilder sb = new StringBuilder();
+		FileItemFactory factory = null;
+		ServletFileUpload upload = null;
+		CreateXML cxml = null;
+		
+		log.info("Peticion: " + cont++);
+		
+		boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);
+//		ServletFileUpload.isMultipartContent(request.get);
+		if (!isMultipartContent) {
+			log.info("You are not trying to upload...");
+			return;
+		}
+
+		factory = new DiskFileItemFactory();
+		upload = new ServletFileUpload(factory);
+		try {
+			List<FileItem> fields = upload.parseRequest(request);
+			log.info("Number of fields: " + fields.size());
+			Iterator<FileItem> it = fields.iterator();
+			if (!it.hasNext()) {
+				log.info("No fields found");
+				return;
+			}
+			String filename = "";
+			long filesize = 0;
+			while (it.hasNext()) {
+				FileItem fileItem = it.next();
+				log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
+				boolean isFormField = fileItem.isFormField();
+				if (isFormField) {
+//					log.info("Regular form field...");
+//					log.info("FIELD NAME: " + fileItem.getFieldName() );
+//					log.info("STRING: " + fileItem.getString());
+				} else {
+//					log.info("NAME: " + fileItem.getName());
+					filename = fileItem.getName();
+//					log.info("CONTENT TYPE: " + fileItem.getContentType());
+//					log.info("SIZE (BYTES): " + fileItem.getSize());
+					filesize = fileItem.getSize();
+					
+					try {
+						Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
+						Sheet sheet = wb.getSheetAt(0);
+						columnLength = sheet.getColumnBreaks().length;
+						log.info("Sheet name = " + sheet.getSheetName());
+					} catch (EncryptedDocumentException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e2.getMessage()), e2);
+					} catch (InvalidFormatException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "InvalidFormatException", e2.getMessage()), e2);
+					} catch (IOException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e2.getMessage()), e2);
+					}
+					
+					boolean state = false;
+					int EXCEL_MAX_FILE_SIZE = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_MAX_FILE_SIZE").getValue());
+					int EXCEL_COLUMN_LENGTH = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_COLUMN_LENGTH").getValue());
+					if((filesize*1024*1024) <= (EXCEL_MAX_FILE_SIZE * 1024) && columnLength <= EXCEL_COLUMN_LENGTH){
+						state = true;
+					}
+					
+					PrintWriter out;
+					try {
+						out = response.getWriter();
+						out.write("{\"state\":"+state+",\"name\":\"" + filename.replace("\"","\\\"") + "\",\"size\":" + filesize + ",\"extra\":{\"info\":\"just a way to send some extra data\",\"param\":\"some value here\"}}");
+					} catch (IOException e) {
+						try {
+							out = response.getWriter();
+							out.write("{\"state\":false,\"name\":\"" + filename.replace("\"","\\\"") + "\",\"size\":" + filesize + ",\"extra\":{\"info\":\"just a way to send some extra data\",\"param\":\"some value here\"}}");							
+						} catch (IOException e1) {
+							log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+						}
+						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+					}					
+				}
+			}
+		} catch (FileUploadException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "FileUploadException", e.getMessage()), e);
+			sb.append("{\"state\":false,\"extra\":{\"info\":\"just a way to send some extra data\",\"param\":\"some value here\"}}");
+		}
+	}
+	
+	public void importExcel(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		FileItemFactory factory = null;
+		ServletFileUpload upload = null;
+		CreateXML cxml = null;
+		StringBuilder sb = new StringBuilder();
+		
+		log.info("Peticion: " + cont++);
+		
+		boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);
+//		ServletFileUpload.isMultipartContent(request.get);
+		if (!isMultipartContent) {
+			log.info("You are not trying to upload...");
+			return;
+		}
+
+		factory = new DiskFileItemFactory();
+		upload = new ServletFileUpload(factory);
+		try {
+			List<FileItem> fields = upload.parseRequest(request);
+			log.info("Number of fields: " + fields.size());
+			Iterator<FileItem> it = fields.iterator();
+			if (!it.hasNext()) {
+				log.info("No fields found");
+				return;
+			}
+			String filename = "";
+			long filesize = 0;
+			while (it.hasNext()) {
+				FileItem fileItem = it.next();
+				log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
+				boolean isFormField = fileItem.isFormField();
+				if (isFormField) {
+//					log.info("Regular form field...");
+//					log.info("FIELD NAME: " + fileItem.getFieldName() );
+//					log.info("STRING: " + fileItem.getString());
+				} else {
+					filename = fileItem.getName();
+					filesize = fileItem.getSize();
+					
+//					cxml = new CreateXML();
+//					StringBuilder xmlFromFile = cxml.createXml(fileItem.getString());
+//					log.info("XML from file: " + xmlFromFile);
+					
+					try {
+						Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
+						Sheet sheet = wb.getSheetAt(0);
+//						sheet.getColumnBreaks();
+						log.info("Sheet name = " + sheet.getSheetName());
+					} catch (EncryptedDocumentException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e2.getMessage()), e2);
+					} catch (InvalidFormatException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "InvalidFormatException", e2.getMessage()), e2);
+					} catch (IOException e2) {
+						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e2.getMessage()), e2);
+					}
+									
+					sb.append("{\"state\":true,\"name\":\"" + filename.replace("\"","\\\"") + "\",\"size\":" + filesize + ",\"extra\":{\"info\":\"just a way to send some extra data\",\"param\":\"some value here\"}}");
+				}
+			}
+		} catch (FileUploadException e) {
+			sb.append("{\"state\":false,\"extra\":{\"info\":\"just a way to send some extra data\",\"param\":\"some value here\"}}");
+			log.info("ERROR: " + e.getMessage());			
+		}
+	}
+		
+	public void setResponse(HttpServletRequest request,
+			HttpServletResponse response, StringBuilder sb) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		response.setContentType("text/html");
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.setHeader("Cache-Control", "post-check=0, pre-check=0");
+		response.setContentType("application/xml");
+		response.setHeader("Pragma", "no-cache");
+
+		PrintWriter out;
+
+		try {
+			out = response.getWriter();
+			out.println(sb.toString());
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction,
+					"Exception", e.getMessage()), e);
+		}
+
+	}
+}

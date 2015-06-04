@@ -1,0 +1,2 @@
+insert into CISDB.CTCISPROPERTY values ('EXCEL_MAX_FILE_SIZE','2');
+insert into CISDB.CTCISPROPERTY values ('EXCEL_COLUMN_LENGTH','19');

@@ -1,0 +1,16 @@
+function exportExcel() {
+//	window.dhx4.ajax.post("myReport.do", "method=getAssetXml", function() {
+//	});
+	var dhxWins = new dhtmlXWindows();
+	var export_excel_window = dhxWins.createWindow("exportExcelWindow", 0, 100, 400, 280);
+	login_window.setText("Exportar Excel");
+	login_window.setModal(true);
+	export_excel_window.button('park').hide();
+	export_excel_window.button('minmax').hide();
+	export_excel_window.button('close').hide();
+	export_excel_window.centerOnScreen();
+}
+
+function doLink(name, value){
+	return '<a href="myReport.do?method=getAssetXml">'+value+'</a>';
+}

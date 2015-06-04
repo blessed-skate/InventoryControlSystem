@@ -11,58 +11,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
-<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
-
-<script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
-	
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxLayout/codebase/dhtmlxlayout.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_web.css" />
-	
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxMenu/codebase/dhtmlxmenu.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxMenu/codebase/skins/dhtmlxmenu_dhx_web.css" />
-
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxTabbar/codebase/dhtmlxtabbar.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxTabbar/codebase/skins/dhtmlxtabbar_dhx_web.css" />
-
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxToolbar/codebase/dhtmlxtoolbar.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxToolbar/codebase/skins/dhtmlxtoolbar_dhx_web.css" />
-	
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxGrid/codebase/dhtmlxgrid.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_web.css" />
-	
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxGrid/codebase/ext/dhtmlxgrid_filter.js"></script> -->
-	
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxForm/codebase/dhtmlxform.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
-	
-<!-- <script type="text/javascript" -->
-<!-- 	src="js/dhtmlx/sources/dhtmlxWindows/codebase/dhtmlxwindows.js"></script> -->
-<!-- <link rel="stylesheet" type="text/css" -->
-<!-- 	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" /> -->
-	
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCalendar/codebase/dhtmlxcalendar.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_web.css" />	
-
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxEditor/codebase/dhtmlxeditor.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxEditor/codebase/skins/dhtmlxeditor_dhx_web.css" />
-
-<!-- <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxMessage/codebase/dhtmlxmessage.js"></script> -->
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxMessage/codebase/skins/dhtmlxmessage_dhx_web.css" />
-	
-<script type="text/javascript" src="js/asset.js"></script>
-<script type="text/javascript" src="js/query.js"></script>
-<script type="text/javascript" src="js/util.js"></script>
 			
 <style>
 div.gridbox div.ftr td {
@@ -99,6 +47,8 @@ body{
 	var insert_layout;
 	var insert_form;
 	var insert_toolbar;
+	var search_form;
+	var search_toolbar;
 	var query_layout;
 	var query_form;
 	var report_grid;
@@ -138,16 +88,16 @@ body{
 // 		home_tabbar = new dhtmlXTabBar("homeTabbar");
 		
 		home_tabbar.addTab("a1", "Alta", null, null, true);
-		home_tabbar.addTab("a2", "Consulta");
-		home_tabbar.addTab("a3", "Reportes");
+		home_tabbar.addTab("a2", "Reportes");
+		home_tabbar.addTab("a3", "Importar");
 		
 		//New item
 		insert_layout = home_tabbar.tabs("a1").attachLayout({
-		    pattern: "3L",
+		    pattern: "2U",
 		    cells: [
-		        {id: "a", text: "Iventario", header: false, collapse: false, fixSize: [true, true]},
-		        {id: "b", text: "Codigo", width: 400, height: 200, collapse: false, fixSize: [true, true]},
-		        {id: "c", text: "Lista", collapse: false, fixSize: [true, true]}
+		        {id: "a", text: "Nuevo Registro", header: false, collapse: false, fixSize: [true, true]}
+		        ,{id: "b", text: "Buscar", header: false, width: 500, collapse: false, fixSize: [true, true]}
+// 		        ,{id: "c", text: "Lista", collapse: false, fixSize: [true, true]}
 		    ]
 		});
 		
@@ -157,6 +107,13 @@ body{
 		insert_form.attachEvent("onButtonClick", function(name){
 			window[name]();
 		});
+		insert_form.attachEvent("onInputChange", function(name, value, form){
+			if(name == "idLedger"){
+		    	reloadSelect(value);
+		    }else if(name == "idSubclass"){
+		    	fillTag(value);
+		    }
+		});
 		insert_form.lock();
 		
 		insert_toolbar = insert_layout.cells("a").attachToolbar({
@@ -165,6 +122,22 @@ body{
 		});
 		
 		insert_toolbar.attachEvent("onClick", function(name){
+			window[name]();
+		});
+		
+		search_form = insert_layout.cells("b").attachForm();
+		search_form.load("xml/search_form.xml");
+		search_form.attachEvent("onButtonClick", function(name){
+			window[name]();
+		});
+		search_form.lock();
+		
+		search_toolbar = insert_layout.cells("b").attachToolbar({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/search_toolbar.xml" 
+		});
+		
+		search_toolbar.attachEvent("onClick", function(name){
 			window[name]();
 		});
 		
@@ -193,7 +166,7 @@ body{
 		query_grid = query_layout.cells("b").attachGrid();
 		query_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 		query_grid.setHeader("&nbsp;, C. contable, Tipo de bien, Etiqueta, Factura, Fecha, Localizacion, F. de uso, Valor, Ubicaion, Seguro");
-		query_grid.attachHeader(" ,#text_filter, ,#text_filter,#text_filter, ,#text_filter, ,#numeric_filter, ,#text_filter");
+		query_grid.attachHeader("#rspan,#text_filter,#rspan,#text_filter,#text_filter,#rspan,#text_filter,#rspan,#numeric_filter,#rspan,#text_filter");
 		query_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
 		query_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
 		query_grid.setColSorting("na,int,na,na,str,date,str,date,int,str,str");
@@ -217,7 +190,7 @@ body{
 		});
 		
 		report_grid = home_tabbar.tabs("a3").attachGrid();
-		report_grid.loadXML("xml/query_grid.xml");
+		report_grid.loadXML("xml/report_grid.xml");
 		report_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 	}
 </script>

@@ -1,8 +1,0 @@
-package mx.com.icsp.service;
-
-import com.mx.icsc.common.Asset;
-
-public interface AssetService {
-
-	public Asset[] getAsset();
-}

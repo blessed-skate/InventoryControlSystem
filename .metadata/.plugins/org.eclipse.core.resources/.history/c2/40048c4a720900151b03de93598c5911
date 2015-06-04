@@ -1,0 +1,18 @@
+function exportExcel() {
+//	window.dhx4.ajax.post("myReport.do", "method=getAssetXml", function() {
+//	});
+	var dhxWins2 = new dhtmlXWindows();
+	var export_excel_window = dhxWins2.createWindow("exportExcelWindow", 0, 100, 200, 250);
+	export_excel_window.setText("Exportar Excel");
+	export_excel_window.setModal(true);
+	export_excel_window.button('park').hide();
+	export_excel_window.button('minmax').hide();
+	export_excel_window.centerOnScreen();
+	
+	var export_excel_form = export_excel_window.attachForm();
+	export_excel_form.loadStruct("xml/export_excel_form.xml");
+}
+
+function doLink(name, value){
+	return '<a href="myReport.do?method=getAssetXml">'+value+'</a>';
+}

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<toolbar>
-	<item id="new" type="buttonSelect" img="new.gif" imgdis="new_dis.gif"
-		text="Nuevo" action="showNewDocumentSelect">
-		<item type="button" id="new_text" text="Text Document" img="text_document.gif" action="doOnNewDocument"/>
-		<item type="button" id="new_text" text="Stylesheet" img="stylesheet.gif" action="doOnNewDocument"/>
-	</item>
-</toolbar>

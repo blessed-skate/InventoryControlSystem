@@ -4,6 +4,6 @@ function refreshQueryGrid(){
 	});
 }
 
-dhtmlxError.catchError("LoadXML", function(a, b, data) {
-	showError('${loading_err}' + '\n' + '${reload_msg}');
-});
+//dhtmlxError.catchError("LoadXML", function(a, b, data) {
+//	showError('${loading_err}' + '\n' + '${reload_msg}');
+//});

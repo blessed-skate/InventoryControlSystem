@@ -6,22 +6,15 @@ public class Asset {
 	private long id;
 	
 	private long idLedger;
-	private String ledger;
-	
-	private int idAssetType;
-	private String assetType;
+	private String idSubclass;
+	private String subclass;
 	
 	private String description;
 	private String brand;
 	private String model;
 	private String serialNumber;
-	
-	private int idMaterial;
 	private String material;
-	
 	private String color;
-	private int idColor;
-	
 	private String supplier;
 	private String generalManager;
 	private String directlyResponsible;
@@ -48,23 +41,17 @@ public class Asset {
 	public void setIdLedger(long idLedger) {
 		this.idLedger = idLedger;
 	}
-	public String getLedger() {
-		return ledger;
+	public String getIdSubclass() {
+		return idSubclass;
 	}
-	public void setLedger(String ledger) {
-		this.ledger = ledger;
+	public void setIdSubclass(String idSubclass) {
+		this.idSubclass = idSubclass;
 	}
-	public int getIdAssetType() {
-		return idAssetType;
+	public String getSubclass() {
+		return subclass;
 	}
-	public void setIdAssetType(int idAssetType) {
-		this.idAssetType = idAssetType;
-	}
-	public String getAssetType() {
-		return assetType;
-	}
-	public void setAssetType(String assetType) {
-		this.assetType = assetType;
+	public void setSubclass(String subclass) {
+		this.subclass = subclass;
 	}
 	public String getDescription() {
 		return description;
@@ -90,12 +77,6 @@ public class Asset {
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
-	public int getIdMaterial() {
-		return idMaterial;
-	}
-	public void setIdMaterial(int idMaterial) {
-		this.idMaterial = idMaterial;
-	}
 	public String getMaterial() {
 		return material;
 	}
@@ -107,12 +88,6 @@ public class Asset {
 	}
 	public void setColor(String color) {
 		this.color = color;
-	}
-	public int getIdColor() {
-		return idColor;
-	}
-	public void setIdColor(int idColor) {
-		this.idColor = idColor;
 	}
 	public String getSupplier() {
 		return supplier;
@@ -191,5 +166,5 @@ public class Asset {
 	}
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
-	}	
+	}
 }

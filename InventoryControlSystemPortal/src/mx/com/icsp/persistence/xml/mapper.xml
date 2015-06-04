@@ -6,4 +6,5 @@
 	<resultMap type="mx.com.icsc.common.Material" id="Material"/>
 	<resultMap type="mx.com.icsc.common.Color" id="Color"/>
 	<resultMap type="mx.com.icsc.common.AssetType" id="AssetType"/>
+	<resultMap type="mx.com.icsc.common.Ledger" id="Ledger"/>
 </mapper>

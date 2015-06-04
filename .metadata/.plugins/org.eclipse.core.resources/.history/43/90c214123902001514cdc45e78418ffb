@@ -1,9 +1,0 @@
-package mx.com.icsp.service;
-
-import com.mx.icsc.common.User;
-
-public interface UserService {
-
-	public User getUser(User user);
-
-}

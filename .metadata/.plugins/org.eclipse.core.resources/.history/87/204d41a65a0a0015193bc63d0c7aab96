@@ -1,0 +1,43 @@
+package mx.com.icsp.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import mx.com.icsc.common.User;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.persistence.dao.PropertyDao;
+import mx.com.icsp.persistence.dao.UserDao;
+import mx.com.icsp.util.Constants;
+
+import org.apache.log4j.Logger;
+
+public class PropertyServiceImpl implements PropertyService{
+
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+	
+	PropertyDao propertyDao;
+	public void setPropertyDao(PropertyDao propertyDao){
+		this.propertyDao = propertyDao;
+	}
+	
+	public static Map<String, Object> map;
+	
+	@Override
+	public void getProperty(String idTransaction) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		User user = null;
+		try{
+			map = new HashMap<String, Object>();
+			map.put("username", username);
+		    user = userDao.getUser(map);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return user;
+	}
+
+}

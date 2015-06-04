@@ -1,0 +1,51 @@
+var dhwin, ulwindow, ulLayout, id="ulwindow";
+var myVault, mygrid;
+var fileToGrid;
+
+//function onLoad(){
+//	createWindow();
+//}
+
+function importExcel(){
+	try{
+		dhwin = new dhtmlXWindows();
+		ulwindow = dhwin.createWindow(id, 50, 50, 1360, 700);
+		ulwindow.setText("Upload files");
+		ulwindow.denyResize();
+		ulwindow.denyMove();
+		ulwindow.button("close").hide();
+		ulwindow.button("park").disable();
+
+		ulLayout = ulwindow.attachLayout("2U");
+		ulLayout.cells("a").setWidth(460);	
+		ulLayout.cells("b").setWidth(900);
+
+		createVault();
+		createGrid();
+	}catch(e){
+		alert("Error: "+ e.toString());
+	}
+}
+
+function createVault(){
+	ulLayout.cells("a").attachVault();
+	myVault = ulLayout.cells("a").attachVault({
+		uploadUrl:  "myImport.do/UploadFile",      // html4/html5 upload url
+	});
+	myVault.attachEvent("onUploadComplete", function(files){
+		alert("upload....");
+		fileToGrid = files;
+	});
+}
+
+function createGrid(){	 
+	mygrid = ulLayout.cells("b").attachGrid();
+	mygrid.setImagePath("../dhtmlx/sources/dhtmlxGrid/codebase/imgs/");          //the path to images required by grid 
+	mygrid.setHeader("Sales,Book title,Author,Price");//the headers of columns  
+	mygrid.setInitWidths("100,250,150,100");          //the widths of columns  
+	mygrid.setColAlign("right,left,left,left");       //the alignment of columns   
+	mygrid.setColTypes("ro,ed,ed,ed");                //the types of columns  
+	mygrid.setColSorting("int,str,str,int");          //the sorting types   
+	mygrid.init();	
+	//mygrid.load(fileToGrid,"xml");
+}

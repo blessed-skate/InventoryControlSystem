@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.icsc.common.AssetType;
 import mx.com.icsc.common.Color;
+import mx.com.icsc.common.Ledger;
 import mx.com.icsc.common.Material;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.persistence.dao.CatalogDao;
@@ -53,17 +54,32 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public AssetType[] getAssetType(String idTransaction) {
+	public AssetType[] getAssetType(String idTransaction, String idLedger) {
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		AssetType[] assetTypeArray = null;
 		try {
-			List<AssetType> list = catalogDao.getAssetType();
+			List<AssetType> list = catalogDao.getAssetType(idLedger);
 			assetTypeArray = list.toArray(new AssetType[list.size()]);
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 
 		return assetTypeArray;
+	}
+
+	@Override
+	public Ledger[] getLedger(String idTransaction, String idLedger) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		Ledger[] ledgerArray = null;
+		try {
+			List<Ledger> list = catalogDao.getLedger(idLedger);
+			ledgerArray = list.toArray(new Ledger[list.size()]);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+
+		return ledgerArray;
 	}
 }
