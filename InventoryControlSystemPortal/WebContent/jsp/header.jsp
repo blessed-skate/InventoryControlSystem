@@ -17,8 +17,8 @@
 
 <script type="text/javascript" src="js/asset.js"></script>
 <script type="text/javascript" src="js/query.js"></script>
-<script type="text/javascript" src="js/report.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/export.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
 
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
@@ -90,15 +90,15 @@ h2{
 
 </head>
 <body>
-	<div id="headerDiv">
-		<h2>Instituto tecnologico de Huaichinango, Pue.</h2>
-		<h3>Sistema para el control de inventarios.</h3>
-		<logic:present name="user">
-			<h4 align="right">
-				Bienvenido
-				<bean:write name="user" property="name" />
-			</h4>
-		</logic:present>
-	</div>
+<!-- 	<div id="headerDiv"> -->
+<!-- 		<h2>Instituto tecnologico de Huaichinango, Pue.</h2> -->
+<!-- 		<h3>Sistema para el control de inventarios.</h3> -->
+<%-- 		<logic:present name="user"> --%>
+<!-- 			<h4 align="right"> -->
+<!-- 				Bienvenido -->
+<%-- 				<bean:write name="user" property="name" /> --%>
+<!-- 			</h4> -->
+<%-- 		</logic:present> --%>
+<!-- 	</div> -->
 </body>
 </html>

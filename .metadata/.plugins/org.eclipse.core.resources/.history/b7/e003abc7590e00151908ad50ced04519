@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="100" />
+<!-- 		inputWidth="170" /> -->
+	<item type="input" label="Nombre del archivo" name="fileName" maxLength="50" required="true"/>
+	<item type="select" label="Extension" name="idSubclass" required="true">
+	
+	</item>
+	<item type="checkbox" label="Cabecera" required="true" name="header">
+		<note width="170">Desea exportar el titulo de las columnas</note>
+	</item>
+<!-- 	<item type="template" label="Excel" name="download" format="doLink" value="Descargar"/> -->
+	
+	<item type="button" name="getAssetGridExcel" value="Descargar grid" width="100"/>
+</items>

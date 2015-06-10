@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.AssetResponse;
 import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsc.common.util.XmlFactory;
 import mx.com.icsp.service.AssetService;
 import mx.com.icsp.util.Constants;
 
@@ -53,11 +55,7 @@ public class AssetAction extends DispatchAction {
 		sb.append("<cell>").append(asset.getBrand()).append("</cell>");
 		sb.append("<cell>").append(asset.getModel()).append("</cell>");
 		sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
-		sb.append("<cell>").append(asset.getMaterial()).append("</cell>");
-		sb.append("<cell>").append(asset.getColor()).append("</cell>");
-		sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
-		sb.append("<cell>").append(asset.getGeneralManager()).append("</cell>");
-		sb.append("<cell>").append(asset.getDirectlyResponsible()).append("</cell>");
+		
 		sb.append("</row>");
 		sb.append("</rows>");
 		return sb.toString();
@@ -66,6 +64,7 @@ public class AssetAction extends DispatchAction {
 	public void getAsset(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
 
+		AssetResponse assetResponse = new AssetResponse();
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		StringBuilder sb = new StringBuilder();
@@ -77,45 +76,56 @@ public class AssetAction extends DispatchAction {
 				sb.append("<rows>");
 				for (Asset asset : assetArray) {
 					sb.append("<row id=\"" + asset.getId() + "\">");
-					sb.append("<cell type=\"sub_row_grid\">").append("xml/query_sgrid.xml").append("</cell>");
-					sb.append("<cell>").append(asset.getIdLedger()).append("</cell>");
-					sb.append("<cell>").append(asset.getIdSubclass()).append("</cell>");
+//					sb.append("<cell type=\"sub_row_grid\">").append("xml/query_sgrid.xml").append("</cell>");
+					sb.append("<cell>").append(asset.getTag()).append("</cell>");
+					sb.append("<cell>").append(asset.getSubclass()).append("</cell>");
+					sb.append("<cell>").append(asset.getDescription()).append("</cell>");
+					sb.append("<cell>").append(asset.getBrand()).append("</cell>");
+					sb.append("<cell>").append(asset.getModel()).append("</cell>");
+					sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
+					sb.append("<cell>").append(asset.getMaterial()).append("</cell>");
+					sb.append("<cell>").append(asset.getColor()).append("</cell>");
+					sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
+					sb.append("<cell>").append(asset.getDirectlyResponsible()).append("</cell>");
+					sb.append("<cell>").append(asset.getGeneralManager()).append("</cell>");
 					sb.append("<cell>").append(asset.getTag()).append("</cell>");
 					sb.append("<cell>").append(asset.getBill()).append("</cell>");
 					sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
-					sb.append("<cell>").append(asset.getLocation()).append("</cell>");
-					sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
 					sb.append("<cell>").append(asset.getPrice()).append("</cell>");
+					sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
+					sb.append("<cell>").append(asset.getLocation()).append("</cell>");
 					sb.append("<cell>").append(asset.getGeneralLocation()).append("</cell>");
 					sb.append("<cell>").append(asset.getSecure()).append("</cell>");
 					sb.append("</row>");
 				}
 				sb.append("</rows>");
 			} else {
-				sb.append("<error>No se encontraron registros</error>");
+				assetResponse.setResponseCode(100);
+				assetResponse.setResponseMessage("No se encontraron registros");
+				sb.append(XmlFactory.getXml(idTransaction, assetResponse));
 			}
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-			sb.append("<response>");
-			sb.append("<responseCode>").append(100).append("</responseCode>");
-			sb.append("<responseMsg>").append("Error al insertar registro").append("</responseMsg>");
-			sb.append("</response>");
+			assetResponse.setResponseCode(101);
+			assetResponse.setResponseMessage("Error al obtener registro");
+			sb.append(XmlFactory.getXml(idTransaction, assetResponse));
 		}
 
-		setResponse(request, response, sb);
+		setResponse(request, response, sb.toString(), "application/xml");
 	}
 	
-	public void getAssetById(ActionMapping arg0, ActionForm arg1,
+	public void getAssetByTag(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
 
+		AssetResponse assetResponse = new AssetResponse();
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			String idAsset = request.getParameter("idAsset");
-			log.info(logPattern.buildPattern(methodName, idTransaction, "idAsset", idAsset));
-			Asset asset = assetService.getAssetById(idTransaction, idAsset);
+			long tag = gerParameterLong(request, "tag");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "tag", String.valueOf(tag)));
+			Asset asset = assetService.getAssetByTag(idTransaction, tag);
 			log.info(logPattern.buildPattern(methodName, idTransaction, "asset", ToStringBuilder.reflectionToString(asset)));
 			
 			if (asset != null) {
@@ -147,20 +157,18 @@ public class AssetAction extends DispatchAction {
 			}
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-			sb.append("<response>");
-			sb.append("<responseCode>").append(100).append("</responseCode>");
-			sb.append("<responseMsg>").append("Error al insertar registro").append("</responseMsg>");
-			sb.append("</response>");
+			assetResponse.setResponseCode(100);
+			assetResponse.setResponseMessage("Error al buscar registro");
+			sb.append(XmlFactory.getXml(idTransaction, assetResponse));
 		}
 
-		setResponse(request, response, sb);
+		setResponse(request, response, sb.toString(), "application/xml");
 	}
 
 	public void insertAsset(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		StringBuilder sb = new StringBuilder();
-		
+		AssetResponse assetResponse = new AssetResponse();
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
@@ -168,10 +176,8 @@ public class AssetAction extends DispatchAction {
 			
 			String idSubclass = gerParameterString(request,"idSubclass");
 			if(idSubclass == null || idSubclass.equals("-1")){
-				sb.append("<response>");
-				sb.append("<responseCode>").append(99).append("</responseCode>");
-				sb.append("<responseMsg>").append("La subclase no puede ser nula, por favor seleccione un valor valido").append("</responseMsg>");
-				sb.append("</response>");
+				assetResponse.setResponseCode(99);
+				assetResponse.setResponseMessage("La subclase no puede ser nula, por favor seleccione un valor valido");
 			}else{
 				Date date = sdf.parse("01/06/2015");
 				
@@ -204,10 +210,8 @@ public class AssetAction extends DispatchAction {
 	
 				long tag = assetService.getTag(idTransaction, idLedger, idSubclass);
 				if (tag == -1) {
-					sb.append("<response>");
-					sb.append("<responseCode>").append(100).append("</responseCode>");
-					sb.append("<responseMsg>").append("Error al obtener el consecutivo de la etiqueta, por favor intente de nuevo").append("</responseMsg>");
-					sb.append("</response>");
+					assetResponse.setResponseCode(100);
+					assetResponse.setResponseMessage("Error al obtener el consecutivo de la etiqueta, por favor intente de nuevo");
 				}else{			
 					Asset asset = new Asset();
 					asset.setIdLedger(idLedger);
@@ -234,36 +238,131 @@ public class AssetAction extends DispatchAction {
 		
 					int responseCode = assetService.insertAsset(idTransaction,asset);
 					if (responseCode == 1) {
-						sb.append("<response>");
-						sb.append("<responseCode>").append(0).append("</responseCode>");
-						sb.append("<responseMsg>").append("Se inserto registro con la etiqueta").append(" ").append(tag);
-						sb.append("</responseMsg>");
-						sb.append("</response>");
+						assetResponse.setResponseCode(0);
+						assetResponse.setResponseMessage("Se inserto registro con la etiqueta " + tag);
 					} else {
-						sb.append("<response>");
-						sb.append("<responseCode>").append(101).append("</responseCode>");
-						sb.append("<responseMsg>").append("Error en la BD al insertar registro").append("</responseMsg>");
-						sb.append("</response>");
+						assetResponse.setResponseCode(101);
+						assetResponse.setResponseMessage("Error en la BD al insertar registro " + tag);
 					}
 				}
 			}
 
 		} catch (ParseException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "ParseException", e.getMessage()), e);
-			sb.append("<response>");
-			sb.append("<responseCode>").append(102).append("</responseCode>");
-			sb.append("<responseMsg>").append("Error al interpretar la fecha")
-					.append("</responseMsg>");
-			sb.append("</response>");
+			assetResponse.setResponseCode(102);
+			assetResponse.setResponseMessage("Error al interpretar la fecha");
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-			sb.append("<response>");
-			sb.append("<responseCode>").append(103).append("</responseCode>");
-			sb.append("<responseMsg>").append("Error al insertar registro")
-					.append("</responseMsg>");
-			sb.append("</response>");
+			assetResponse.setResponseCode(103);
+			assetResponse.setResponseMessage("Error al insertar registro");
 		}
-		setResponse(request, response, sb);
+		setResponse(request, response, XmlFactory.getXml(idTransaction, assetResponse), "application/xml");
+	}
+	
+	public void updateAsset(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		AssetResponse assetResponse = new AssetResponse();
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		try {
+			
+			long tag = gerParameterLong(request,"tag");
+			if(tag == -1){
+				assetResponse.setResponseCode(99);
+				assetResponse.setResponseMessage("El numero de etiqueta no puede ser nulo");
+			}else{
+				Date date = sdf.parse("01/06/2015");
+				
+				String description = gerParameterString(request, "description");
+				String brand = gerParameterString(request, "brand", "Sin marca");
+				String model = gerParameterString(request, "model", "Sin modelo");
+				String serialNumber = gerParameterString(request, "serialNumber", "Sin numero de serie");
+				
+				String material = gerParameterString(request,"material");
+				String color = gerParameterString(request,"mColor");
+				
+				String supplier = gerParameterString(request, "supplier", "Proveedor no identificado");
+				String generalManager = gerParameterString(request, "generalManager");
+				String directlyResponsible = gerParameterString(request, "directlyResponsible");
+				
+				String bill = gerParameterString(request, "bill", "Sin factura");
+				Date billingDate = getParameterDate(request, "billingDate", date);
+				String location = gerParameterString(request, "location");
+				Date useDate = getParameterDate(request, "useDate", date);
+				
+				float price = gerParameterFloat(request, "price");
+				
+				String generalLocation = gerParameterString(request, "generalLocation");
+				String secure = gerParameterString(request, "secure");
+	
+				Asset asset = new Asset();
+				asset.setTag(tag);
+				asset.setDescription(description);
+				asset.setBrand(brand);
+				asset.setModel(model);
+				asset.setSerialNumber(serialNumber);
+				asset.setMaterial(material);
+				asset.setColor(color);
+				asset.setSupplier(supplier);
+				asset.setGeneralManager(generalManager);
+				asset.setDirectlyResponsible(directlyResponsible);
+				asset.setBill(bill);
+				asset.setBillingDate(billingDate);
+				asset.setLocation(location);
+				asset.setUseDate(useDate);
+				asset.setPrice(price);
+				asset.setGeneralLocation(generalLocation);
+				asset.setSecure(secure);
+				
+				log.info(logPattern.buildPattern(methodName, idTransaction, "asset", ToStringBuilder.reflectionToString(asset)));
+	
+				int responseCode = assetService.updateAsset(idTransaction,asset);
+				if (responseCode == 1) {
+					assetResponse.setResponseCode(0);
+					assetResponse.setResponseMessage("Se actualizo registro con la etiqueta " + tag);
+				} else {
+					assetResponse.setResponseCode(101);
+					assetResponse.setResponseMessage("Error en la BD al actualizar registro");
+				}
+			}
+		} catch (ParseException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "ParseException", e.getMessage()), e);
+			assetResponse.setResponseCode(102);
+			assetResponse.setResponseMessage("Error al interpretar la fecha");
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			assetResponse.setResponseCode(103);
+			assetResponse.setResponseMessage("Error al insertar registro");
+		}
+		setResponse(request, response, XmlFactory.getXml(idTransaction, assetResponse), "application/xml");
+//		setResponse(request, response, sb);
+	}
+	
+	public void setResponse(HttpServletRequest request,
+			HttpServletResponse response, String res, String contentType) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+	
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+//		response.setContentType("application/xml");
+		response.setContentType(contentType);
+		response.setHeader("Pragma", "no-cache");// set HTTP/1.0 no-cache
+	
+		PrintWriter out;
+	
+		try {
+			out = response.getWriter();
+			out.println(res);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+		}
+	
 	}
 	
 	public void setResponse(HttpServletRequest request, HttpServletResponse response, StringBuilder sb){

@@ -1,6 +1,7 @@
 //dhtmlxError.catchError("LoadXML", function(a, b, data) {
 //	showError('${loading_err}' + '\n' + '${reload_msg}');
 //});
+dhx4.ajax.cache=true;
 
 function showResponseXmlAlertError(msg) {
 	dhtmlx.alert({

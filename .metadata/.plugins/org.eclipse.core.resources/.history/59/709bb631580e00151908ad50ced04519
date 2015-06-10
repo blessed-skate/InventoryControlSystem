@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="100"
+		inputWidth="170" />
+	<item type="checkbox" label="Cabecera" required="true" name="header">
+		<note width="170">Seleccione si se desea exportar el titulo de las columnas</note>
+	</item>
+	<item type="template" label="Excel" name="download" format="doLink" value="Descargar"/>
+	
+	<item type="button" name="getAssetGridExcel" value="Descargar grid" width="120"/>
+</items>

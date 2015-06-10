@@ -1,0 +1,23 @@
+package mx.com.icsc.common.util;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
+import mx.com.icsc.common.AssetResponse;
+
+public class XmlFactory {
+	
+	public static String getXml(AssetResponse object){
+		JAXBContext jaxbContext = JAXBContext.newInstance(AssetResponse.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+ 
+		// output pretty printed
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+ 
+		jaxbMarshaller.marshal(customer, file);
+		jaxbMarshaller.marshal(customer, System.out);
+		
+		return null;
+	}
+
+}

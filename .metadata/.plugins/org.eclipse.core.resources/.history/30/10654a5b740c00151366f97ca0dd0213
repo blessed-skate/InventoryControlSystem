@@ -1,0 +1,9 @@
+package mx.com.icsc.common;
+
+public class AssetResponse {
+
+	private int responseCode;
+	private String responseMessage;
+	
+	
+}

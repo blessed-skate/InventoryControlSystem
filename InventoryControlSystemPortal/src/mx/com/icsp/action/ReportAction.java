@@ -3,8 +3,11 @@ package mx.com.icsp.action;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,8 @@ import mx.com.icsc.common.Asset;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.service.AssetService;
 import mx.com.icsp.util.Constants;
+import mx.com.icsp.util.excel.ExcelWriter;
+import mx.com.icsp.util.excel.ExcelXmlParser;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,15 +31,15 @@ import org.apache.struts.actions.DispatchAction;
 
 public class ReportAction extends DispatchAction{
 	
-	Logger log = Logger.getLogger(this.getClass());
-	LogPattern logPattern = new LogPattern(Constants.domainCode,
+	private Logger log = Logger.getLogger(this.getClass());
+	private LogPattern logPattern = new LogPattern(Constants.domainCode,
 			Constants.solutioNameCode, Constants.platform, Constants.tower,
 			this.getClass().getName());
 	
 	public static final String CONTENT_TYPE_EXCEL = "application/ms-excel";
-//	public static final String CONTENT_TYPE_EXCEL = "application/force-download";
 	public static final String HEADER_1 = "Content-Disposition";
 	public static final String HEADER_2 = "attachment; filename=";
+	public static final String CONTENT_TYPE_PDF = "application/pdf";
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -51,6 +56,7 @@ public class ReportAction extends DispatchAction{
 		
 		Asset[] assetArray = assetService.getAsset(idTransaction);
 		if(assetArray != null && assetArray.length > 0){
+			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", String.valueOf(assetArray.length)));
 			try{
 				Workbook wb = new HSSFWorkbook();
 				
@@ -133,8 +139,49 @@ public class ReportAction extends DispatchAction{
 				log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 			}
 		}
+	}
+	
+	public void getAssetGridPdf(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
 		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		String param = request.getParameter("grid_xml");
+		String fileName = request.getParameter("fileName");
+//		log.info(logPattern.buildPattern(methodName, idTransaction, "param", param));
 		
+		try {
+			String xml = URLDecoder.decode(param, "UTF-8");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
+//			new ExcelWriter().generate(idTransaction, xml, response, fileName);
+		} catch (UnsupportedEncodingException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage()), e);
+		}
+	}
+	
+	public void getAssetGridExcel(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		String param = request.getParameter("grid_xml");
+		String fileName = request.getParameter("fileName");
+		String header = request.getParameter("header");
+		String extension = request.getParameter("extension");
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
+		log.info(logPattern.buildPattern(methodName, idTransaction, "header", header));
+		log.info(logPattern.buildPattern(methodName, idTransaction, "extension", extension));
+		
+		try {
+			String xml = URLDecoder.decode(param, "UTF-8");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
+			new ExcelWriter().generate(idTransaction, xml, response, fileName, header, extension);
+		} catch (UnsupportedEncodingException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage()), e);
+		}
 	}
 	
 	public void setResponse(HttpServletRequest request, HttpServletResponse response, String contentType, String fileName, Workbook wb){

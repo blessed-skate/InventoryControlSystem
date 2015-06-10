@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.AssetResponse;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.persistence.dao.AssetDao;
 import mx.com.icsp.util.Constants;
+
+import org.apache.log4j.Logger;
 
 public class AssetServiceImpl implements AssetService{
 	
@@ -53,17 +54,52 @@ public class AssetServiceImpl implements AssetService{
 		}
 		return reponseCode;
 	}
+	
+	@Override
+	public AssetResponse insertAsset(String idTransaction, Asset[] assetArray){
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		StringBuilder sb1 = new StringBuilder();
+		StringBuilder sb2 = new StringBuilder();
+		AssetResponse response = new AssetResponse();
+		
+		int reponseCode = -1;
+		int cont = 0;
+		
+		if(assetArray != null && assetArray.length > 0){
+			for(Asset asset: assetArray){			
+				try{
+					reponseCode = assetDao.insertAsset(asset);
+					log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+					if(reponseCode == 1){
+						cont++;
+					}else{
+						sb2.append("No se inserto el registro con la etiqueta ").append(asset.getTag()).append("\n");
+					}
+				}catch(Exception e){
+					log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+				}
+			}
+			sb1.append("Se insertaron ").append(cont).append(" de ").append(assetArray.length).append(" resgitros").append("\n");
+			sb1.append(sb2);
+		}else{
+			sb1.append("No existen registros para insertar");
+		}
+		
+		response.setResponseCode(reponseCode == 1 ? 200 : 0);
+		response.setResponseMessage(sb1.toString());
+		return response;
+	}
 
 	@Override
-	public Asset getAssetById(String idTransaction, String idAsset) {
+	public Asset getAssetByTag(String idTransaction, long tag) {
 		
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		Asset asset = null;
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("idAsset", idAsset);
-			asset = assetDao.getAssetById(params);					
+			params.put("tag", tag);
+			asset = assetDao.getAssetByTag(params);					
 		}catch(Exception e){
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
@@ -84,5 +120,19 @@ public class AssetServiceImpl implements AssetService{
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 		return tag;
+	}
+
+	@Override
+	public int updateAsset(String idTransaction, Asset asset) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		int reponseCode = -1;
+		try{
+			reponseCode = assetDao.updateAsset(asset);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
 	}
 }

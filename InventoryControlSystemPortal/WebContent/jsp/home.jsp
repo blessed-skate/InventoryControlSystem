@@ -43,7 +43,7 @@ body{
 	var main_div;
 	var main_menu;
 	var home_tabbar;
-	var query_grid;
+	var export_grid;
 	var insert_layout;
 	var insert_form;
 	var insert_toolbar;
@@ -51,27 +51,14 @@ body{
 	var search_toolbar;
 	var query_layout;
 	var query_form;
-	var report_grid;
+	var import_grid;
+	var import_toolbar;
 	
 	function logOut(){
 		alert("Salir");
 	}
 	
 	function doOnLoad() {
-		
-		var formData = [
-					{type: "settings", position: "label-left", labelWidth: 120, inputWidth: 120},
-					{type: "input", label: "Name", value: "John Smith"},
-					{type: "password", label: "Password", value: "123"},
-					{type: "select", label: "Session", options:[
-						{value: "1", text: "Administration"},
-						{value: "2", text: "Design"},
-						{value: "3", text: "Manage Articles"}
-					]},
-					{type: "calendar", dateFormat: "%Y-%m-%d %H:%i", name: "start_date", label: "Start Date", value:"2011-06-20 14:38", enableTime: true, calendarPosition: "right"},
-					{type: "calendar", name: "end_date", label: "End Date", dateFormat: "%Y-%m-%d", serverDateFormat: "%d.%m.%Y", value: "20.06.2011", calendarPosition: "right"}
-				];
-		
 		main_div = new dhtmlXLayoutObject("mainDiv", "1C");
 		main_menu = main_div.cells("a").attachMenu({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
@@ -102,8 +89,8 @@ body{
 		});
 		
 		insert_form = insert_layout.cells("a").attachForm();
-		insert_form.load("xml/insert_form.xml");
-// 		insert_form.load(formData);
+		insert_form.load("xml/insert/insert_form.xml");
+		insert_form.enableLiveValidation(true);
 		insert_form.attachEvent("onButtonClick", function(name){
 			window[name]();
 		});
@@ -118,7 +105,7 @@ body{
 		
 		insert_toolbar = insert_layout.cells("a").attachToolbar({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/insert_toolbar.xml" 
+			xml: "xml/insert/insert_toolbar.xml" 
 		});
 		
 		insert_toolbar.attachEvent("onClick", function(name){
@@ -126,7 +113,8 @@ body{
 		});
 		
 		search_form = insert_layout.cells("b").attachForm();
-		search_form.load("xml/search_form.xml");
+		search_form.load("xml/insert/search_form.xml");
+		search_form.enableLiveValidation(true);
 		search_form.attachEvent("onButtonClick", function(name){
 			window[name]();
 		});
@@ -134,7 +122,7 @@ body{
 		
 		search_toolbar = insert_layout.cells("b").attachToolbar({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/search_toolbar.xml" 
+			xml: "xml/insert/search_toolbar.xml" 
 		});
 		
 		search_toolbar.attachEvent("onClick", function(name){
@@ -152,7 +140,7 @@ body{
 		
 		query_layout.cells("a").collapse();
 		query_form = query_layout.cells("a").attachForm();
-		query_form.load("xml/query_form.xml");
+		query_form.load("xml/export/query_form.xml");
 		query_form.attachEvent("onButtonClick", function(name){
 			window[name]();
 		});
@@ -160,38 +148,39 @@ body{
 		
 		query_layout.cells("b").attachToolbar({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/export_toolbar.xml"
+			xml: "xml/export/export_toolbar.xml"
 		});
 		
-		query_grid = query_layout.cells("b").attachGrid();
-		query_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
-		query_grid.setHeader("&nbsp;, C. contable, Tipo de bien, Etiqueta, Factura, Fecha, Localizacion, F. de uso, Valor, Ubicaion, Seguro");
-		query_grid.attachHeader("#rspan,#text_filter,#rspan,#text_filter,#text_filter,#rspan,#text_filter,#rspan,#numeric_filter,#rspan,#text_filter");
-		query_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
-		query_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
-		query_grid.setColSorting("na,int,na,na,str,date,str,date,int,str,str");
-		query_grid.setColAlign("left,left,center,center,left,letf,left,left,right,left,left");
- 		query_grid.setNumberFormat("0,000.00",7,".",",");
- 		query_grid.setDateFormat("%d/%m/%Y");
-		query_grid.init();
-		query_grid.enableAutoHeight();
-		query_grid.attachFooter(" , , , ,#cspan,#cspan,#cspan,Total,#stat_total, , ");
-		query_grid.attachFooter(" , , , ,#cspan,#cspan,#cspan,Maximo,#stat_max, , ");
-		query_grid.attachFooter(" , , , ,#cspan,#cspan,#cspan,Minimo,#stat_min, , ");
-		query_grid.attachFooter(" , , , ,#cspan,#cspan,#cspan,Promedio,#stat_average, , ");
-		query_grid.attachFooter(" , , , ,#cspan,#cspan,#cspan,Registros,#stat_count, , ");
+		export_grid = query_layout.cells("b").attachGrid();
+		export_grid.loadXML("xml/export/query_sgrid.xml");
+		export_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+// 		export_grid.setHeader("&nbsp;, C. contable, Tipo de bien, Etiqueta, Factura, Fecha, Localizacion, F. de uso, Valor, Ubicaion, Seguro");
+		export_grid.attachHeader("#text_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#numeric_filter,#rspan,#rspan,#rspan,#rspan");
+// 		export_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
+// 		export_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
+// 		export_grid.setColSorting("na,int,na,na,str,date,str,date,int,str,str");
+// 		export_grid.setColAlign("left,left,center,center,left,letf,left,left,right,left,left");
+ 		export_grid.setNumberFormat("0,000.00",7,".",",");
+ 		export_grid.setDateFormat("%d/%m/%Y");
+		export_grid.init();
+		export_grid.enableAutoHeight();
+		export_grid.attachFooter(" , , , , , , , , , , , , ,Total,#stat_total, , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , , ,Maximo,#stat_max, , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , , ,Minimo,#stat_min, , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , , ,Promedio,#stat_average, , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , , ,Registros,#stat_count, , , , ");
 		
-		query_grid.loadXML("myAsset.do?method=getAsset");
+		export_grid.loadXML("myAsset.do?method=getAsset");
 		
 		//Reports
-		home_tabbar.tabs("a3").attachToolbar({
+		import_toolbar = home_tabbar.tabs("a3").attachToolbar({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/import_toolbar.xml"
+			xml: "xml/import/import_toolbar.xml"
 		});
 		
-		report_grid = home_tabbar.tabs("a3").attachGrid();
-		report_grid.loadXML("xml/report_grid.xml");
-		report_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+		import_grid = home_tabbar.tabs("a3").attachGrid();
+		import_grid.loadXML("xml/import/import_grid.xml");
+		import_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 	}
 </script>
 </head>

@@ -27,7 +27,7 @@ public interface AssetDao {
 	
 	static final String ORDERBY = " ORDER BY FIIDASSET ASC";
 
-	static final String SELASSETBYID = " WHERE FIIDASSET = #{idAsset}";
+	static final String SELASSETBYIDTAG = " WHERE FITAG = #{tag}";
 	
 	static final String SELTAG = "SELECT CONCAT(#{idLedger}, #{idSubclass}, IF( MAX(FITAG) IS NULL, '00001', LPAD(SUBSTR(MAX(FITAG), 6) + 1, 5, '0'))) tag FROM CISDB.TACISASSET"
 			+ " WHERE FIIDLEDGER = #{idLedger} AND FCSUBCLASS = #{idSubclass}";
@@ -38,6 +38,11 @@ public interface AssetDao {
 			+ "(#{idLedger}, #{idSubclass}, #{description}, #{brand}, #{model}, #{serialNumber}, #{material}, #{color},"
 			+ "#{supplier}, #{generalManager}, #{directlyResponsible}, #{tag},"
 			+ "#{bill}, #{billingDate}, #{location}, #{useDate}, #{price}, #{generalLocation}, #{secure})";
+	
+	static final String UPDASSET = "UPDATE CISDB.TACISASSET SET FCDESCRIPTION=#{description},FCBRAND=#{brand},FCMODEL=#{model},"
+			+ "FCSERIALNUMBER=#{serialNumber}, FCMATERIAL=#{material}, FCCOLOR=#{color},FCSUPPLIER=#{supplier}, FCGENERALMANAGER=#{generalManager},"
+			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
+			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure} WHERE FITAG=#{tag}";
 
 	@Select(SELASSET+ORDERBY)
 	@Options(statementType = StatementType.CALLABLE)
@@ -47,11 +52,15 @@ public interface AssetDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract Asset getTag(@Param(value = "idLedger") long idLedger, @Param(value = "idSubclass") String idSubclass);
 	
-	@Select(SELASSET+SELASSETBYID)
+	@Select(SELASSET+SELASSETBYIDTAG)
 	@Options(statementType = StatementType.CALLABLE)
-	public abstract Asset getAssetById(Map<String, Object> params);
+	public abstract Asset getAssetByTag(Map<String, Object> params);
 
 	@Insert(INSASSET)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract int insertAsset(Asset asset);
+
+	@Insert(UPDASSET)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract int updateAsset(Asset asset);
 }

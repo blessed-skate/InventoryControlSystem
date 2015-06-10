@@ -1,0 +1,38 @@
+package mx.com.icsc.common.util;
+
+import java.io.StringWriter;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+
+import mx.com.icsc.common.AssetResponse;
+
+public class XmlFactory {
+	
+	public static String getXml(AssetResponse object){
+		JAXBContext jaxbContext = JAXBContext.newInstance(AssetResponse.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+ 
+		java.io.StringWriter sw;
+		try {
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		
+		
+		sw = new StringWriter();
+		
+			jaxbMarshaller.marshal(object, sw);
+		}
+	 catch (PropertyException e) {
+		 
+	 }
+	catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return sw.toString();
+	}
+
+}

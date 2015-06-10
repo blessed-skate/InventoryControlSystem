@@ -1,8 +1,0 @@
-function exportExcel() {
-//	window.dhx4.ajax.post("myReport.do", "method=getAssetXml", function() {
-//	});
-}
-
-function doLink(name, value){
-	return '<a href="myReport.do?method=getAssetXml">'+value+'</a>';
-}

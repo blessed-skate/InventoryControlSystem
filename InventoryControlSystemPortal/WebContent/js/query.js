@@ -1,5 +1,5 @@
-function refreshQueryGrid(){
-	query_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
+function refreshExportGrid(){
+	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
 		showResponseXmlAlert("La tabla se ha refrescado...");
 	});
 }

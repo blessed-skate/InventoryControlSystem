@@ -1,0 +1,37 @@
+package mx.com.icsc.common.util;
+
+import java.io.StringWriter;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+
+import mx.com.icsc.common.AssetResponse;
+
+import org.apache.log4j.Logger;
+
+public class XmlFactory {
+	static Logger log = Logger.getLogger(XmlFactory.class);
+	static LogPattern logPattern = new LogPattern(Constants.domainCode, Constants.solutioNameCode, 
+			Constants.platform, Constants.tower, XmlFactory.class);
+	
+	public static String getXml(AssetResponse object) {
+		JAXBContext jaxbContext;		
+		StringWriter sw = new StringWriter();
+		
+		try {
+			jaxbContext = JAXBContext.newInstance(AssetResponse.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(object, sw);
+		} catch (PropertyException e) {
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+
+		return sw.toString();
+	}
+
+}

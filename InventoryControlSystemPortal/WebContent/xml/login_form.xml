@@ -8,7 +8,7 @@
 			checked="true" label="Already have account">
 			<item type="input" value="" label="Usuario" name="username"/>
 			<item type="password" value="" label="Contrseña" name="password"/>
-			<item type="checkbox" checked="false" label="Recordarme" />
+<!-- 			<item type="checkbox" checked="false" label="Recordarme" /> -->
 		</item>
 		<item type="label" label="" name="error_msg" />
 		<item type="button" name="login" value="Ingresar" />

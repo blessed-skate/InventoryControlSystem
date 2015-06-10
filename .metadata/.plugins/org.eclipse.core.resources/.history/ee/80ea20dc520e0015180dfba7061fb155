@@ -1,0 +1,107 @@
+package mx.com.icsp.util.excel;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.util.Constants;
+
+import org.apache.log4j.Logger;
+import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
+
+
+public class ExcelWriter{
+
+	private ExcelXmlParser parser;
+	private Logger log = Logger.getLogger(this.getClass());
+	private LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+	
+	private int rows_stat;
+	
+	public void generate(String idTransaction, String xml, HttpServletResponse resp){
+		
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
+		parser = new ExcelXmlParser();
+		try {
+			parser.setXML(xml);
+		} catch (DOMException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "DOMException", e.getMessage()), e);
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+		} catch (ParserConfigurationException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "ParserConfigurationException", e.getMessage()), e);
+		} catch (SAXException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "SAXException", e.getMessage()), e);
+		}
+	
+	}
+	
+	private void rowsPrint(ExcelXmlParser parser, HttpServletResponse resp) throws WriteException, IOException {
+		//do we really need them?
+		ExcelRow[] rows = parser.getGridContent();
+		if (rows == null) return;
+		this.rows_stat = rows.length;
+		
+		for (int i = 0; i < rows.length; i++) {
+			ExcelCell[] cells = rows[i].getCells();
+			sheet.setRowView(i + headerOffset, 400);
+			for (int j = 0; j < cells.length; j++) {
+				// sets cell font
+				WritableFont font = new WritableFont(WritableFont.ARIAL, fontSize, (cells[j].getBold()) ? WritableFont.BOLD : WritableFont.NO_BOLD, (cells[j].getItalic()) ? true : false);
+				if ((!cells[j].getTextColor().equals(""))&&(parser.getProfile().equals("full_color")))
+					font.setColour(colors.getColor(cells[j].getTextColor(), wb));
+				else
+					font.setColour(colors.getColor(gridTextColor, wb));
+				WritableCellFormat f = new WritableCellFormat (font);
+
+				// sets cell background color
+				if ((!cells[j].getBgColor().equals(""))&&(parser.getProfile().equals("full_color"))) {
+					Colour col = colors.getColor(cells[j].getBgColor(), wb);
+					f.setBackground(col);
+				} else {
+					Colour bg;
+					if (i%2 == 1) {
+						bg = colors.getColor(scaleTwoColor, wb);
+						
+					} else {
+						bg = colors.getColor(scaleOneColor, wb);
+					}
+					f.setBackground(bg);
+				}
+
+				f.setBorder(Border.ALL, BorderLineStyle.THIN, colors.getColor(lineColor, wb));
+				f.setVerticalAlignment(VerticalAlignment.CENTRE);
+
+				String al = cells[j].getAlign();
+				if (al == "")
+					al = cols[0][j].getAlign();
+				if (al.equalsIgnoreCase("left")) {
+					f.setAlignment(Alignment.LEFT);
+				} else {
+					if (al.equalsIgnoreCase("right")) {
+						f.setAlignment(Alignment.RIGHT);
+					} else {
+						f.setAlignment(Alignment.CENTRE);
+					}
+				}
+				try {
+					double name = Double.parseDouble(cells[j].getValue());
+					Number label = new Number(j, i + headerOffset, name, f);
+					sheet.addCell(label);
+				} catch (Exception e) {
+					String name = cells[j].getValue();
+					Label label = new Label(j, i + headerOffset, name, f);
+					sheet.addCell(label);
+				}
+			}
+		}
+		headerOffset += rows.length;
+	}
+}

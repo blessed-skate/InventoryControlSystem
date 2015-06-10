@@ -8,7 +8,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.AssetResponse;
 import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsc.common.util.XmlFactory;
 import mx.com.icsp.service.AssetService;
 import mx.com.icsp.service.PropertyServiceImpl;
 import mx.com.icsp.util.Constants;
@@ -44,24 +47,31 @@ public class ImportAction extends DispatchAction {
 		this.assetService = assetService;
 	}
 		
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void importExcel(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
+		
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
-		FileItemFactory factory = null;
-		ServletFileUpload upload = null;
-		CreateXML cxml = null;
 		StringBuilder sb = new StringBuilder();
 		
-		log.info("Peticion: " + cont++);
+		String filename = null;
+		long filesize = -1;
+		boolean state = false;
 		
-		boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);
-//		ServletFileUpload.isMultipartContent(request.get);
+		String info = "Se cargo exitosamente";
+		String param = null;
+		
+		boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);		
+
 		if (!isMultipartContent) {
 			log.info("You are not trying to upload...");
 			return;
 		}
+		
+		FileItemFactory factory = null;
+		ServletFileUpload upload = null;
 
 		factory = new DiskFileItemFactory();
 		upload = new ServletFileUpload(factory);
@@ -78,24 +88,30 @@ public class ImportAction extends DispatchAction {
 				boolean isFormField = fileItem.isFormField();
 				if (isFormField) {
 				} else {
-					log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
-					String filename = fileItem.getName();
-					long filesize = fileItem.getSize();
-					boolean state = false;
 					
-					String info = "Se cargo exitosamente";
-					String param = "";
+					log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
+					filename = fileItem.getName();
+					filesize = fileItem.getSize();
+					
+					String header = request.getParameter("header");
+					log.info(logPattern.buildPattern(methodName, idTransaction, "header", header));
+					
+					int sheetNumber = Integer.parseInt(request.getParameter("sheet"));
+					log.info(logPattern.buildPattern(methodName, idTransaction, "sheet", String.valueOf(sheetNumber)));
 					
 					try {
-						Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
-						Sheet sheet = wb.getSheetAt(0);
-						int columnLength = sheet.getColumnBreaks().length;
-						
-						if(state = validateWB(filesize, columnLength, info)){
-							CreateXML createXML = new CreateXML();
-							param = createXML.createGrid(sheet);
+						if(filename.endsWith(".xls") || filename.endsWith("xlsx")){
+							Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
+							Sheet sheet = wb.getSheetAt(0);
+							
+							if(state = validateWB(filesize, 0, info)){
+								CreateXML createXML = new CreateXML();
+								param = createXML.createGrid(sheet);							
+							}
+							log.info("Sheet name = " + sheet.getSheetName());
+						}else{
+							info = "La extension del archvio es invalida";
 						}
-						log.info("Sheet name = " + sheet.getSheetName());
 					} catch (EncryptedDocumentException e2) {
 						info = e2.getMessage();
 						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e2.getMessage()), e2);
@@ -106,39 +122,66 @@ public class ImportAction extends DispatchAction {
 						info = e2.getMessage();
 						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e2.getMessage()), e2);
 					}
-									
-					sb.append("{\"state\":").append(state).append(",\"name\":\"").append(filename).append("\",\"size\":").append(filesize).append(",");
-					sb.append(" extra: { info: \"").append(info).append("\", param: \"").append(param).append("\" }");
-					sb.append("}");
 				}
 			}
 		} catch (FileUploadException e) {
-			sb.append("{\"state\":false,\"extra\":{\"info\":\"Error al cargar el archivo\",\"param\":\""+e.getMessage()+"\"}}");
+			param = e.getMessage();
 			log.error(logPattern.buildPattern(methodName, idTransaction, "FileUploadException", e.getMessage()), e);			
 		}
-		setResponse(request, response, sb);
-	}
+		sb.append("{state:").append(state).append(",name:\"").append(filename).append("\",size:").append(filesize).append(",");
+		sb.append(" extra: { info: \"").append(info).append("\", param: \"").append(param).append("\" }");
+		sb.append("}");
 		
+//		log.info(logPattern.buildPattern(methodName, idTransaction, "response", sb.toString()));
+		
+		setResponse(request, response, sb.toString(), "text/json");
+	}
+
+	public void saveFile(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		AssetResponse assetResponse = new AssetResponse();
+		
+		try{
+			String fileName = request.getParameter("fileName");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
+			Asset[] assetArray = (Asset[])request.getSession().getAttribute(fileName);
+			assetResponse = assetService.insertAsset(idTransaction, assetArray);
+		}
+		catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			assetResponse.setResponseCode(200);
+			assetResponse.setResponseMessage(e.getMessage());
+		}
+		setResponse(request, response, XmlFactory.getXml(idTransaction, assetResponse), "application/xml");		
+	}	
+	
 	public void setResponse(HttpServletRequest request,
-			HttpServletResponse response, StringBuilder sb) {
+			HttpServletResponse response, String res, String contentType) {
 		
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
-
-		response.setContentType("text/json");
-
+	
+		response.setContentType(contentType);
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+//		response.setContentType("application/xml");
+		response.setHeader("Pragma", "no-cache");// set HTTP/1.0 no-cache
+	
 		PrintWriter out;
-
+	
 		try {
 			out = response.getWriter();
-			out.println(sb.toString());
-			log.info(logPattern.buildPattern(methodName, idTransaction, "Response", sb.toString()));
+			out.write(res);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
 		} catch (IOException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
 		}
-
-	}
 	
+	}
+
 	public boolean validateWB(long filesize, int columnLength, String msg){
 		boolean state = true;
 		int EXCEL_MAX_FILE_SIZE = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_MAX_FILE_SIZE").getValue());

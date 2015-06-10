@@ -1,15 +1,11 @@
-var dhwin, ulwindow, ulLayout, id="ulwindow";
+var dhwin, import_excel_window, id="import_excel_window";
 var myVault, mygrid;
 var fileToGrid;
-
-//function onLoad(){
-//	createWindow();
-//}
 
 function importExcel(){
 	try{
 		dhwin = new dhtmlXWindows();
-		ulwindow = dhwin.createWindow({
+		import_excel_window = dhwin.createWindow({
 			id : "exportExcelWindow",
 			left : 0,
 			right : 0,
@@ -23,30 +19,37 @@ function importExcel(){
 			header : true
 		});
 		
-		ulwindow.button('park').hide();
-		ulwindow.button('minmax').hide();
-
-		myVault = ulwindow.attachVault({
-			uploadUrl:  "myImport.do?method=importExcel"      // html4/html5 upload url
-		});
+		import_excel_window.button("park").hide();
+		import_excel_window.button("minmax").hide();
 		
-		myVault.attachEvent("onFileAdd", function(file){
-//			alert(file.serverName);
-//			alert(file.uploaded);
-		});
-		
-		myVault.attachEvent("onUploadComplete", function(files){
-//			showResponseXmlAlert(files[0].size + " " + files[0].serverName);
-//			showResponseXmlAlert(files[0].uploaded);
+		myVault = import_excel_window.attachVault({
+			uploadUrl:  "myImport.do?method=importExcel&header=true&sheet=0",
+			filesLimit: 1,
+			multiple: false,
+			buttonClear: false
 		});
 		
 		myVault.attachEvent("onUploadFile", function(file, extra){
 			if(file.uploaded){
 				showResponseXmlAlert("<b>"+extra.info+"</b>: " + file.name);
 				report_grid.loadXMLString(extra.param);
+				import_toolbar.setValue("file", file.name);
 			}else{
 				showResponseXmlAlertError("<b>Ocurrio un error cargar el archvio</b>: "+file.name + " " +extra.info)
 			}
+		});
+		
+		myVault.attachEvent("onUploadFail", function(file, extra){
+			showResponseXmlAlertError("<b>Ocurrio un error cargar el archvio</b>: "+file.name + " " +extra.info)			
+		});
+		
+		var import_excel_toolbar = import_excel_window.attachToolbar({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/import/import_excel_toolbar.xml"
+		});
+		
+		import_excel_toolbar.attachEvent("onClick", function(name){
+			window[name]();
 		});
 
 	}catch(e){
@@ -54,4 +57,28 @@ function importExcel(){
 	}
 }
 
+function saveFileImported(){
+	var textFileValue = import_toolbar.getValue("file");
+	if(textFileValue != null && textFileValue != ""){
+		var loader = window.dhx4.ajax.post("myImport.do", "method=saveFile&fileName="+textFileValue);
+		
+		console.log(loader.xmlDoc.responseXML);
+		alert(loader.xmlDoc.responseXML);
+		
+		var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+		var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+		if(responseCode == 0){
+			showResponseXmlAlert(responseMessage);
+			insert_form.clear();
+		}else{
+			showResponseXmlAlertError(responseMessage);
+		}
+	}else{
+		showResponseXmlAlertError("Por favor importe algun archivo");
+	} 
+}
 
+
+function setExcelHeader(){
+	alert(import_excel_toolbar.getItemState("header"));
+}

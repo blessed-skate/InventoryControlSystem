@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item type="checkbox" id="header" text="" img="database.gif"
+		action="setHeader" />
+	<item type="button" id="export_excel" text="Excel" img="stylesheet.gif"
+		action="exportExcel" />
+	<item type="button" id="export_pdf" text="Pdf" img="ico_pdf_18.gif"
+		action="exportPDF" />
+</toolbar>
