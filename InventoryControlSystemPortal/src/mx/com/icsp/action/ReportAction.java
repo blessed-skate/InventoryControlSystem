@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.service.AssetService;
 import mx.com.icsp.util.Constants;
 import mx.com.icsp.util.excel.ExcelWriter;
-import mx.com.icsp.util.excel.ExcelXmlParser;
+import mx.com.icsp.util.pdf.PdfWriter;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -149,14 +148,14 @@ public class ReportAction extends DispatchAction{
 
 		String param = request.getParameter("grid_xml");
 		String fileName = request.getParameter("fileName");
-//		log.info(logPattern.buildPattern(methodName, idTransaction, "param", param));
+		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
 		
+		String xml = null;
 		try {
-			String xml = URLDecoder.decode(param, "UTF-8");
-			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
-//			new ExcelWriter().generate(idTransaction, xml, response, fileName);
+			xml = URLDecoder.decode(param, "UTF-8");
+			new PdfWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
 		}
 	}
 	
@@ -174,13 +173,13 @@ public class ReportAction extends DispatchAction{
 		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
 		log.info(logPattern.buildPattern(methodName, idTransaction, "header", header));
 		log.info(logPattern.buildPattern(methodName, idTransaction, "extension", extension));
-		
+		String xml = null;
 		try {
-			String xml = URLDecoder.decode(param, "UTF-8");
-			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
-			new ExcelWriter().generate(idTransaction, xml, response, fileName, header, extension);
+			xml = URLDecoder.decode(param, "UTF-8");
+//			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
+			new ExcelWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
 		}
 	}
 	

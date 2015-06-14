@@ -350,3 +350,49 @@ org.eclipse.debug.core.DebugException: Terminate failed
 
 !ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-06-07 13:20:05.184
 !MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-06-10 15:14:21.827
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-06-10 15:14:58.085
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 0 2015-06-10 15:18:16.175
+!MESSAGE Module InventoryControlSystemPortal on EAP-6.4.0 not yet fully deployed. Waiting...
+
+!ENTRY org.jboss.ide.eclipse.as.core 2 0 2015-06-10 15:18:36.229
+!MESSAGE Module InventoryControlSystemPortal on EAP-6.4.0 still not ready to be shown in browser. Aborting delay.
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842776 2015-06-10 15:33:31.863
+!MESSAGE Server shutting down
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842785 2015-06-10 15:33:31.991
+!MESSAGE Server Shutdown Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-06-10 15:33:32.495
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-06-10 15:33:38.643
+!MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-06-11 22:01:04.432
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-06-11 22:01:22.158
+!MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 0 2015-06-12 01:55:32.124
+!MESSAGE Module InventoryControlSystemPortal on EAP-6.4.0 not yet fully deployed. Waiting...
+
+!ENTRY org.jboss.ide.eclipse.as.core 2 0 2015-06-12 01:55:53.067
+!MESSAGE Module InventoryControlSystemPortal on EAP-6.4.0 still not ready to be shown in browser. Aborting delay.
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-06-12 02:02:13.358
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-06-12 02:02:32.857
+!MESSAGE Server Startup Succeeded

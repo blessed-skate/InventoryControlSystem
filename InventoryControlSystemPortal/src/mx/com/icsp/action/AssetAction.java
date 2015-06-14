@@ -358,31 +358,11 @@ public class AssetAction extends DispatchAction {
 		try {
 			out = response.getWriter();
 			out.println(res);
-			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
 		} catch (IOException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+//			log.error(logPattern.buildPattern(methodName, idTransaction, "response", res));
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage(), res), e);
 		}
 	
-	}
-	
-	public void setResponse(HttpServletRequest request, HttpServletResponse response, StringBuilder sb){
-		String idTransaction = request.getSession().getId();
-		String methodName = new Throwable().getStackTrace()[0].getMethodName();
-		
-		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
-		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-		response.setContentType("application/xml");
-		response.setHeader("Pragma", "no-cache");// set HTTP/1.0 no-cache
-
-		PrintWriter out;
-
-		try {
-			out = response.getWriter();
-			out.println(sb.toString());
-		} catch (IOException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-		}
 	}
 	
 	public String gerParameterString(HttpServletRequest request, String name){

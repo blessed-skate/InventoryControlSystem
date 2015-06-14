@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<toolbar>
-	<item id="header" type="buttonTwoState" text="¿Cabecera?" selected="true" img="open.gif"
-	imgDis="open_dis.gif"/>
-</toolbar>

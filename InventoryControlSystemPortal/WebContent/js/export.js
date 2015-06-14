@@ -10,7 +10,7 @@ function exportPdf(){
 		left : 0,
 		right : 0,
 		width : 400,
-		height : 100,
+		height : 150,
 		center : true,
 		move : false,
 		modal : true,
@@ -67,6 +67,7 @@ function getAssetGridExcel(){
 	}else{
 		showResponseXmlAlert("Favor de ingresar un nombre de archivo valido");
 	}
+	alert("");
 }
 
 function getAssetGridPdf(){

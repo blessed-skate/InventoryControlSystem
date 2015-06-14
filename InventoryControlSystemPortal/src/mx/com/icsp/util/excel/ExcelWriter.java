@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -29,14 +30,17 @@ public class ExcelWriter{
 	private ExcelXmlParser parser;
 	private Workbook wb;
 	private Sheet sheet;
+	private String fileName, extension;
 	
-	public void generate(String idTransaction, String xml, HttpServletResponse response, String fileName, String header, String extension){
+	public void generate(String idTransaction, HttpServletRequest request, HttpServletResponse response, String xml){
 		
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
 		parser = new ExcelXmlParser();
 		try {
+			fileName = request.getParameter("fileName");
+			extension = request.getParameter("extension");
 			parser.setXML(xml);
 			createExcel();
 			rowsPrint(parser, response);

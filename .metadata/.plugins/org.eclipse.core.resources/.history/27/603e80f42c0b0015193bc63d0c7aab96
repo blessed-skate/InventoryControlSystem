@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<toolbar>
-	<item id="filter" type="buttonTwoState" img="filter.gif" imgdis="filter_dis.gif"
-		text="¿Contiene header?" title="Filter" />
-</toolbar>

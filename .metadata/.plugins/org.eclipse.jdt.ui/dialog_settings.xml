@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="/Users/IvanXVI/lib/poi-3.12" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="/Users/IvanXVI/lib/jasperreports-6.1.0/lib" key="org.eclipse.jdt.ui.lastextjar"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="renameSubpackages"/>
 		<item value="false" key="updateQualifiedNames"/>

@@ -1,0 +1,92 @@
+package mx.com.icsp.util.pdf;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.ImageIcon;
+
+import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.util.Constants;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+
+public class PdfReport {
+
+	private Logger log = Logger.getLogger(this.getClass());
+	private LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+
+	public void generate(String idTransaction, HttpServletResponse response,
+			String fileName, List<Asset> arrayList) {
+
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			JRBeanCollectionDataSource dataSource;
+			dataSource = new JRBeanCollectionDataSource(arrayList);
+			
+			URL url = null;
+			try{
+				url = this.getClass().getResource("logo2.png");
+				log.info(logPattern.buildPattern(methodName, idTransaction, "url", ToStringBuilder.reflectionToString(url)));
+				ImageIcon img = new ImageIcon(url.getPath());
+				parameters.put("image", img.getImage());
+			}catch(Exception e){
+				log.error(logPattern.buildPattern(methodName, idTransaction,
+						"Exception", e.getMessage()), e);
+			}
+
+			// Datos de la cuenta
+//			parameters.put("cuenta", "5.12357");
+//			parameters.put("factura", "144422");
+
+			InputStream inputStream = this.getClass().getResourceAsStream("report3.jrxml");
+			JasperReport report;
+			report = JasperCompileManager.compileReport(inputStream);
+
+			JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
+			fileName = fileName.toLowerCase().contains(".pdf") ? fileName : fileName + ".pdf";
+
+			response.setContentType("application/x-pdf");
+			response.setHeader("Content-Disposition", "attachment; filename="+fileName);// set HTTP/1.0 no-cache
+
+			OutputStream outStream;
+			outStream = response.getOutputStream();
+
+			JasperExportManager.exportReportToPdfStream(print, outStream);
+
+		} catch (JRException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction,
+					"JRException", e.getMessage()), e);
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction,
+					"IOException", e.getMessage()), e);
+		}
+
+	}
+	
+	public void generateGuard(String idTransaction, HttpServletResponse response,
+			String fileName, List<Asset> arrayList) {
+		
+	}
+}

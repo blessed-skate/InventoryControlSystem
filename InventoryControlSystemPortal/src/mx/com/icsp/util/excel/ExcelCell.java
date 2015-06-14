@@ -1,10 +1,15 @@
 package mx.com.icsp.util.excel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class ExcelCell {
 
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	private String value = "";
 	private String bgColor = "";
 	private String textColor = "";
@@ -25,6 +30,28 @@ public class ExcelCell {
 
 	public String getValue() {
 		return value;
+	}
+	
+	public long getLongValue() {
+		if(isLong())
+			return Long.parseLong(value);
+		else 
+			return 0;
+	}
+	
+	public float getFloatValue() {
+		if(isFloat())
+			return Float.parseFloat(value);
+		else 
+			return 0;
+	}
+	
+	public Date getDateValue() {
+		try {
+			return sdf.parse(value);
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 
 	public String getBgColor() {
@@ -51,6 +78,24 @@ public class ExcelCell {
 
 	public String getAlign() {
 		return align;
+	}
+	
+	private boolean isLong(){
+		try{
+			Long.parseLong(value);
+		}catch(NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isFloat(){
+		try{
+			Float.parseFloat(value);
+		}catch(NumberFormatException e){
+			return false;
+		}
+		return true;
 	}
 
 }
