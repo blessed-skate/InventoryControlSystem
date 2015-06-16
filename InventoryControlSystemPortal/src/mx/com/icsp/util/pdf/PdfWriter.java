@@ -1,6 +1,5 @@
 package mx.com.icsp.util.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,7 +31,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.Row;
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
 
@@ -52,7 +50,6 @@ public class PdfWriter {
 		
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
-		log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
 		parser = new ExcelXmlParser();
 		try {
 			user = request.getSession().getAttribute("user") != null ? (User)request.getSession().getAttribute("user") : new User();
@@ -67,18 +64,17 @@ public class PdfWriter {
 			fileName = request.getParameter("fileName");
 			parser.setXML(xml);
 			List<Asset> list = rowsPrint(parser);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "list", String.valueOf(list.size())));
 			createReport(idTransaction, list, userName);
 			outputPdf(idTransaction, response, fileName);
-//			rowsPrint(parser, response);
-//			outputExcel(idTransaction, response, fileName+"."+extension);
 		} catch (DOMException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "DOMException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "DOMException", e.getMessage(), xml), e);
 		} catch (IOException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage(), xml), e);
 		} catch (ParserConfigurationException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "ParserConfigurationException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "ParserConfigurationException", e.getMessage(), xml), e);
 		} catch (SAXException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "SAXException", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "SAXException", e.getMessage(), xml), e);
 		}
 	}
 	
@@ -88,25 +84,26 @@ public class PdfWriter {
 		for (int i = 0; i < rows.length; i++) {
 			Asset asset = new Asset();
 			ExcelCell[] cells = rows[i].getCells();
-				asset.setIdLedger(cells[0].getLongValue());
-				asset.setSubclass(cells[1].getValue());
-				asset.setDescription(cells[2].getValue());
-				asset.setBrand(cells[3].getValue());
-				asset.setModel(cells[4].getValue());
-				asset.setSerialNumber(cells[5].getValue());
-				asset.setMaterial(cells[6].getValue());
-				asset.setColor(cells[7].getValue());
-				asset.setSupplier(cells[8].getValue());
-				asset.setDirectlyResponsible(cells[9].getValue());
-				asset.setGeneralManager(cells[10].getValue());
-				asset.setTag(cells[11].getLongValue());
-				asset.setBill(cells[12].getValue());
-				asset.setBillingDate(cells[13].getDateValue());
-				asset.setPrice(cells[14].getFloatValue());
-				asset.setUseDate(cells[15].getDateValue());
-				asset.setLocation(cells[16].getValue());
-				asset.setGeneralLocation(cells[17].getValue());
-				asset.setSecure(cells[18].getValue());
+			asset.setIdLedger(cells[0].getLongValue());
+			asset.setSubclass(cells[1].getValue());
+			asset.setDescription(cells[2].getValue());
+			asset.setBrand(cells[3].getValue());
+			asset.setModel(cells[4].getValue());
+			asset.setSerialNumber(cells[5].getValue());
+			asset.setMaterial(cells[6].getValue());
+			asset.setColor(cells[7].getValue());
+			asset.setSupplier(cells[8].getValue());
+			asset.setDirectlyResponsible(cells[9].getValue());
+			asset.setGeneralManager(cells[10].getValue());
+			asset.setTag(cells[11].getLongValue());
+			asset.setBill(cells[12].getValue());
+			asset.setBillingDate(cells[13].getDateValue());
+			asset.setPrice(cells[14].getFloatValue());
+			asset.setUseDate(cells[15].getDateValue());
+			asset.setLocation(cells[16].getValue());
+			asset.setGeneralLocation(cells[17].getValue());
+			asset.setSecure(cells[18].getValue());
+			list.add(asset);
 		}
 		return list;
 	}

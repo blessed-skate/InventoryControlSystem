@@ -22,8 +22,10 @@ function exportPdf(){
 	export_pdf_window.button('minmax').hide();
 	export_pdf_window.keepInViewport(true);
 
+	var fileName = "REPORT_PDF_"+new Date().toISOString();
 	export_pdf_form = export_pdf_window.attachForm();
 	export_pdf_form.loadStruct("xml/export/export_pdf_form.xml");
+	export_pdf_form.setItemValue("fileName", fileName);
 	export_pdf_form.attachEvent("onButtonClick", function(name){
 		window[name]();
 	});
@@ -50,8 +52,10 @@ function exportExcel() {
 	export_excel_window.button('minmax').hide();
 	export_excel_window.keepInViewport(true);
 
+	var fileName = "REPORT_PDF_"+new Date().toISOString();
 	export_excel_form = export_excel_window.attachForm();
 	export_excel_form.loadStruct("xml/export/export_excel_form.xml");
+	export_excel_form.setItemValue("fileName", fileName);
 	export_excel_form.attachEvent("onButtonClick", function(name){
 		window[name]();
 	});
