@@ -176,10 +176,29 @@ public class ReportAction extends DispatchAction{
 		String xml = null;
 		try {
 			xml = URLDecoder.decode(param, "UTF-8");
-//			log.info(logPattern.buildPattern(methodName, idTransaction, "xml", xml));
 			new ExcelWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
+		}
+	}
+	
+	public void getAssetDbExcel(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		String fileName = request.getParameter("fileName");
+		String extension = request.getParameter("extension");
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
+		log.info(logPattern.buildPattern(methodName, idTransaction, "extension", extension));
+		
+		try {
+			Asset[] assetArray = assetService.getAsset(idTransaction);
+			new ExcelWriter().generate(idTransaction, request, response, assetArray);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 	}
 	

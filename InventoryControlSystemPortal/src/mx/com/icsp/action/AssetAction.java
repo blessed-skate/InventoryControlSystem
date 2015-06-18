@@ -131,7 +131,7 @@ public class AssetAction extends DispatchAction {
 			if (asset != null) {
 				sb.append("<data>");
 				sb.append("<idLedger>").append(asset.getIdLedger()).append("</idLedger>");
-				sb.append("<idSubclass>").append(asset.getIdSubclass()).append("</idSubclass>");
+				sb.append("<idSubclass>").append(asset.getSubclass()).append("</idSubclass>");
 				sb.append("<description>").append(asset.getDescription()).append("</description>");
 				sb.append("<brand>").append(asset.getBrand()).append("</brand>");
 				sb.append("<model>").append(asset.getModel()).append("</model>");

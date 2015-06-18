@@ -32,6 +32,32 @@ public class ErrorAction extends Action{
 			case 1:
 				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
 			break;
+			case 2:
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 3:
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 4:
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			
+			case 401: //No se ha logeado
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 403: //Acceso prohibido
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 404: //La pagina a la que intenta entrar no existe
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 500: //Error interno en el servidor
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			case 503: //Error interno en el servidor
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+			break;
+			
 			default:
 				errors.add("ERROR_MESSAGE", new ActionMessage("error.unknow.code"));
 			break;

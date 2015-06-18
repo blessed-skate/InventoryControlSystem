@@ -10,8 +10,11 @@
 			action="exportPdf" />
 	</item>
 	<item id="sep1" type="separator" />
-	<item type="button" id="refresh" text="Actualizar" img="redo.gif"
+	<item type="button" id="refresh" text="Actualizar" img="redo.gif" 
 			action="refreshExportGrid" />
+	<item id="sep2" type="separator" />
+	<item type="button" id="exportDb" text="Exportar Base de datos" img="stylesheet.gif"
+			action="exportDb" />
 <!-- 	<item id="new" type="buttonSelect" img="open.gif" imgdis="open_dis.gif" -->
 <!-- 		text="Importar" action="importDocumentSelect"> -->
 <!-- 		<item type="button" id="import_xml" text="XML" img="database.gif" -->

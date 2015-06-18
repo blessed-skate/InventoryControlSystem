@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;export_excel_form.xml&apos; to &apos;export&apos;&#x0A;- Original project: &apos;InventoryControlSystemPortal&apos;&#x0A;- Destination element: &apos;export&apos;&#x0A;- Original element: &apos;export_excel_form.xml&apos;" description="Copy file" element1="WebContent/xml/export/export_excel_form.xml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1434514786488" target="/InventoryControlSystemPortal/WebContent/xml/export" units="0" version="1.0"/>
+</session>

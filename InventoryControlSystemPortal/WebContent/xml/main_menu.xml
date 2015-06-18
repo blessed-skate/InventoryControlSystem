@@ -11,7 +11,9 @@
             <item id="type" text="Tipo"/>
         </item>
         <item id="ms2" type="separator"/>
-        <item id="logOut" text="Salir" action="logOut"/> 
+        <item id="logOut" text="Salir" action="logOut">
+        	<hotkey>Ctrl+S</hotkey>
+        </item> 
     </item>
     <item id="help" text="Ayuda">
         <item id="about" text="Acerca de..."/>

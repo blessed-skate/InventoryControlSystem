@@ -56,6 +56,7 @@ body{
 	
 	function logOut(){
 		alert("Salir");
+		logout_form_hidden.submit();
 	}
 	
 	function doOnLoad() {
@@ -65,9 +66,6 @@ body{
 			xml: "xml/main_menu.xml"
 		});
 		main_menu.attachEvent("onClick", function(id, zoneId, cas){
-			alert(id);
-			alert(zoneId);
-			alert(cas);
 			window[id]();
 		});
 		
@@ -186,5 +184,8 @@ body{
 </head>
 <body onload="doOnLoad();">
 	<div id="mainDiv"></div>
+	<form action="j_acegi_logout" method="post"
+		name="logout_form_hidden">
+	</form>
 </body>
 </html>
