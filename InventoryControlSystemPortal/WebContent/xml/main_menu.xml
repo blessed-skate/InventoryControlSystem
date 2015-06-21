@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
     <item id="file" text="Archivo" img="">
-        <item id="new" text="Nuevo" img="new.gif" imgdis="new_dis.gif">
-            <hotkey>Ctrl+N</hotkey>
-        </item>
-        <item id="users" text="Usuarios"/>
+<!--         <item id="new" text="Nuevo" img="new.gif" imgdis="new_dis.gif"> -->
+<!--             <hotkey>Ctrl+N</hotkey> -->
+<!--         </item> -->
         <item id="catalogs" text="Catalogos">
-            <item id="color" text="Color"/>
-            <item id="material" text="Usuarios"/>
-            <item id="type" text="Tipo"/>
+        	<item id="user" text="Usuarios"/>
+            <item id="material" text="Material"/>
+            <item id="property" text="Propiedades"/>
+            <item id="role" text="Roles"/>
         </item>
         <item id="ms2" type="separator"/>
-        <item id="logOut" text="Salir" action="logOut"/> 
+        <item id="logOut" text="Salir"/> 
     </item>
     <item id="help" text="Ayuda">
         <item id="about" text="Acerca de..."/>

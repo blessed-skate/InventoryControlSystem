@@ -38,6 +38,22 @@
 		<action path="/myCatalog"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
 			parameter="method" />
+			
+		<action path="/myProperty"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
+		<action path="/adminUser"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
+		<action path="/adminRole"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
+		<action path="/adminProperty"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />			
 
 		<action path="/Error"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">

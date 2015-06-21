@@ -20,6 +20,10 @@
 <script type="text/javascript" src="js/report.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/catUser.js"></script>
+<script type="text/javascript" src="js/catProperty.js"></script>
+<script type="text/javascript" src="js/catRole.js"></script>
 
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 

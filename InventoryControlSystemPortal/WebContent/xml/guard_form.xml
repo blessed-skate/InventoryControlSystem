@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="block" inputWidth="auto">
+		<item type="settings" position="label-left" labelWidth="120" inputWidth="120" />
+			<item type="select" label="Responsable">
+				<option text="Selecciona un responsable..." value="1" selected="true" />
+			</item>
+		</item>
+</items>

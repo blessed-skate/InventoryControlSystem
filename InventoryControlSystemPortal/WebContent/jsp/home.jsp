@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-			
+
 <style>
 div.gridbox div.ftr td {
 	text-align: right;
@@ -34,10 +34,9 @@ div#mainDiv {
 	margin-right: auto;
 }
 
-body{
+body {
 	background-color: #deefff;
 }
-
 </style>
 <script>
 	var main_div;
@@ -53,9 +52,14 @@ body{
 	var query_form;
 	var report_grid;
 	
-	function logOut(){
-		alert("Salir");
-	}
+	// Guard
+	var guard_layuout, guard_grid, guard_form;
+	
+	// Catalogos...
+	var dhxWinsUser, cat_user_window, cat_user_layout, cat_user_form, cat_user_grid, cat_user_toolbar;
+// 	var dhxWinsMaterial, cat_material_window, cat_material_layout, cat_material_form, cat_material_grid, cat_material_toolbar;
+	var dhxWinsProperty, cat_property_window, cat_property_layout, cat_property_form, cat_property_grid, cat_property_toolbar;
+	var dhxWinsRole, cat_role_window, cat_role_layout, cat_role_form, cat_role_grid, cat_role_toolbar;
 	
 	function doOnLoad() {
 		
@@ -78,10 +82,25 @@ body{
 			xml: "xml/main_menu.xml"
 		});
 		main_menu.attachEvent("onClick", function(id, zoneId, cas){
-			alert(id);
-			alert(zoneId);
-			alert(cas);
-			window[id]();
+			switch (id){
+			case "user":
+				catUsers();
+				break;
+			case "material":
+// 				catMaterial();
+				break;
+			case "property":
+				catProperty();
+				break;
+			case "role":
+				catRole();
+				break;
+			case "logOut":
+				logOut();
+				break;
+			default:
+				showError("ERROR...");
+			}
 		});
 		
 		home_tabbar = main_div.cells("a").attachTabbar();
@@ -90,6 +109,7 @@ body{
 		home_tabbar.addTab("a1", "Alta", null, null, true);
 		home_tabbar.addTab("a2", "Reportes");
 		home_tabbar.addTab("a3", "Importar");
+		home_tabbar.addTab("a4", "Resguardo");
 		
 		//New item
 		insert_layout = home_tabbar.tabs("a1").attachLayout({
@@ -192,6 +212,42 @@ body{
 		report_grid = home_tabbar.tabs("a3").attachGrid();
 		report_grid.loadXML("xml/report_grid.xml");
 		report_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+		
+		// Resguardo
+		guard_layout = home_tabbar.tabs("a4").attachLayout({
+		    pattern: "2E",
+		    cells: [
+		        {id: "a", text: "Filtro", header: true, height: 80},
+		        {id: "b", text: "Resultado", header: false}
+		    ]
+		});
+		
+		guard_form = guard_layout.cells("a").attachForm();
+		guard_form.load("xml/guard_form.xml");
+		guard_form.attachEvent("onButtonClick", function(name){
+			window[name]();
+		});
+		
+		
+		guard_layout.cells("b").attachToolbar({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/guard_toolbar.xml"
+		});
+		
+		guard_grid = guard_layout.cells("b").attachGrid();
+		guard_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+		guard_grid.setHeader("&nbsp;, C. contable, Tipo de bien, Etiqueta, Factura, Fecha, Localizacion, F. de uso, Valor, Ubicaion, Seguro");
+		guard_grid.attachHeader("#rspan,#text_filter,#rspan,#text_filter,#text_filter,#rspan,#text_filter,#rspan,#numeric_filter,#rspan,#text_filter");
+		guard_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
+		guard_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
+		guard_grid.setColSorting("na,int,na,na,str,date,str,date,int,str,str");
+		guard_grid.setColAlign("left,left,center,center,left,letf,left,left,right,left,left");
+ 		guard_grid.setNumberFormat("0,000.00",7,".",",");
+ 		guard_grid.setDateFormat("%d/%m/%Y");
+		guard_grid.init();
+		guard_grid.enableAutoHeight();
+		
+		guard_grid.loadXML("myAsset.do?method=getAsset");
 	}
 </script>
 </head>

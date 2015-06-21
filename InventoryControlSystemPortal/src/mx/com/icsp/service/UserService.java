@@ -5,5 +5,7 @@ import mx.com.icsc.common.User;
 public interface UserService {
 
 	public User getUser(String idTransaction, String username);
+	public User[] getUsers(String idTransaction);
+	public int insertUser(String idTransaction, User user);
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />
+	<item type="input" label="Role" required="true" name="valueRole" maxLength="100" validate="NotEmpty"/>
+	<item type="input" label="Descripcion" required="true" name="descriptionRole" maxLength="100" validate="NotEmpty"/>
+	
+	<item type="block" inputWidth="auto">
+		<item type="button" name="doInsertFormSaveRole" value="Guardar" width="70"/>
+	</item>	
+</items>

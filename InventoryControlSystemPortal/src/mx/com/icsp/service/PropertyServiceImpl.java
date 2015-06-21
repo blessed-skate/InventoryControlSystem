@@ -2,6 +2,7 @@ package mx.com.icsp.service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import mx.com.icsc.common.Property;
@@ -44,6 +45,33 @@ public class PropertyServiceImpl implements PropertyService{
 		}catch(Exception e){
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
+	}
+
+	@Override
+	public Property[] getPropertys(String idTransaction) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		List<Property> list = null;
+		Property[] propertyArray = null;
+		try{
+			list = propertyDao.getPropertys();
+			propertyArray = list.toArray(new Property[list.size()]);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return propertyArray;
+	}
+
+	@Override
+	public int insertProperty(String idTransaction, Property property) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();		
+		int reponseCode = -1;
+		try{
+			reponseCode = propertyDao.insertProperty(property);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
 	}
 
 }

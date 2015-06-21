@@ -13,6 +13,14 @@
 		<property name="userService" ref="userService"/>
 	</bean>
 	
+	<bean name="/adminRole" class="mx.com.icsp.action.RoleAction">
+		<property name="roleService" ref="roleService"/>
+	</bean>
+	
+	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction">
+		<property name="propertyService" ref="propertyService"/>
+	</bean>
+	
 	<bean name="/myAsset" class="mx.com.icsp.action.AssetAction">
 		<property name="assetService" ref="assetService"/>
 	</bean>
@@ -27,6 +35,10 @@
 	
 	<bean name="/myImport" class="mx.com.icsp.action.ImportAction">
 		<property name="assetService" ref="assetService"/>
+	</bean>
+	
+	<bean name="/myProperty" class="mx.com.icsp.action.PropertyAction">
+		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
 	<bean name="/Error" class="mx.com.icsp.action.ErrorAction"/>
@@ -49,6 +61,9 @@
         <property name="propertyDao" ref="propertyDao" />
     </bean>
 
+ 	<bean id="roleService" class="mx.com.icsp.service.RoleServiceImpl">
+        <property name="roleDao" ref="roleDao" />
+    </bean>
 
     <!--  DAO  -->
     <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
@@ -68,6 +83,11 @@
     
     <bean id="propertyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
       <property name="mapperInterface" value="mx.com.icsp.persistence.dao.PropertyDao" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    
+    <bean id="roleDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+      <property name="mapperInterface" value="mx.com.icsp.persistence.dao.RoleDao" />
       <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
     

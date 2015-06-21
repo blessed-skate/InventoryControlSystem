@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item type="button" id="new_item" text="Nueva propiedad" img="new.gif" action="doOnNewItemProperty" />
+</toolbar>

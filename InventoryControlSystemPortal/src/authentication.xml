@@ -32,14 +32,14 @@
         <property name="usersByUsernameQuery">
             <value>
                 SELECT fcusername username, fcpassword password, fcenabled enabled
-  					FROM CISDB.TACISUSER
+  					FROM cisdb.TACISUSER
                 	where fcusername = ?
             </value>
         </property>
         <property name="authoritiesByUsernameQuery">
             <value>
                 SELECT fcusername username, fcauthority authority 
-  					FROM CISDB.TACISUSER
+  					FROM cisdb.TACISUSER
                 	where fcusername = ?
             </value>
         </property>

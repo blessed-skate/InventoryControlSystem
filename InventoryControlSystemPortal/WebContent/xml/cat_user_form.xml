@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />
+	<item type="input" label="Nombre usuario" required="true" name="username" maxLength="100" validate="NotEmpty"/>
+	
+	<item type="password" label="Contraseña" required="true" name="passUser" maxLength="100" validate="NotEmpty"/>
+	<item type="password" label="Confirmar contraseña" required="true" name="confirmPassUser" maxLength="100" validate="NotEmpty"/>
+
+	<item type="select" label="Role" name="authority" required="true">
+	 	<option text="Administrador" value="role_admin"/>
+	 	<option text="Usuario" value="role_user"/>
+	</item>
+	
+	<item type="input" label="Nombre(s)" required="true" name="nameUser" maxLength="100" validate="NotEmpty"/>
+	<item type="input" label="Apellido(s)" required="true" name="lastnameUser" maxLength="100" validate="NotEmpty"/>
+	
+	<item type="calendar" dateFormat="%d/%m/%Y" name="birthUser" label="Fecha de Nacimiento"/>
+	
+	<item type="fieldset" name="dataSexUser" label="Sexo" inputWidth="auto">
+		<item type="radio" name="sexUser" label="Hombre" value="H" position="label-right" checked="true"/>
+		<item type="newcolumn" />
+	    <item type="radio" name="sexUser" label="Mujer" value="M" position="label-right"/>
+	</item>
+	
+	<item type="fieldset" name="dataStatusUser" label="Estatus del usuario" inputWidth="auto">
+		<item type="radio" name="statusUser" label="Habilitado" value="1" position="label-right" checked="true"/>
+		<item type="newcolumn" />
+	    <item type="radio" name="statusUser" label="Deshabilitado" value="0" position="label-right"/>
+	</item>
+	
+	<item type="block" inputWidth="auto">
+		<item type="button" name="doInsertFormSaveUser" value="Guardar" width="70"/>
+	</item>	
+</items>
