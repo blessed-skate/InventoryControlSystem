@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib uri="/WEB-INF/tags-conf/struts-html.tld" prefix="html"%>
+<%@taglib uri="/WEB-INF/tags-conf/struts-logic.tld" prefix="logic"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sistema de control de Inventarios</title>
+
+<!-- <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/skins/web/dhtmlx.css" /> -->
+
+<link rel="icon" href="imgs/icon.png" type="image/png" />
+
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
+	
+<script type="text/javascript"
+	src="js/login.js"></script>	
+
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxForm/codebase/dhtmlxform.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
+
+<script type="text/javascript"
+	src="js/dhtmlx/sources/dhtmlxWindows/codebase/dhtmlxwindows.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />
+
+<style>
+body {
+	background-color: #deefff;
+}
+
+div#winVP {
+	position: relative;
+	height: 450px;	
+}
+</style>
+</head>
+<body onload="doOnLoad();">
+	<div id="winVP"></div>
+	<form action="j_acegi_security_check" method="post"
+		name="login_form_hidden">
+		<input name="j_username" type="hidden" id="j_username" /> <input
+			name="j_password" type="hidden" id="j_password" />
+	</form>
+	<html:errors name="ERROR_MESSAGE"/>
+</body>
+</html>

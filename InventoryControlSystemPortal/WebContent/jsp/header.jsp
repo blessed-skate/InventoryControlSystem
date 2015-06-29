@@ -15,11 +15,11 @@
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
 <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
 
-<script type="text/javascript" src="js/asset.js"></script>
-<script type="text/javascript" src="js/query.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/asset.js"></script>
 <script type="text/javascript" src="js/export.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
+<script type="text/javascript" src="js/guard.js"></script>
 
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 

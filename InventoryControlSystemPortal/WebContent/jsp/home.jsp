@@ -53,13 +53,20 @@ body{
 	var query_form;
 	var import_grid;
 	var import_toolbar;
+	var guard_toolbar;
+	var guard_layout;
+	var guard_form;
+	var guard_grid;
+	var dhxWin;
 	
 	function logOut(){
-		alert("Salir");
 		logout_form_hidden.submit();
 	}
 	
 	function doOnLoad() {
+		dhxWin = new dhtmlXWindows();
+		dhxWin.attachViewportTo("mainDiv");
+		
 		main_div = new dhtmlXLayoutObject("mainDiv", "1C");
 		main_menu = main_div.cells("a").attachMenu({
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
@@ -75,6 +82,7 @@ body{
 		home_tabbar.addTab("a1", "Alta", null, null, true);
 		home_tabbar.addTab("a2", "Reportes");
 		home_tabbar.addTab("a3", "Importar");
+		home_tabbar.addTab("a4", "Resguardo");
 		
 		//New item
 		insert_layout = home_tabbar.tabs("a1").attachLayout({
@@ -179,6 +187,48 @@ body{
 		import_grid = home_tabbar.tabs("a3").attachGrid();
 		import_grid.loadXML("xml/import/import_grid.xml");
 		import_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+		
+		
+		//Resguardos
+		guard_toolbar = home_tabbar.tabs("a4").attachToolbar({
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+			xml: "xml/import/import_toolbar.xml"
+		});
+		
+		guard_layout = home_tabbar.tabs("a4").attachLayout({
+		    pattern: "2E",
+		    cells: [
+		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [true, true], height: 180}
+		        ,{id: "b", text: "Activos", collapse: false, fixSize: [true, true]}
+		    ]
+		});
+		
+		guard_form = guard_layout.cells("a").attachForm();
+		guard_form.load("xml/guard/guard_form.xml");
+// 		guard_form.attachEvent("onButtonClick", function(name){
+// 			window[name]();
+// 		});
+		
+		guard_form.attachEvent("onInputChange", function(name, value, form){
+			if(name == "directlyResponsible"){
+				updateGuardGrid(value);
+		    }else if(name == ""){
+		    	
+		    }
+		});
+		
+		guard_grid = guard_layout.cells("b").attachGrid();
+		guard_grid.loadXML("xml/guard/guard_grid.xml");
+		guard_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+ 		guard_grid.setNumberFormat("$ 0,000.00",7,".",",");
+ 		guard_grid.setDateFormat("%d/%m/%Y");
+		guard_grid.init();
+		guard_grid.enableAutoHeight();
+		guard_grid.attachFooter(" , , , , ,Total,#stat_total");
+		guard_grid.attachFooter(" , , , , ,Maximo,#stat_max");
+		guard_grid.attachFooter(" , , , , ,Minimo,#stat_min");
+		guard_grid.attachFooter(" , , , , ,Promedio,#stat_average");
+		guard_grid.attachFooter(" , , , , ,Registros,#stat_count");
 	}
 </script>
 </head>

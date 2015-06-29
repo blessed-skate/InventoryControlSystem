@@ -4,6 +4,7 @@ public class Property {
 	
 	private String key;
 	private String value;
+	private String defaultValue;
 	
 	public String getKey() {
 		return key;
@@ -12,9 +13,18 @@ public class Property {
 		this.key = key;
 	}
 	public String getValue() {
-		return value;
+		if(value == null || value.trim().equals(""))
+			return defaultValue;
+		else 
+			return value;
 	}
 	public void setValue(String value) {
 		this.value = value;
+	}
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 }

@@ -1,9 +1,0 @@
-package mx.com.icsc.common.util;
-
-public class XmlFactory {
-	
-	public static String getXml(){
-		
-	}
-
-}

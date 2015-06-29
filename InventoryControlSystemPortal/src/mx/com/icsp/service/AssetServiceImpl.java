@@ -135,4 +135,40 @@ public class AssetServiceImpl implements AssetService{
 		}
 		return reponseCode;
 	}
+
+	@Override
+	public Asset[] getDirectlyResponsible(String idTransaction){
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		List<Asset> list = null;
+		Asset[] assetArray = null;
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			list = assetDao.getDirectlyResponsible(params);
+			assetArray = list.toArray(new Asset[list.size()]);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", String.valueOf(assetArray.length)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return assetArray;
+	}
+
+	@Override
+	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String directlyResponsible) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		List<Asset> list = null;
+		Asset[] assetArray = null;
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("directlyResponsible", directlyResponsible);
+			list = assetDao.getDirectlyResponsibleAsset(params);
+			assetArray = list.toArray(new Asset[list.size()]);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return assetArray;
+	}
 }

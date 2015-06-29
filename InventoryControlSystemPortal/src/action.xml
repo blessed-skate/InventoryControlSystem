@@ -13,6 +13,14 @@
 		<property name="userService" ref="userService"/>
 	</bean>
 	
+	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction">
+		<property name="propertyService" ref="propertyService"/>
+	</bean>
+	
+	<bean name="/adminCatalog" class="mx.com.icsp.action.CatalogAction">
+		<property name="catalogService" ref="catalogService"/>
+	</bean>
+	
 	<bean name="/myAsset" class="mx.com.icsp.action.AssetAction">
 		<property name="assetService" ref="assetService"/>
 	</bean>
@@ -28,6 +36,8 @@
 	<bean name="/myImport" class="mx.com.icsp.action.ImportAction">
 		<property name="assetService" ref="assetService"/>
 	</bean>
+	
+	<bean name="/ErrorAsync" class="mx.com.icsp.action.ErrorAsyncAction"/>
 	
 	<bean name="/Error" class="mx.com.icsp.action.ErrorAction"/>
 		

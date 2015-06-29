@@ -15,7 +15,7 @@ public interface PropertyDao {
 	// + "#{username, mode=IN, jdbcType=VARCHAR}"
 	// + ")}";
 
-	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value' from CISDB.CTCISPROPERTY";
+	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value', FCDEFAULT as 'defaultValue' from CISDB.CTCISPROPERTY";
 
 	@Select(SELPROPERTY)
 	@Options(statementType=StatementType.PREPARED)

@@ -14,6 +14,7 @@ import mx.com.icsc.common.AssetResponse;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsc.common.util.XmlFactory;
 import mx.com.icsp.service.AssetService;
+import mx.com.icsp.service.PropertyServiceImpl;
 import mx.com.icsp.util.Constants;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -64,10 +65,13 @@ public class AssetAction extends DispatchAction {
 	public void getAsset(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		AssetResponse assetResponse = new AssetResponse();
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		StringBuilder sb = new StringBuilder();
+		AssetResponse assetResponse = new AssetResponse();
 		
 		try {
 			Asset[] assetArray = assetService.getAsset(idTransaction);
@@ -120,6 +124,9 @@ public class AssetAction extends DispatchAction {
 		AssetResponse assetResponse = new AssetResponse();
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		StringBuilder sb = new StringBuilder();
 		
 		try {
@@ -172,6 +179,8 @@ public class AssetAction extends DispatchAction {
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		try {
 			
 			String idSubclass = gerParameterString(request,"idSubclass");
@@ -179,7 +188,7 @@ public class AssetAction extends DispatchAction {
 				assetResponse.setResponseCode(99);
 				assetResponse.setResponseMessage("La subclase no puede ser nula, por favor seleccione un valor valido");
 			}else{
-				Date date = sdf.parse("01/06/2015");
+				Date date = sdf.parse(PropertyServiceImpl.map.get("DEFAULT_DATE").getValue());
 				
 				long idLedger = gerParameterLong(request,"idLedger");
 				
@@ -266,6 +275,8 @@ public class AssetAction extends DispatchAction {
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		try {
 			
 			long tag = gerParameterLong(request,"tag");
@@ -273,7 +284,7 @@ public class AssetAction extends DispatchAction {
 				assetResponse.setResponseCode(99);
 				assetResponse.setResponseMessage("El numero de etiqueta no puede ser nulo");
 			}else{
-				Date date = sdf.parse("01/06/2015");
+				Date date = sdf.parse(PropertyServiceImpl.map.get("DEFAULT_DATE").getValue());
 				
 				String description = gerParameterString(request, "description");
 				String brand = gerParameterString(request, "brand", "Sin marca");
@@ -340,6 +351,95 @@ public class AssetAction extends DispatchAction {
 //		setResponse(request, response, sb);
 	}
 	
+	public void getDirectlyResponsible(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response){
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		StringBuilder sb = new StringBuilder();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
+		try {
+			Asset[] assetArray = assetService.getDirectlyResponsible(idTransaction);
+			
+			if(assetArray != null && assetArray.length > 0){
+				sb.append("<data>");
+				sb.append("<item value=\"").append(-1).append("\" label=\"").append("Seleccionar").append("\" />");
+				for(Asset asset : assetArray){
+	//				log.info(logPattern.buildPattern(methodName, idTransaction, "asset", ToStringBuilder.reflectionToString(asset)));
+					if(asset != null){
+						sb.append("<item value=\"").append(asset.getDirectlyResponsible()).append("\" label=\"").append(asset.getDirectlyResponsible()).append("\" />");
+					}
+				}
+				sb.append("</data>");
+			}
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		
+		setResponse(request, response, sb.toString(), "application/xml");
+	}
+	
+	public void getDirectlyResponsibleAsset(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response){
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		StringBuilder sb = new StringBuilder();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
+		AssetResponse assetResponse = new AssetResponse();
+		
+		String directlyResponsible = gerParameterString(request, "directlyResponsible");
+		
+		try {
+			Asset[] assetArray = assetService.getDirectlyResponsibleAsset(idTransaction, directlyResponsible);
+			
+			if (assetArray != null) {
+				log.error(logPattern.buildPattern(methodName, idTransaction, "assetArray", assetArray.length));
+				sb.append("<rows>");
+				for (Asset asset : assetArray) {
+					sb.append("<row id=\"" + asset.getId() + "\">");
+//					sb.append("<cell type=\"sub_row_grid\">").append("xml/query_sgrid.xml").append("</cell>");
+					sb.append("<cell>").append(asset.getTag()).append("</cell>");
+					sb.append("<cell>").append(asset.getSubclass()).append("</cell>");
+					sb.append("<cell>").append(asset.getDescription()).append("</cell>");
+					sb.append("<cell>").append(asset.getBrand()).append("</cell>");
+					sb.append("<cell>").append(asset.getModel()).append("</cell>");
+					sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
+//					sb.append("<cell>").append(asset.getMaterial()).append("</cell>");
+//					sb.append("<cell>").append(asset.getColor()).append("</cell>");
+//					sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
+//					sb.append("<cell>").append(asset.getDirectlyResponsible()).append("</cell>");
+//					sb.append("<cell>").append(asset.getGeneralManager()).append("</cell>");
+//					sb.append("<cell>").append(asset.getTag()).append("</cell>");
+//					sb.append("<cell>").append(asset.getBill()).append("</cell>");
+//					sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
+					sb.append("<cell>").append(asset.getPrice()).append("</cell>");
+//					sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
+//					sb.append("<cell>").append(asset.getLocation()).append("</cell>");
+//					sb.append("<cell>").append(asset.getGeneralLocation()).append("</cell>");
+//					sb.append("<cell>").append(asset.getSecure()).append("</cell>");
+					sb.append("</row>");
+				}
+				sb.append("</rows>");
+			} else {
+				assetResponse.setResponseCode(100);
+				assetResponse.setResponseMessage("No se encontraron registros");
+				sb.append(XmlFactory.getXml(idTransaction, assetResponse));
+			}
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			assetResponse.setResponseCode(101);
+			assetResponse.setResponseMessage("Error al obtener registro");
+			sb.append(XmlFactory.getXml(idTransaction, assetResponse));
+		}
+
+		setResponse(request, response, sb.toString(), "application/xml");
+	}
+	
 	public void setResponse(HttpServletRequest request,
 			HttpServletResponse response, String res, String contentType) {
 		
@@ -366,11 +466,11 @@ public class AssetAction extends DispatchAction {
 	}
 	
 	public String gerParameterString(HttpServletRequest request, String name){
-		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name) : null;
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name).toUpperCase().trim() : null;
 	}
 	
 	public String gerParameterString(HttpServletRequest request, String name, String def){
-		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name) : def;
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name).toUpperCase().trim() : def.toUpperCase().trim();
 	}
 	
 	public int gerParameterInt(HttpServletRequest request, String name){

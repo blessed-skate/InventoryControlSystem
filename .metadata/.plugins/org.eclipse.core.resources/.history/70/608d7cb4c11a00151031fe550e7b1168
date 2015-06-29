@@ -1,0 +1,13 @@
+function updateGuardGrid(directlyResponsible){
+//	var directlyResponsible = guard_form.getSelect("directlyResponsible").value;
+//	alert(directlyResponsible);
+	try{	
+		guard_grid.loadXML("myAsset.do?method=getDirectlyResponsibleAsset&directlyResponsible="+directlyResponsible);
+	}catch(err){
+		showResponseXmlAlertError(err.message);
+	}
+}
+
+function reloadDirectlyResponsibleSelect(value){
+	insert_form.reloadOptions("idSubclass", "myAsset.do?method=getDirectlyResponsible");
+}

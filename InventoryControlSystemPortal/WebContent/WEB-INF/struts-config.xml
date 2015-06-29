@@ -22,7 +22,19 @@
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
 			<forward name="home" path="/jsp/home.jsp" />
 		</action>
-
+		
+		<action path="/adminUser"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
+		<action path="/adminProperty"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+		
+		<action path="/adminCatalog"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+		
 		<action path="/myAsset"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
 			parameter="method" />
@@ -36,6 +48,10 @@
 			parameter="method" />
 			
 		<action path="/myCatalog"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
+			parameter="method" />
+			
+		<action path="/ErrorAsync"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request"
 			parameter="method" />
 

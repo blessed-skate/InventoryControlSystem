@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="select" label="Extension" name="extension">
+		<option text="*.xls" value="xls" />
+		<option text="*.xlsx" value="xlsx" />
+	</item>
+	<item type="button" name="getGuard" value="Exportar"/>
+</items>

@@ -3,6 +3,10 @@
 //});
 dhx4.ajax.cache=true;
 
+//function doOnLoad(){
+//	showResponseXmlAlertWarning("doOnLoad");
+//}
+
 function showResponseXmlAlertError(msg) {
 	dhtmlx.alert({
 		title : "Error",
@@ -66,5 +70,12 @@ function showError(msg) {
 		title : "Error",
 		type : "alert-error",
 		text : msg
+	});
+}
+
+function updateDHTMLXComponents(){
+	reloadDirectlyResponsibleSelect();
+	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
+//		showResponseXmlAlert("La tabla se ha refrescado...");
 	});
 }

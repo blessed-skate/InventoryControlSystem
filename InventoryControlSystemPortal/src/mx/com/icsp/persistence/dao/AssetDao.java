@@ -25,6 +25,8 @@ public interface AssetDao {
 			+ " TAAT.FIIDLEDGER = CTLE.FIIDLEDGER AND"
 			+ " TAAT.FCSUBCLASS = CTLE.FCSUBCLASS";
 	
+	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = #{directlyResponsible}";
+	
 	static final String ORDERBY = " ORDER BY FIIDASSET ASC";
 
 	static final String SELASSETBYIDTAG = " WHERE FITAG = #{tag}";
@@ -43,6 +45,8 @@ public interface AssetDao {
 			+ "FCSERIALNUMBER=#{serialNumber}, FCMATERIAL=#{material}, FCCOLOR=#{color},FCSUPPLIER=#{supplier}, FCGENERALMANAGER=#{generalManager},"
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
 			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure} WHERE FITAG=#{tag}";
+	
+	static final String SELDIRRESP = "select distinct(FCDIRECTLYRESPONSIBLE) directlyResponsible from cisdb.tacisasset";
 
 	@Select(SELASSET+ORDERBY)
 	@Options(statementType = StatementType.CALLABLE)
@@ -63,4 +67,12 @@ public interface AssetDao {
 	@Insert(UPDASSET)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract int updateAsset(Asset asset);
+	
+	@Select(SELDIRRESP)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getDirectlyResponsible(Map<String, Object> params);
+
+	@Select(SELASSET+SELASSETBYDIRECTLYRESPONSIBLE)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getDirectlyResponsibleAsset(Map<String, Object> params);
 }

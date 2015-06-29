@@ -1,0 +1,5 @@
+function updateGuardGrid(){
+	var responsible = guard_form.getSelect("responsible").value;
+	alert(responsible);
+	guard_grid.loadXML("myAsset.do?method=getResponsibleAsset&responsible="+responsible);
+}

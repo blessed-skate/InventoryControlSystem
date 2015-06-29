@@ -39,6 +39,10 @@ public class CatalogAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response){
 		
 		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		StringBuilder sb = new StringBuilder();
 		
 		String idLedger = request.getParameter("idLedger");

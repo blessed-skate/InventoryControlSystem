@@ -132,6 +132,21 @@ public class LogPattern {
 		return sB.toString();
 	}
 	
+	public String buildPattern(String methodName, String idTransaction, String logParameter, Object logParameterValue)
+	{	
+		StringBuilder sB = new StringBuilder ();
+		sB.append(idTransaction).append(this.FS);
+		sB.append(this.domainCode).append(this.FS);
+		sB.append(this.solutioNameCode).append(this.FS);
+		sB.append(this.platform).append(this.FS);
+		sB.append(this.tower).append(this.FS);
+		sB.append(this.className).append(this.FS);
+		sB.append(methodName).append(this.FS);
+		sB.append(logParameter != null ? logParameter.toString() : "null").append("=");
+		sB.append(logParameterValue);
+		return sB.toString();
+	}
+	
 	public String buildPattern(String methodName, String idTransaction, String message)
 	{	
 		StringBuilder sB = new StringBuilder ();

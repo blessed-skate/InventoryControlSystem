@@ -1,0 +1,5 @@
+function updateGuardGrid(){
+	var directlyResponsible = guard_form.getSelect("directlyResponsible").value;
+	alert(directlyResponsible);
+	guard_grid.loadXML("myAsset.do?method=getDirectlyResponsibleAsset&directlyResponsible="+directlyResponsible);
+}

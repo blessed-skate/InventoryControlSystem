@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="select" label="Usuario" name="responsible" connector="myAsset?method="/>
+	<item type="button" name="getGuard" value="Exportar"/>
+</items>

@@ -54,6 +54,8 @@ public class ImportAction extends DispatchAction {
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		StringBuilder sb = new StringBuilder();
 		
 		String filename = null;
@@ -92,32 +94,32 @@ public class ImportAction extends DispatchAction {
 					log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
 					filename = fileItem.getName();
 					filesize = fileItem.getSize();
-					
-					String header = request.getParameter("header");
-					log.info(logPattern.buildPattern(methodName, idTransaction, "header", header));
-					
+					boolean header = request.getParameter("header") != null && !request.getParameter("header").equals("") ? Boolean.parseBoolean(request.getParameter("header")) : Boolean.parseBoolean("false");
 					int sheetNumber = Integer.parseInt(request.getParameter("sheet"));
-					log.info(logPattern.buildPattern(methodName, idTransaction, "sheet", String.valueOf(sheetNumber)));
+
+					Object[] params = new Object[]{header, sheetNumber, filename, filesize};
+					
+					log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));
 					
 					try {
 						if(filename.endsWith(".xls") || filename.endsWith("xlsx")){
-							Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
-							Sheet sheet = wb.getSheetAt(0);
-							
 							if(state = validateWB(filesize, 0, info)){
+								Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
+								Sheet sheet = wb.getSheetAt(sheetNumber);
+								log.info("Sheet name = " + sheet.getSheetName());
+								
 								CreateXML createXML = new CreateXML();
 								param = createXML.createGrid(sheet);							
-							}
-							log.info("Sheet name = " + sheet.getSheetName());
+							}							
 						}else{
 							info = "La extension del archvio es invalida";
 						}
-					} catch (EncryptedDocumentException e2) {
-						info = e2.getMessage();
-						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e2.getMessage()), e2);
-					} catch (InvalidFormatException e2) {
-						info = e2.getMessage();
-						log.error(logPattern.buildPattern(methodName, idTransaction, "InvalidFormatException", e2.getMessage()), e2);
+					} catch (EncryptedDocumentException e) {
+						info = e.getMessage();
+						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e.getMessage()), e);
+					} catch (InvalidFormatException e) {
+						info = e.getMessage();
+						log.error(logPattern.buildPattern(methodName, idTransaction, "InvalidFormatException", e.getMessage()), e);
 					} catch (IOException e2) {
 						info = e2.getMessage();
 						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e2.getMessage()), e2);
@@ -139,8 +141,12 @@ public class ImportAction extends DispatchAction {
 
 	public void saveFile(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
+		
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		AssetResponse assetResponse = new AssetResponse();
 		
 		try{
@@ -182,18 +188,18 @@ public class ImportAction extends DispatchAction {
 	
 	}
 
-	public boolean validateWB(long filesize, int columnLength, String msg){
+	public boolean validateWB(long filesize, int columnLength, String info){
 		boolean state = true;
 		int EXCEL_MAX_FILE_SIZE = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_MAX_FILE_SIZE").getValue());
 		int EXCEL_COLUMN_LENGTH = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_COLUMN_LENGTH").getValue());
 		
 		if((filesize/1024) > (EXCEL_MAX_FILE_SIZE * 1024)){
 			state = false;		
-			msg = "El archivo es mayor a 2Mb, por favor cambie las preferencias";
+			info = "El archivo es mayor a 2Mb, por favor cambie las preferencias";
 		}
 		else if(columnLength <= EXCEL_COLUMN_LENGTH && columnLength > 0){
 			state = false;		
-			msg = "El formato de excel no cumple con las columnas especificadas";
+			info = "El formato de excel no cumple con las columnas especificadas";
 		}
 		return state;
 	}

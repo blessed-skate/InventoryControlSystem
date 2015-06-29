@@ -23,39 +23,47 @@ public class ErrorAction extends Action{
 	
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		// TODO Auto-generated method stub
+			HttpServletRequest request, HttpServletResponse response){
+
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		int code = Integer.parseInt(request.getParameter("code"));
+		log.info(logPattern.buildPattern(methodName, idTransaction, "code", code));
 		ActionErrors errors = new ActionErrors();
 		switch (code){
 			case 1:
 				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
 			break;
 			case 2:
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.access.denied"));
 			break;
 			case 3:
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.access.unauthorized"));
 			break;
 			case 4:
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.logout"));
+			break;
+			case 5:
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.concurrent.session"));
 			break;
 			
 			case 401: //No se ha logeado
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.401"));
 			break;
 			case 403: //Acceso prohibido
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.403"));
 			break;
 			case 404: //La pagina a la que intenta entrar no existe
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.404"));
 			break;
 			case 500: //Error interno en el servidor
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.500"));
 			break;
 			case 503: //Error interno en el servidor
-				errors.add("ERROR_MESSAGE", new ActionMessage("error.invalid.credentials"));
+				errors.add("ERROR_MESSAGE", new ActionMessage("error.503"));
 			break;
 			
 			default:

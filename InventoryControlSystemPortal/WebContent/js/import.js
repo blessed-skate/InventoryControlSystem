@@ -1,11 +1,10 @@
-var dhwin, import_excel_window, id="import_excel_window";
+var import_excel_window; 
 var myVault, mygrid;
 var fileToGrid;
 
 function importExcel(){
 	try{
-		dhwin = new dhtmlXWindows();
-		import_excel_window = dhwin.createWindow({
+		import_excel_window = dhxWin.createWindow({
 			id : "exportExcelWindow",
 			left : 0,
 			right : 0,
@@ -32,7 +31,7 @@ function importExcel(){
 		myVault.attachEvent("onUploadFile", function(file, extra){
 			if(file.uploaded){
 				showResponseXmlAlert("<b>"+extra.info+"</b>: " + file.name);
-				report_grid.loadXMLString(extra.param);
+				import_grid.loadXMLString(extra.param);
 				import_toolbar.setValue("file", file.name);
 			}else{
 				showResponseXmlAlertError("<b>Ocurrio un error cargar el archvio</b>: "+file.name + " " +extra.info)
@@ -49,11 +48,17 @@ function importExcel(){
 		});
 		
 		import_excel_toolbar.attachEvent("onClick", function(name){
-			window[name]();
+			showResponseXmlAlert(name);
+		});
+		
+		import_excel_toolbar.attachEvent("onStateChange", function(id, state){
+			var sheet = import_excel_toolbar.getValue("sheet_item_input");
+			myVault.setURL("myImport.do?method=importExcel&header="+state+"&sheet="+sheet);
+			showResponseXmlAlert(myVault.getURL());
 		});
 
-	}catch(e){
-		alert("Error: "+ e.toString());
+	}catch(err){
+		showResponseXmlAlertError(err.message);
 	}
 }
 

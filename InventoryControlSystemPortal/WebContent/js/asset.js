@@ -5,7 +5,8 @@ function saveForm(){
 			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
 			if(responseCode == 0){
 				showResponseXmlAlert(responseMessage);
-				insert_form.clear();
+				clearInsertForm();
+				updateDHTMLXComponents();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}
@@ -32,7 +33,7 @@ function validateForm(){
 }
 
 function cancelForm(){
-	showConfirm("Cancelar","¿Desea cancelar la operacion, se perdera la informacion capturada?", clearInsertForm);
+	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearInsertForm);
 }
 
 function clearInsertForm(){
@@ -77,8 +78,10 @@ function updateAsset(){
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
 			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
 			if(responseCode == 0){
+				search_form.clear();
+				search_form.lock();
+				updateDHTMLXComponents();
 				showResponseXmlAlert(responseMessage);
-				insert_form.clear();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}

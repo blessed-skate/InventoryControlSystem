@@ -1,0 +1,4 @@
+function updateGuardGrid(){
+	var responsible = guard_form.getSelect("responsible").value;
+	alert(responsible);
+}

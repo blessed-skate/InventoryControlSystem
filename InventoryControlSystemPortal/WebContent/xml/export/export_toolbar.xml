@@ -2,8 +2,6 @@
 <toolbar>
 	<item id="export" type="buttonSelect" img="new.gif" imgdis="new_dis.gif"
 		text="Exportar">
-		<item type="button" id="export_xml" text="XML" img="database.gif"
-			action="exportXML" />
 		<item type="button" id="export_excel" text="Excel" img="stylesheet.gif"
 			action="exportExcel" />
 		<item type="button" id="export_pdf" text="Pdf" img="ico_pdf_18.gif"

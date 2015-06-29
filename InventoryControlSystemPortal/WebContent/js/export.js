@@ -3,10 +3,7 @@ var export_pdf_form;
 var export_db_form;
 
 function exportPdf(){
-	var dhxWins2 = new dhtmlXWindows();
-	dhxWins2.attachViewportTo("mainDiv");
-
-	var export_pdf_window = dhxWins2.createWindow({
+	var export_pdf_window = dhxWin.createWindow({
 		id : "exportPdfWindow",
 		left : 0,
 		right : 0,
@@ -23,13 +20,16 @@ function exportPdf(){
 	export_pdf_window.button('minmax').hide();
 	export_pdf_window.keepInViewport(true);
 
-	var fileName = "REPORTE_PDF_"+new Date().toISOString();
 	export_pdf_form = export_pdf_window.attachForm();
-	export_pdf_form.loadStruct("xml/export/export_pdf_form.xml");
+	export_pdf_form.loadStruct("xml/export/export_pdf_form.xml", function(){
+		var d = new Date();
+		var fileName = "REPORTE_PDF_"+d.toLocaleString();
+		export_pdf_form.setItemValue("fileName", fileName);
+	});
 	export_pdf_form.attachEvent("onButtonClick", function(name){
 		window[name]();
 	});
-	export_pdf_form.setItemValue("fileName", fileName);
+	export_pdf_form.setUserData("fileName", "value", "Hola");
 }
 
 function getAssetGridPdf(){
@@ -43,10 +43,9 @@ function getAssetGridPdf(){
 }
 
 function exportExcel() {
-	var dhxWins2 = new dhtmlXWindows();
-	dhxWins2.attachViewportTo("mainDiv");
 
-	var export_excel_window = dhxWins2.createWindow({
+	var export_excel_window = dhxWin.createWindow(
+		{
 		id : "exportExcelWindow",
 		left : 0,
 		right : 0,
@@ -62,14 +61,15 @@ function exportExcel() {
 	export_excel_window.button('park').hide();
 	export_excel_window.button('minmax').hide();
 	export_excel_window.keepInViewport(true);
-
-	var fileName = "REPORTE_PDF_"+new Date().toISOString();
 	export_excel_form = export_excel_window.attachForm();
-	export_excel_form.loadStruct("xml/export/export_excel_form.xml");
+	export_excel_form.loadStruct("xml/export/export_excel_form.xml", function(){
+		var d = new Date();
+		var fileName = "REPORTE_EXCEL_"+d.toLocaleString();
+		export_excel_form.setItemValue("fileName", fileName);
+	});
 	export_excel_form.attachEvent("onButtonClick", function(name){
 		window[name]();
 	});
-	export_excel_form.setItemValue("fileName", fileName);
 }
 
 function getAssetGridExcel(){
@@ -105,13 +105,15 @@ function exportDb(){
 	export_db_window.button('minmax').hide();
 	export_db_window.keepInViewport(true);
 
-	var fileName = "RESPALDO_BD_"+new Date().toISOString();
 	export_db_form = export_db_window.attachForm();
-	export_db_form.loadStruct("xml/export/export_db_form.xml");
+	export_db_form.loadStruct("xml/export/export_db_form.xml", function(){
+		var d = new Date();
+		var fileName = "RESPALDO_BD_"+d.toLocaleString();
+		export_db_form.setItemValue("fileName", fileName);
+	});
 	export_db_form.attachEvent("onButtonClick", function(name){
 		window[name]();
 	});
-	export_db_form.setItemValue("fileName", fileName);
 }
 
 function getAssetDbExcel(){
