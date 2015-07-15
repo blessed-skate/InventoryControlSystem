@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="image" key="selection"/>
+		<item value="id" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="id"/>
+			<item value="fileName"/>
+			<item value="tag"/>
 			<item value="image"/>
 			<item value="cantidad"/>
 			<item value="print"/>
 			<item value="deployment"/>
 			<item value="ojdbc"/>
-			<item value="ora"/>
-			<item value="oracle"/>
-			<item value="getAssetGridPdf"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

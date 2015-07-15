@@ -2,6 +2,7 @@ package mx.com.icsp.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mx.com.icsc.common.Asset;
 import mx.com.icsc.common.AssetResponse;
+import mx.com.icsc.common.ImportExcelResponse;
 import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsc.common.util.XmlFactory;
 import mx.com.icsp.service.AssetService;
@@ -35,8 +37,8 @@ import org.apache.struts.actions.DispatchAction;
 
 public class ImportAction extends DispatchAction {
 	
-	Logger log = Logger.getLogger(this.getClass());
-	LogPattern logPattern = new LogPattern(Constants.domainCode, Constants.solutioNameCode, 
+	private Logger log = Logger.getLogger(this.getClass());
+	private LogPattern logPattern = new LogPattern(Constants.domainCode, Constants.solutioNameCode, 
 			Constants.platform, Constants.tower, this.getClass().getName());
 
 	
@@ -49,23 +51,16 @@ public class ImportAction extends DispatchAction {
 		
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void importExcel(ActionMapping arg0, ActionForm arg1,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest req, HttpServletResponse res) {
 		
-		String idTransaction = request.getSession().getId();
+		String idTransaction = req.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
 		
 		StringBuilder sb = new StringBuilder();
 		
-		String filename = null;
-		long filesize = -1;
-		boolean state = false;
-		
-		String info = "Se cargo exitosamente";
-		String param = null;
-		
-		boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);		
+		boolean isMultipartContent = ServletFileUpload.isMultipartContent(req);		
 
 		if (!isMultipartContent) {
 			log.info("You are not trying to upload...");
@@ -77,8 +72,10 @@ public class ImportAction extends DispatchAction {
 
 		factory = new DiskFileItemFactory();
 		upload = new ServletFileUpload(factory);
+		ImportExcelResponse response = new ImportExcelResponse();
+		
 		try {
-			List<FileItem> fields = upload.parseRequest(request);
+			List<FileItem> fields = upload.parseRequest(req);
 			log.info("Number of fields: " + fields.size());
 			Iterator<FileItem> it = fields.iterator();
 			if (!it.hasNext()) {
@@ -90,53 +87,68 @@ public class ImportAction extends DispatchAction {
 				boolean isFormField = fileItem.isFormField();
 				if (isFormField) {
 				} else {
-					
 					log.info(logPattern.buildPattern(methodName, idTransaction, "fileItem", ToStringBuilder.reflectionToString(fileItem)));
-					filename = fileItem.getName();
-					filesize = fileItem.getSize();
-					boolean header = request.getParameter("header") != null && !request.getParameter("header").equals("") ? Boolean.parseBoolean(request.getParameter("header")) : Boolean.parseBoolean("false");
-					int sheetNumber = Integer.parseInt(request.getParameter("sheet"));
+					boolean header = req.getParameter("header") != null && !req.getParameter("header").equals("") ? Boolean.parseBoolean(req.getParameter("header")) : Boolean.parseBoolean("false");
+					int sheetNumber = Integer.parseInt(req.getParameter("sheet"));
 
-					Object[] params = new Object[]{header, sheetNumber, filename, filesize};
+					response.setFileName(fileItem.getName());
+					response.setFileSize(fileItem.getSize());
+					response.setHeader(header);
+					
+					Object[] params = new Object[]{header, sheetNumber};
 					
 					log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));
 					
 					try {
-						if(filename.endsWith(".xls") || filename.endsWith("xlsx")){
-							if(state = validateWB(filesize, 0, info)){
+						if(validateWB(response)){
+							if(response.getFileName().endsWith(".xls") || response.getFileName().endsWith("xlsx")){
 								Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
 								Sheet sheet = wb.getSheetAt(sheetNumber);
-								log.info("Sheet name = " + sheet.getSheetName());
+								
+								response.setSheetName(sheet.getSheetName());
+								
+								List<Asset> assetList = new ArrayList<Asset>();
 								
 								CreateXML createXML = new CreateXML();
-								param = createXML.createGrid(sheet);							
-							}							
-						}else{
-							info = "La extension del archvio es invalida";
-						}
+								createXML.createGrid(idTransaction, response, sheet, assetList);
+								
+								if(response.isState()){
+									AssetResponse assetResponse = assetService.insertAsset(idTransaction, assetList.toArray(new Asset[assetList.size()]));
+									if(assetResponse.getResponseCode() == Constants.SUCCESS_RESPONSE){
+										response.setInfo(response.getInfo() +" ["+assetResponse.getResponseMessage()+"] ");
+									}else{
+										response.setInfo(assetResponse.getResponseMessage());
+										response.setParam("");
+										response.setState(false);
+									}
+								}
+															
+							}else{
+								response.setInfo("La extension del archvio es invalida");
+							}
+						}						
+//						log.error(logPattern.buildPattern(methodName, idTransaction, "importExcelResponse", ToStringBuilder.reflectionToString(response)));						
 					} catch (EncryptedDocumentException e) {
-						info = e.getMessage();
+						response.setInfo(e.getMessage());
 						log.error(logPattern.buildPattern(methodName, idTransaction, "EncryptedDocumentException", e.getMessage()), e);
 					} catch (InvalidFormatException e) {
-						info = e.getMessage();
+						response.setInfo(e.getMessage());
 						log.error(logPattern.buildPattern(methodName, idTransaction, "InvalidFormatException", e.getMessage()), e);
-					} catch (IOException e2) {
-						info = e2.getMessage();
-						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e2.getMessage()), e2);
+					} catch (IOException e) {
+						response.setInfo(e.getMessage());
+						log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
 					}
 				}
 			}
 		} catch (FileUploadException e) {
-			param = e.getMessage();
+			response.setInfo(e.getMessage());
 			log.error(logPattern.buildPattern(methodName, idTransaction, "FileUploadException", e.getMessage()), e);			
 		}
-		sb.append("{state:").append(state).append(",name:\"").append(filename).append("\",size:").append(filesize).append(",");
-		sb.append(" extra: { info: \"").append(info).append("\", param: \"").append(param).append("\" }");
+		sb.append("{ state:").append(response.isState()).append(", name:\"").append(response.getFileName()).append("\", size:").append(response.getFileSize()).append(",");
+		sb.append(" extra: { info: \"").append(response.getInfo()).append("\", param: \"").append(response.getParam()).append("\" }");
 		sb.append("}");
 		
-//		log.info(logPattern.buildPattern(methodName, idTransaction, "response", sb.toString()));
-		
-		setResponse(request, response, sb.toString(), "text/json");
+		setResponse(req, res, sb.toString(), "text/json");
 	}
 
 	public void saveFile(ActionMapping arg0, ActionForm arg1,
@@ -181,26 +193,21 @@ public class ImportAction extends DispatchAction {
 		try {
 			out = response.getWriter();
 			out.write(res);
-			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
+//			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
 		} catch (IOException e) {
+			log.info(logPattern.buildPattern(methodName, idTransaction, "response", res));
 			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
 		}
 	
 	}
 
-	public boolean validateWB(long filesize, int columnLength, String info){
-		boolean state = true;
+	public boolean validateWB(ImportExcelResponse response){
 		int EXCEL_MAX_FILE_SIZE = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_MAX_FILE_SIZE").getValue());
-		int EXCEL_COLUMN_LENGTH = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_COLUMN_LENGTH").getValue());
 		
-		if((filesize/1024) > (EXCEL_MAX_FILE_SIZE * 1024)){
-			state = false;		
-			info = "El archivo es mayor a 2Mb, por favor cambie las preferencias";
+		if((response.getFileSize()/1024) > (EXCEL_MAX_FILE_SIZE * 1024)){
+			response.setInfo("El archivo es mayor a 2Mb, por favor cambie las preferencias");
+			return false;
 		}
-		else if(columnLength <= EXCEL_COLUMN_LENGTH && columnLength > 0){
-			state = false;		
-			info = "El formato de excel no cumple con las columnas especificadas";
-		}
-		return state;
+		return true;
 	}
 }

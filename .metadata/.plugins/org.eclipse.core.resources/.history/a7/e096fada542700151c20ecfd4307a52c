@@ -1,0 +1,229 @@
+package mx.com.icsp.util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Scanner;
+
+import mx.com.icsc.common.ImportExcelResponse;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.service.PropertyServiceImpl;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+public class CreateXML {
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+
+	// public static void main(String[] args){
+	// String file = "a,b,c \n e,f,g";
+	// createXml(file);
+	// }
+
+	public StringBuilder createXml(String file) {
+		StringBuilder sb = null;
+		int j = 0;
+		if (file != null) {
+			log.info("[CreateXML] File: " + file);
+			sb = new StringBuilder();
+			sb.append("<?xml version=\"1.0\" enconding=\"UTF-8\" ?>");
+			sb.append("<rows>");
+			Scanner scan = new Scanner(file);
+			while (scan.hasNextLine()) {
+				String oneLine = scan.nextLine();
+				String[] tokens = oneLine.split(",");
+				sb.append("<row id=\"").append(j).append("\">");
+				for (int i = 0; i < tokens.length; i++) {
+					sb.append("<cell>").append(tokens[i].trim())
+							.append("</cell>");
+				}
+				sb.append("</row>");
+				j++;
+			}
+			sb.append("</rows>");
+			log.info("SB: " + sb.toString());
+			return sb;
+		}
+		return sb;
+	}
+
+	public void createGrid(String idTransaction, ImportExcelResponse response, Sheet sheet) {
+		Iterator<Row> rowIterator = sheet.iterator();
+		StringBuilder sb = new StringBuilder();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			Date date = sdf.parse(PropertyServiceImpl.map.get("DEFAULT_DATE")
+					.getValue());
+		} catch (ParseException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction,
+					"IOException", e.getMessage()), e);
+		}
+
+		sb.append("<rows>");
+		int rowInt = -1, columnInt = -1;
+		try {
+			if(response.isHeader())
+				rowIterator.next();
+				
+			while (rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				Iterator<Cell> cellIterator = row.cellIterator();
+				rowInt = row.getRowNum();
+
+				sb.append("<row>");
+				while (cellIterator.hasNext()) {
+					Cell cell = cellIterator.next();
+					columnInt = cell.getColumnIndex();
+					
+					sb.append("<cell>");
+
+					String cellStringValue = null;
+					int cellIntValue = 0;
+					double cellDoubleValue = 0;
+					Date cellDateValue = null;
+
+					switch (columnInt) {
+					case Constants.COLUMN_ID_LEDGER:
+						cellIntValue = (int) cell.getNumericCellValue();
+						sb.append(cellIntValue);
+						break;
+
+					case Constants.COLUMN_ASSET_TYPE:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_DESCRIPTION:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_BRAND:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_MODEL:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_SERIAL_NUMBER:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_MATERIAL:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_COLOR:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_SUPPLIER:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_DIRECTLY_RESPONSIBLE:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_GENERAL_MANAGER:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_BILL:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_BILL_DATE:
+						cellDateValue = cell.getDateCellValue();
+						sb.append(sdf.format(cellDateValue));
+						break;
+
+					case Constants.COLUMN_PRICE:
+						cellDoubleValue = cell.getNumericCellValue();
+						sb.append(cellDoubleValue);
+						break;
+
+					case Constants.COLUMN_USE_DATE:
+						cellDateValue = cell.getDateCellValue();
+						sb.append(sdf.format(cellDateValue));
+						break;
+
+					case Constants.COLUMN_PLACE:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_LOCATION:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_GENERAL_LOCATION:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_SECURE:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+
+					case Constants.COLUMN_START:
+						cellStringValue = cell.getStringCellValue().replace(
+								"\"", "\\\"");
+						sb.append(cellStringValue);
+						break;
+					}
+
+				}
+				sb.append("</cell>");
+				sb.append("</row>");
+			}
+		} catch(IllegalStateException e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IllegalStateException", e.getMessage()), e);
+			response.setInfo("Error de formato: " + e.getMessage() + " [columna="+columnInt+", fila="+rowInt+", value="+sheet.getRow(rowInt).getCell(columnInt).getStringCellValue()+"]");
+			return;
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			response.setInfo("Error de sistema: " + e.getMessage() + ": [columna="+columnInt+", fila="+rowInt+"]");
+			return;
+		}
+		sb.append("</rows>");
+
+		response.setParam(sb.toString());
+		response.setState(true);
+	}
+}

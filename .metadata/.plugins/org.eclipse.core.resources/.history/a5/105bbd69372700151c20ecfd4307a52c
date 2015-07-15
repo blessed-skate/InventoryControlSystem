@@ -1,0 +1,6 @@
+package mx.com.icsc.common;
+
+public class ImportExcelResponse {
+	private int responseCode;
+	private String responseMessage;
+}

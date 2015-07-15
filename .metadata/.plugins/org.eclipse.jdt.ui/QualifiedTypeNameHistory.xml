@@ -30,6 +30,6 @@
 <fullyQualifiedTypeName name="java.io.OutputStream"/>
 <fullyQualifiedTypeName name="mx.com.icsp.util.pdf.PdfReport"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
-<fullyQualifiedTypeName name="org.apache.commons.lang.builder.ToStringBuilder"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang.builder.ToStringBuilder"/>
 </qualifiedTypeNameHistroy>

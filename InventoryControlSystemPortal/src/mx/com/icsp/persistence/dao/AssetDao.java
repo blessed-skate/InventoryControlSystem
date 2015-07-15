@@ -19,13 +19,14 @@ public interface AssetDao {
 			+ " TAAT.FCSUPPLIER supplier, IF(TAAT.FCGENERALMANAGER IS NOT NULL, TAAT.FCGENERALMANAGER, '') generalManager, IF(TAAT.FCDIRECTLYRESPONSIBLE IS NOT NULL, TAAT.FCDIRECTLYRESPONSIBLE, '') directlyResponsible,"
 			+ " IF(TAAT.FITAG IS NOT NULL, TAAT.FITAG, 0) tag, TAAT.FCBILL bill, TAAT.FDBILLINGDATE billingDate, IF(TAAT.FCLOCATION IS NOT NULL, TAAT.FCLOCATION, '') location,"
 			+ " TAAT.FDUSEDATE useDate, TAAT.FNPRICE price, IF(TAAT.FCGENERALLOCATION IS NOT NULL, TAAT.FCGENERALLOCATION, '') generalLocation,"
-			+ " IF(TAAT.FCSECURE IS NOT NULL, TAAT.FCSECURE, '') secure, TAAT.FDREGISTERDATE registerDate, TAAT.FDLASTUPDATE lastUpdate"
+			+ " IF(TAAT.FCSECURE IS NOT NULL, TAAT.FCSECURE, '') secure, IF(TAAT.FCSTART IS NOT NULL, TAAT.FCSTART, '') start, "
+			+ " IF(TAAT.FCPLACE IS NOT NULL, TAAT.FCPLACE, '') place, TAAT.FDREGISTERDATE registerDate, TAAT.FDLASTUPDATE lastUpdate"
 			+ " FROM" + " CISDB.TACISASSET TAAT "
 			+ " INNER JOIN CISDB.CTCISLEDGER CTLE ON"
 			+ " TAAT.FIIDLEDGER = CTLE.FIIDLEDGER AND"
 			+ " TAAT.FCSUBCLASS = CTLE.FCSUBCLASS";
 	
-	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = #{directlyResponsible}";
+	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = (SELECT FCDIRECTLYRESPONSIBLE FROM cisdb.tacisasset WHERE FITAG = #{tag})";
 	
 	static final String ORDERBY = " ORDER BY FIIDASSET ASC";
 
@@ -35,18 +36,19 @@ public interface AssetDao {
 			+ " WHERE FIIDLEDGER = #{idLedger} AND FCSUBCLASS = #{idSubclass}";
 
 	static final String INSASSET = "Insert into CISDB.TACISASSET (FIIDLEDGER,FCSUBCLASS,FCDESCRIPTION,FCBRAND,FCMODEL,FCSERIALNUMBER,FCMATERIAL,FCCOLOR,"
-			+ "FCSUPPLIER,FCGENERALMANAGER,FCDIRECTLYRESPONSIBLE,FITAG,FCBILL,FDBILLINGDATE,FCLOCATION,FDUSEDATE,FNPRICE,FCGENERALLOCATION,FCSECURE) "
+			+ "FCSUPPLIER,FCGENERALMANAGER,FCDIRECTLYRESPONSIBLE,FITAG,FCBILL,FDBILLINGDATE,FCLOCATION,FDUSEDATE,FNPRICE,FCGENERALLOCATION,FCSECURE,FCSTART,FCPLACE) "
 			+ "values "
 			+ "(#{idLedger}, #{idSubclass}, #{description}, #{brand}, #{model}, #{serialNumber}, #{material}, #{color},"
 			+ "#{supplier}, #{generalManager}, #{directlyResponsible}, #{tag},"
-			+ "#{bill}, #{billingDate}, #{location}, #{useDate}, #{price}, #{generalLocation}, #{secure})";
+			+ "#{bill}, #{billingDate}, #{location}, #{useDate}, #{price}, #{generalLocation}, #{secure}, #{start}, #{place})";
 	
 	static final String UPDASSET = "UPDATE CISDB.TACISASSET SET FCDESCRIPTION=#{description},FCBRAND=#{brand},FCMODEL=#{model},"
 			+ "FCSERIALNUMBER=#{serialNumber}, FCMATERIAL=#{material}, FCCOLOR=#{color},FCSUPPLIER=#{supplier}, FCGENERALMANAGER=#{generalManager},"
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
-			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure} WHERE FITAG=#{tag}";
+			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place} WHERE FITAG=#{tag}";
 	
-	static final String SELDIRRESP = "select distinct(FCDIRECTLYRESPONSIBLE) directlyResponsible from cisdb.tacisasset";
+	static final String SELDIRRESP = "select distinct(FCDIRECTLYRESPONSIBLE) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset"
+								   + " group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC;";
 
 	@Select(SELASSET+ORDERBY)
 	@Options(statementType = StatementType.CALLABLE)

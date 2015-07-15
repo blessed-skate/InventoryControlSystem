@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="120"
+		inputWidth="200" />
+	<item type="input" label="Cuenta contable" name="idLedger" disabled="true"/>
+	<item type="input" label="Subclase" name="idSubclass" disabled="true"/>
+	<item type="input" label="No. de etiqueta" required="true" name="tag" disabled="true"/>
+	
+	<item type="input" label="Descripcion" required="true" name="description" maxLength="100" validate="NotEmpty"/>
+	<item type="input" label="Valor estimado" required="true" name="price" numberFormat="$ 0,000.00" groupSep="," decSep="." maxLength="10" validate="NotEmpty,ValidNumeric"/>
+	<item type="input" label="Marca" name="brand" maxLength="100"/>
+	<item type="input" label="Modelo" name="model" maxLength="100"/>
+	<item type="input" label="No. de serie" name="serialNumber" maxLength="100"/>
+	<item type="input" label="Material" name="material"  maxLength="100"/>
+	<item type="input" label="Color" name="color"  maxLength="100"/>
+	<item type="input" label="Proveedor" name="supplier" maxLength="100"/>
+	<item type="input" label="Responsable general" name="generalManager" maxLength="100"/>
+	<item type="input" label="Responsable directo" name="directlyResponsible" maxLength="100" required="true"/>
+	<item type="input" label="No. de factura" name="bill" maxLength="100"/>
+	<item type="calendar" dateFormat="%d/%m/%Y" name="billingDate" label="Fecha de factura"/>
+	<item type="input" label="Localización" name="location" maxLength="100"/>
+	<item type="calendar" dateFormat="%d/%m/%Y" name="useDate" label="Fecha de uso"/>
+	<item type="input" label="Ubicacion" name="generalLocation" maxLength="100"/>
+	<item type="input" label="Seguro" name="secure" maxLength="100"/>
+	<item type="input" label="Inicio" name="start" maxLength="100"/>
+</items>

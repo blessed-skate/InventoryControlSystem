@@ -10,6 +10,7 @@ import mx.com.icsc.common.util.LogPattern;
 import mx.com.icsp.persistence.dao.AssetDao;
 import mx.com.icsp.util.Constants;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 
 public class AssetServiceImpl implements AssetService{
@@ -59,34 +60,45 @@ public class AssetServiceImpl implements AssetService{
 	public AssetResponse insertAsset(String idTransaction, Asset[] assetArray){
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		StringBuilder sb1 = new StringBuilder();
-		StringBuilder sb2 = new StringBuilder();
+		StringBuilder sb2 = new StringBuilder("Error al insertar resgistros: ");
 		AssetResponse response = new AssetResponse();
+		boolean error = false;
 		
 		int reponseCode = -1;
 		int cont = 0;
+		
 		
 		if(assetArray != null && assetArray.length > 0){
 			for(Asset asset: assetArray){			
 				try{
 					reponseCode = assetDao.insertAsset(asset);
-					log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+//					log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
 					if(reponseCode == 1){
 						cont++;
 					}else{
-						sb2.append("No se inserto el registro con la etiqueta ").append(asset.getTag()).append("\n");
+						if(!error)
+							error = true;
+						sb2.append(asset.getTag()).append(", ");
 					}
 				}catch(Exception e){
-					log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+					if(!error)
+						error = true;
+					sb2.append(asset.getTag()).append(", ");
+					log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage(), ToStringBuilder.reflectionToString(asset)), e);
 				}
 			}
-			sb1.append("Se insertaron ").append(cont).append(" de ").append(assetArray.length).append(" resgitros").append("\n");
-			sb1.append(sb2);
+			sb1.append("Se insertaron ").append(cont).append(" de ").append(assetArray.length).append(" resgitros.");
+			if(error)
+				sb1.append(" ").append(sb2);
+			
 		}else{
 			sb1.append("No existen registros para insertar");
 		}
 		
-		response.setResponseCode(reponseCode == 1 ? 200 : 0);
+		response.setResponseCode(reponseCode == 1 ? 0 : 200);
 		response.setResponseMessage(sb1.toString());
+		log.info(logPattern.buildPattern(methodName, idTransaction, "assetResponse", ToStringBuilder.reflectionToString(response)));
+		
 		return response;
 	}
 
@@ -155,7 +167,7 @@ public class AssetServiceImpl implements AssetService{
 	}
 
 	@Override
-	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String directlyResponsible) {
+	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String tag) {
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		List<Asset> list = null;
@@ -163,7 +175,7 @@ public class AssetServiceImpl implements AssetService{
 		
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("directlyResponsible", directlyResponsible);
+			params.put("tag", tag);
 			list = assetDao.getDirectlyResponsibleAsset(params);
 			assetArray = list.toArray(new Asset[list.size()]);
 		}catch(Exception e){

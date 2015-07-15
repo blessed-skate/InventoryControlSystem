@@ -92,14 +92,15 @@ public class AssetAction extends DispatchAction {
 					sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
 					sb.append("<cell>").append(asset.getDirectlyResponsible()).append("</cell>");
 					sb.append("<cell>").append(asset.getGeneralManager()).append("</cell>");
-					sb.append("<cell>").append(asset.getTag()).append("</cell>");
 					sb.append("<cell>").append(asset.getBill()).append("</cell>");
 					sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
 					sb.append("<cell>").append(asset.getPrice()).append("</cell>");
 					sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
+					sb.append("<cell>").append(asset.getPlace()).append("</cell>");
 					sb.append("<cell>").append(asset.getLocation()).append("</cell>");
 					sb.append("<cell>").append(asset.getGeneralLocation()).append("</cell>");
 					sb.append("<cell>").append(asset.getSecure()).append("</cell>");
+					sb.append("<cell>").append(asset.getStart()).append("</cell>");
 					sb.append("</row>");
 				}
 				sb.append("</rows>");
@@ -148,14 +149,16 @@ public class AssetAction extends DispatchAction {
 				sb.append("<supplier>").append(asset.getSupplier()).append("</supplier>");
 				sb.append("<generalManager>").append(asset.getGeneralManager()).append("</generalManager>");
 				sb.append("<directlyResponsible>").append(asset.getDirectlyResponsible()).append("</directlyResponsible>");
-				sb.append("<tag>").append(asset.getTag()).append("</tag>");
 				sb.append("<bill>").append(asset.getBill()).append("</bill>");
 				sb.append("<billingDate>").append(sdf.format(asset.getBillingDate())).append("</billingDate>");
 				sb.append("<location>").append(asset.getLocation()).append("</location>");
 				sb.append("<useDate>").append(sdf.format(asset.getUseDate())).append("</useDate>");
 				sb.append("<price>").append(asset.getPrice()).append("</price>");
+				sb.append("<place>").append(asset.getPlace()).append("</place>");
 				sb.append("<generalLocation>").append(asset.getGeneralLocation()).append("</generalLocation>");
 				sb.append("<secure>").append(asset.getSecure()).append("</secure>");
+				sb.append("<start>").append(asset.getStart()).append("</start>");
+				sb.append("<tag>").append(asset.getTag()).append("</tag>");
 				sb.append("</data>");
 			} else {
 				sb.append("<data>");
@@ -199,7 +202,7 @@ public class AssetAction extends DispatchAction {
 				String serialNumber = gerParameterString(request, "serialNumber", "Sin numero de serie");
 				
 				String material = gerParameterString(request,"material");
-				String color = gerParameterString(request,"mColor");
+				String color = gerParameterString(request,"color");
 				
 				String supplier = gerParameterString(request, "supplier", "Proveedor no identificado");
 				String generalManager = gerParameterString(request, "generalManager");
@@ -214,8 +217,10 @@ public class AssetAction extends DispatchAction {
 				
 				float price = gerParameterFloat(request, "price");
 				
+				String place = gerParameterString(request, "place");
 				String generalLocation = gerParameterString(request, "generalLocation");
 				String secure = gerParameterString(request, "secure");
+				String start = gerParameterString(request, "start");
 	
 				long tag = assetService.getTag(idTransaction, idLedger, idSubclass);
 				if (tag == -1) {
@@ -242,6 +247,8 @@ public class AssetAction extends DispatchAction {
 					asset.setPrice(price);
 					asset.setGeneralLocation(generalLocation);
 					asset.setSecure(secure);
+					asset.setStart(start);
+					asset.setPlace(place);
 					
 					log.info(logPattern.buildPattern(methodName, idTransaction, "Asset", ToStringBuilder.reflectionToString(asset)));
 		
@@ -292,7 +299,7 @@ public class AssetAction extends DispatchAction {
 				String serialNumber = gerParameterString(request, "serialNumber", "Sin numero de serie");
 				
 				String material = gerParameterString(request,"material");
-				String color = gerParameterString(request,"mColor");
+				String color = gerParameterString(request,"color");
 				
 				String supplier = gerParameterString(request, "supplier", "Proveedor no identificado");
 				String generalManager = gerParameterString(request, "generalManager");
@@ -305,8 +312,10 @@ public class AssetAction extends DispatchAction {
 				
 				float price = gerParameterFloat(request, "price");
 				
+				String place = gerParameterString(request, "place");
 				String generalLocation = gerParameterString(request, "generalLocation");
 				String secure = gerParameterString(request, "secure");
+				String start = gerParameterString(request, "start");
 	
 				Asset asset = new Asset();
 				asset.setTag(tag);
@@ -326,6 +335,8 @@ public class AssetAction extends DispatchAction {
 				asset.setPrice(price);
 				asset.setGeneralLocation(generalLocation);
 				asset.setSecure(secure);
+				asset.setStart(start);
+				asset.setPlace(place);
 				
 				log.info(logPattern.buildPattern(methodName, idTransaction, "asset", ToStringBuilder.reflectionToString(asset)));
 	
@@ -369,7 +380,7 @@ public class AssetAction extends DispatchAction {
 				for(Asset asset : assetArray){
 	//				log.info(logPattern.buildPattern(methodName, idTransaction, "asset", ToStringBuilder.reflectionToString(asset)));
 					if(asset != null){
-						sb.append("<item value=\"").append(asset.getDirectlyResponsible()).append("\" label=\"").append(asset.getDirectlyResponsible()).append("\" />");
+						sb.append("<item value=\"").append(asset.getTag()).append("\" label=\"").append(asset.getDirectlyResponsible()).append("\" />");
 					}
 				}
 				sb.append("</data>");
@@ -392,36 +403,23 @@ public class AssetAction extends DispatchAction {
 		
 		AssetResponse assetResponse = new AssetResponse();
 		
-		String directlyResponsible = gerParameterString(request, "directlyResponsible");
+		String tag = gerParameterString(request, "directlyResponsible");
 		
 		try {
-			Asset[] assetArray = assetService.getDirectlyResponsibleAsset(idTransaction, directlyResponsible);
+			Asset[] assetArray = assetService.getDirectlyResponsibleAsset(idTransaction, tag);
 			
 			if (assetArray != null) {
 				log.error(logPattern.buildPattern(methodName, idTransaction, "assetArray", assetArray.length));
 				sb.append("<rows>");
 				for (Asset asset : assetArray) {
 					sb.append("<row id=\"" + asset.getId() + "\">");
-//					sb.append("<cell type=\"sub_row_grid\">").append("xml/query_sgrid.xml").append("</cell>");
 					sb.append("<cell>").append(asset.getTag()).append("</cell>");
 					sb.append("<cell>").append(asset.getSubclass()).append("</cell>");
 					sb.append("<cell>").append(asset.getDescription()).append("</cell>");
 					sb.append("<cell>").append(asset.getBrand()).append("</cell>");
 					sb.append("<cell>").append(asset.getModel()).append("</cell>");
 					sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
-//					sb.append("<cell>").append(asset.getMaterial()).append("</cell>");
-//					sb.append("<cell>").append(asset.getColor()).append("</cell>");
-//					sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
-//					sb.append("<cell>").append(asset.getDirectlyResponsible()).append("</cell>");
-//					sb.append("<cell>").append(asset.getGeneralManager()).append("</cell>");
-//					sb.append("<cell>").append(asset.getTag()).append("</cell>");
-//					sb.append("<cell>").append(asset.getBill()).append("</cell>");
-//					sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
 					sb.append("<cell>").append(asset.getPrice()).append("</cell>");
-//					sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
-//					sb.append("<cell>").append(asset.getLocation()).append("</cell>");
-//					sb.append("<cell>").append(asset.getGeneralLocation()).append("</cell>");
-//					sb.append("<cell>").append(asset.getSecure()).append("</cell>");
 					sb.append("</row>");
 				}
 				sb.append("</rows>");

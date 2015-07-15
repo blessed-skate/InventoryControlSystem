@@ -12,5 +12,5 @@ public interface AssetService {
 	public int updateAsset(String idTransaction, Asset asset);
 	public AssetResponse insertAsset(String idTransaction, Asset[] assetArray);
 	public Asset[] getDirectlyResponsible(String idTransaction);
-	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String directlyResponsible);
+	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String tag);
 }

@@ -1,0 +1,14 @@
+package mx.com.icsc.common;
+
+public class ImportExcelResponse {
+
+	private boolean state;
+	private String name;
+	private String param;
+	private String info;
+	private String fileName;
+	private String fileSize;
+	
+	private int responseCode;
+	private String responseMessage;
+}

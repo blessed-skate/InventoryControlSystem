@@ -1,0 +1,265 @@
+package mx.com.icsp.util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Scanner;
+
+import mx.com.icsc.common.ImportExcelResponse;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.service.PropertyServiceImpl;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+public class CreateXML {
+	Logger log = Logger.getLogger(this.getClass());
+	LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+
+	// public static void main(String[] args){
+	// String file = "a,b,c \n e,f,g";
+	// createXml(file);
+	// }
+
+	public StringBuilder createXml(String file) {
+		StringBuilder sb = null;
+		int j = 0;
+		if (file != null) {
+			log.info("[CreateXML] File: " + file);
+			sb = new StringBuilder();
+			sb.append("<?xml version=\"1.0\" enconding=\"UTF-8\" ?>");
+			sb.append("<rows>");
+			Scanner scan = new Scanner(file);
+			while (scan.hasNextLine()) {
+				String oneLine = scan.nextLine();
+				String[] tokens = oneLine.split(",");
+				sb.append("<row id=\"").append(j).append("\">");
+				for (int i = 0; i < tokens.length; i++) {
+					sb.append("<cell>").append(tokens[i].trim())
+							.append("</cell>");
+				}
+				sb.append("</row>");
+				j++;
+			}
+			sb.append("</rows>");
+			log.info("SB: " + sb.toString());
+			return sb;
+		}
+		return sb;
+	}
+
+	public void createGrid(String idTransaction, ImportExcelResponse response, Sheet sheet) {
+		Iterator<Row> rowIterator = sheet.iterator();
+		StringBuilder sb = new StringBuilder();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		sb.append("<rows>");
+		int rowInt = -1, columnInt = -1;
+		try {
+			if(response.isHeader())
+				rowIterator.next();
+				
+			while (rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				Iterator<Cell> cellIterator = row.cellIterator();
+				rowInt = row.getRowNum();
+
+				sb.append("<row>");
+				while (cellIterator.hasNext()) {
+					Cell cell = cellIterator.next();
+					columnInt = cell.getColumnIndex();
+					
+					sb.append("<cell>");
+
+					switch (columnInt) {
+					case Constants.COLUMN_ID_LEDGER:
+						sb.append(getCellIntValue(cell));
+						break;
+
+					case Constants.COLUMN_ASSET_TYPE:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_DESCRIPTION:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_BRAND:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_MODEL:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_SERIAL_NUMBER:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_MATERIAL:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_COLOR:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_SUPPLIER:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_DIRECTLY_RESPONSIBLE:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_GENERAL_MANAGER:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_BILL:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_BILL_DATE:
+						cellDateValue = cell.getDateCellValue();
+						sb.append(sdf.format(cellDateValue));
+						break;
+
+					case Constants.COLUMN_PRICE:
+						sb.append(getCellDoubleValue(cell));
+						break;
+
+					case Constants.COLUMN_USE_DATE:
+						cellDateValue = cell.getDateCellValue();
+						sb.append(sdf.format(cellDateValue));
+						break;
+
+					case Constants.COLUMN_PLACE:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_LOCATION:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_GENERAL_LOCATION:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_SECURE:
+						sb.append(getCellStringValue(cell));
+						break;
+
+					case Constants.COLUMN_START:
+						sb.append(getCellStringValue(cell));
+						break;
+					}
+
+				}
+				sb.append("</cell>");
+				sb.append("</row>");
+			}
+		} catch(IllegalStateException e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IllegalStateException", e.getMessage()), e);
+			response.setInfo("Error de formato: " + e.getMessage() + " [columna="+columnInt+", fila="+rowInt+", value="+sheet.getRow(rowInt).getCell(columnInt).getStringCellValue()+"]");
+			return;
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			response.setInfo("Error de sistema: " + e.getMessage() + ": [columna="+columnInt+", fila="+rowInt+"]");
+			return;
+		}
+		sb.append("</rows>");
+
+		response.setParam(sb.toString());
+		response.setState(true);
+	}
+	
+	public String getCellStringValue(Cell cell){
+		String value = "";
+		if(cell != null){
+			switch(cell.getCellType()){
+				case Cell.CELL_TYPE_NUMERIC:
+					value = String.valueOf(cell.getNumericCellValue()).replace("\"", "\\\"");
+				break;
+				case Cell.CELL_TYPE_STRING:
+					value = cell.getStringCellValue().replace("\"", "\\\"");
+				break;
+				case Cell.CELL_TYPE_BLANK:
+				break;
+				case Cell.CELL_TYPE_ERROR:
+					value = String.valueOf(cell.getErrorCellValue()).replace("\"", "\\\"");
+				break;
+			}
+		}
+		return value;
+	}
+	
+	public double getCellDoubleValue(Cell cell){
+		double value = 0;
+		if(cell != null){
+			switch(cell.getCellType()){
+				case Cell.CELL_TYPE_NUMERIC:
+					value = cell.getNumericCellValue();
+				break;
+				case Cell.CELL_TYPE_STRING:
+					value = Double.parseDouble(cell.getStringCellValue() != null ? cell.getStringCellValue() : "0.0");
+				break;
+				case Cell.CELL_TYPE_BLANK:
+					value = 0.0;
+				break;
+				case Cell.CELL_TYPE_ERROR:
+					value = 0.0;
+				break;
+			}
+		}
+		return value;
+	}
+	
+	public double getCellIntValue(Cell cell){
+		int value = 0;
+		if(cell != null){
+			switch(cell.getCellType()){
+				case Cell.CELL_TYPE_NUMERIC:
+					value = (int) cell.getNumericCellValue();
+				break;
+				case Cell.CELL_TYPE_STRING:
+					value = Integer.parseInt(cell.getStringCellValue() != null ? cell.getStringCellValue() : "0");
+				break;
+				case Cell.CELL_TYPE_BLANK:
+					value = 0;
+				break;
+				case Cell.CELL_TYPE_ERROR:
+					value = 0;
+				break;
+			}
+		}
+		return value;
+	}
+	
+	public Date getCellDateValue(Cell cell){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			defaultDate = sdf.parse(PropertyServiceImpl.map.get("DEFAULT_DATE").getValue());
+		} catch (ParseException e) {}
+		
+		Date value = new Date();
+		if(cell != null){
+			switch(cell.getCellType()){
+				case Cell.CELL_TYPE_STRING:
+				try {
+					value = sdf.parse(cell.getStringCellValue() != null ? cell.getStringCellValue() : PropertyServiceImpl.map.get("DEFAULT_DATE").getValue());
+				} catch (ParseException e) {}
+				break;
+				default:
+					value = defaultDate;
+				break;
+			}
+		}
+		return value;
+	}
+}

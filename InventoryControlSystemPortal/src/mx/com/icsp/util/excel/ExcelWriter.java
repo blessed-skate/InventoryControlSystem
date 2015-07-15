@@ -15,6 +15,7 @@ import mx.com.icsp.util.Constants;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -110,6 +111,7 @@ public class ExcelWriter{
 		styleBorder.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		
 		styleBorder.setWrapText(true);
+		styleBorder.setFillBackgroundColor(HSSFColor.YELLOW.index);
 		
 		font.setBold(true);
 		styleBorder.setFont(font);
@@ -133,14 +135,15 @@ public class ExcelWriter{
 		row.createCell(8).setCellValue("Proveedor");
 		row.createCell(9).setCellValue("Usuario");
 		row.createCell(10).setCellValue("Jefe de usuario");
-		row.createCell(11).setCellValue("Número de etiqueta");
-		row.createCell(12).setCellValue("Número de factura");
-		row.createCell(13).setCellValue("Fecha");
-		row.createCell(14).setCellValue("Monto y/o valor estimado");
-		row.createCell(15).setCellValue("Fecha de uso");
+		row.createCell(11).setCellValue("Número de factura");
+		row.createCell(12).setCellValue("Fecha");
+		row.createCell(13).setCellValue("Monto y/o valor estimado");
+		row.createCell(14).setCellValue("Fecha de uso");
+		row.createCell(15).setCellValue("Lugar");
 		row.createCell(16).setCellValue("Localización");
 		row.createCell(17).setCellValue("Ubicación");
 		row.createCell(18).setCellValue("Seguro");
+		row.createCell(19).setCellValue("Incio");
 		
 		for(int i=0; i < row.getLastCellNum(); i++){
 			row.getCell(i).setCellStyle(styleBorder);
@@ -164,24 +167,25 @@ public class ExcelWriter{
 			rowData.createCell(8).setCellValue(asset.getSupplier());
 			rowData.createCell(9).setCellValue(asset.getDirectlyResponsible());
 			rowData.createCell(10).setCellValue(asset.getGeneralManager());
-			rowData.createCell(11).setCellValue(String.valueOf(asset.getTag()));
-			rowData.createCell(12).setCellValue(asset.getBill());
+			rowData.createCell(11).setCellValue(asset.getBill());
 			
-			Cell cellDate1 = rowData.createCell(13);
+			Cell cellDate1 = rowData.createCell(12);
 			cellDate1.setCellStyle(cellStyleDate);
 			cellDate1.setCellValue(asset.getBillingDate());
 			
-			Cell cellNumeric = rowData.createCell(14);
+			Cell cellNumeric = rowData.createCell(13);
 			cellNumeric.setCellType(Cell.CELL_TYPE_NUMERIC);
 			cellNumeric.setCellValue(asset.getPrice());
 			
-			Cell cellDate2 = rowData.createCell(15);
+			Cell cellDate2 = rowData.createCell(14);
 			cellDate2.setCellStyle(cellStyleDate);
 			cellDate2.setCellValue(asset.getUseDate());
 			
+			rowData.createCell(15).setCellValue(asset.getPlace());
 			rowData.createCell(16).setCellValue(asset.getLocation());
 			rowData.createCell(17).setCellValue(asset.getGeneralLocation());
 			rowData.createCell(18).setCellValue(asset.getSecure());
+			rowData.createCell(19).setCellValue(asset.getStart());
 		}
 	}
 	

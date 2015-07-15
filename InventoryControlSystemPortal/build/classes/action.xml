@@ -59,6 +59,9 @@
         <property name="propertyDao" ref="propertyDao" />
     </bean>
 
+ 	<bean id="roleService" class="mx.com.icsp.service.RoleServiceImpl">
+        <property name="roleDao" ref="roleDao" />
+    </bean>
 
     <!--  DAO  -->
     <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
@@ -78,6 +81,11 @@
     
     <bean id="propertyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
       <property name="mapperInterface" value="mx.com.icsp.persistence.dao.PropertyDao" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    
+    <bean id="roleDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+      <property name="mapperInterface" value="mx.com.icsp.persistence.dao.RoleDao" />
       <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
     

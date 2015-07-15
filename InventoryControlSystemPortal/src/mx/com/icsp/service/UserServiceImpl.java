@@ -1,6 +1,7 @@
 package mx.com.icsp.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mx.com.icsc.common.User;
@@ -35,6 +36,33 @@ public class UserServiceImpl implements UserService{
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 		return user;
+	}
+
+	@Override
+	public User[] getUsers(String idTransaction) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		List<User> list = null;
+		User[] userArray = null;
+		try{
+			list = userDao.getUsers();
+			userArray = list.toArray(new User[list.size()]);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return userArray;
+	}
+
+	@Override
+	public int insertUser(String idTransaction, User user) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();		
+		int reponseCode = -1;
+		try{
+			reponseCode = userDao.insertUser(user);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
 	}
 
 }

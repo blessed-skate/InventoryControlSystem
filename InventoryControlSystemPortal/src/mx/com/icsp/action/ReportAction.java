@@ -153,6 +153,8 @@ public class ReportAction extends DispatchAction{
 			new ExcelWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage(), param), e);
 		}
 	}
 	

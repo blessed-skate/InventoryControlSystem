@@ -4,6 +4,7 @@ var fileToGrid;
 
 function importExcel(){
 	try{
+		import_grid.clearAll();
 		import_excel_window = dhxWin.createWindow({
 			id : "exportExcelWindow",
 			left : 0,
@@ -33,13 +34,26 @@ function importExcel(){
 				showResponseXmlAlert("<b>"+extra.info+"</b>: " + file.name);
 				import_grid.loadXMLString(extra.param);
 				import_toolbar.setValue("file", file.name);
+				updateDHTMLXComponents();
 			}else{
-				showResponseXmlAlertError("<b>Ocurrio un error cargar el archvio</b>: "+file.name + " " +extra.info)
+				showResponseXmlAlertError("<b>Ocurrio un error cargar el archivo</b>: "+file.name + " " + (extra != null ? extra.info : ""));
+				updateDHTMLXComponents();
 			}
 		});
 		
 		myVault.attachEvent("onUploadFail", function(file, extra){
-			showResponseXmlAlertError("<b>Ocurrio un error cargar el archvio</b>: "+file.name + " " +extra.info)			
+			showResponseXmlAlertError("<b>Ocurrio un error cargar el archivo</b>: "+file.name + " " + (extra != null ? extra.info : ""));
+			updateDHTMLXComponents();
+		});
+		
+		myVault.attachEvent("onBeforeFileAdd", function(file){
+			var ext = this.getFileExtension(file.name);
+			if(ext == "xls" || ext == "xlsx"){
+				return true;
+			}else{
+				showResponseXmlAlertError("<b>La extensión del archivo es inválida</b>: " + ext)
+				return false;
+			}
 		});
 		
 		var import_excel_toolbar = import_excel_window.attachToolbar({

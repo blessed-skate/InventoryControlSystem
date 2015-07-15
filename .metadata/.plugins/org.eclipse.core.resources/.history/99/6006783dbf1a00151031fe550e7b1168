@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items>
-	<item type="select" label="Responsable directo" name="directlyResponsible"
-		connector="myAsset.do?method=getDirectlyResponsible"/>
-	<item type="button" name="updateGuardGrid" value="Obtener activos" />
-</items>

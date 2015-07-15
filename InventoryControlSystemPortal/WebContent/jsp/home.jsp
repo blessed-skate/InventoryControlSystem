@@ -158,23 +158,20 @@ body{
 		});
 		
 		export_grid = query_layout.cells("b").attachGrid();
-		export_grid.loadXML("xml/export/query_sgrid.xml");
+// 		export_grid.enableSmartRendering(true);
+		export_grid.loadXML("xml/grid.xml");
 		export_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
-// 		export_grid.setHeader("&nbsp;, C. contable, Tipo de bien, Etiqueta, Factura, Fecha, Localizacion, F. de uso, Valor, Ubicaion, Seguro");
-		export_grid.attachHeader("#text_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#numeric_filter,#rspan,#rspan,#rspan,#rspan");
-// 		export_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
-// 		export_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
-// 		export_grid.setColSorting("na,int,na,na,str,date,str,date,int,str,str");
-// 		export_grid.setColAlign("left,left,center,center,left,letf,left,left,right,left,left");
- 		export_grid.setNumberFormat("0,000.00",7,".",",");
+		export_grid.attachHeader("#text_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#numeric_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan");
+ 		export_grid.setNumberFormat("0, 000.00",14,".",",");
  		export_grid.setDateFormat("%d/%m/%Y");
+ 		export_grid.setPagingSkin("bricks");
 		export_grid.init();
 		export_grid.enableAutoHeight();
-		export_grid.attachFooter(" , , , , , , , , , , , , ,Total,#stat_total, , , , ");
-		export_grid.attachFooter(" , , , , , , , , , , , , ,Maximo,#stat_max, , , , ");
-		export_grid.attachFooter(" , , , , , , , , , , , , ,Minimo,#stat_min, , , , ");
-		export_grid.attachFooter(" , , , , , , , , , , , , ,Promedio,#stat_average, , , , ");
-		export_grid.attachFooter(" , , , , , , , , , , , , ,Registros,#stat_count, , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , ,Total,#stat_total, , , , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , ,Maximo,#stat_max, , , , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , ,Minimo,#stat_min, , , , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , ,Promedio,#stat_average, , , , , , ");
+		export_grid.attachFooter(" , , , , , , , , , , , ,Registros,#stat_count, , , , , , ");
 		
 		export_grid.loadXML("myAsset.do?method=getAsset");
 		
@@ -185,8 +182,13 @@ body{
 		});
 		
 		import_grid = home_tabbar.tabs("a3").attachGrid();
-		import_grid.loadXML("xml/import/import_grid.xml");
+// 		import_grid.enableSmartRendering(true);
+		import_grid.loadXML("xml/grid.xml");
 		import_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+		export_grid.setNumberFormat("0, 000.00",14,".",",");
+		import_grid.setDateFormat("%d/%m/%Y");
+		import_grid.init();
+		import_grid.enableAutoHeight();
 		
 		
 		//Resguardos
@@ -218,6 +220,7 @@ body{
 		});
 		
 		guard_grid = guard_layout.cells("b").attachGrid();
+// 		guard_grid.enableSmartRendering(true);
 		guard_grid.loadXML("xml/guard/guard_grid.xml");
 		guard_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
  		guard_grid.setNumberFormat("$ 0,000.00",7,".",",");

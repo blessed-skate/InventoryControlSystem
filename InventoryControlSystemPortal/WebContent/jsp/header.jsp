@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
 <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxGrid/codebase/ext/dhtmlxgrid_srnd.js"></script>
 
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/asset.js"></script>
