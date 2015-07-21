@@ -15,14 +15,14 @@
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
 <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxGrid/codebase/ext/dhtmlxgrid_srnd.js"></script>
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 
 <script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
 <script type="text/javascript" src="js/asset.js"></script>
 <script type="text/javascript" src="js/export.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
 <script type="text/javascript" src="js/guard.js"></script>
-
-<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />

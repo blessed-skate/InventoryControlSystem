@@ -1,5 +1,6 @@
 package mx.com.icsp.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,6 +179,48 @@ public class AssetServiceImpl implements AssetService{
 			params.put("tag", tag);
 			list = assetDao.getDirectlyResponsibleAsset(params);
 			assetArray = list.toArray(new Asset[list.size()]);
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return assetArray;
+	}
+
+	@Override
+	public Asset[] getAssetByBillingDate(String idTransaction,
+			Date startDate, Date endDate) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		List<Asset> list = null;
+		Asset[] assetArray = null;
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
+			list = assetDao.getAssetByBillingDate(params);
+			assetArray = list.toArray(new Asset[list.size()]);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", String.valueOf(assetArray.length)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return assetArray;
+	}
+	
+	@Override
+	public Asset[] getAssetByUseDate(String idTransaction,
+			Date startDate, Date endDate) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		List<Asset> list = null;
+		Asset[] assetArray = null;
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
+			list = assetDao.getAssetByUseDate(params);
+			assetArray = list.toArray(new Asset[list.size()]);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", String.valueOf(assetArray.length)));
 		}catch(Exception e){
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}

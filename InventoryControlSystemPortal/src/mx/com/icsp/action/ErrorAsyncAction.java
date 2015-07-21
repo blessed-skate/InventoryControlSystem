@@ -31,7 +31,9 @@ public class ErrorAsyncAction extends DispatchAction{
 		log.info(logPattern.buildPattern(methodName, idTransaction, "code", code));
 	
 		StringBuilder sb = new StringBuilder();
+		sb.append("<script>");
 		sb.append("location='Error.do?code=").append(code).append("'");
+		sb.append("</script>");
 		
 		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
 		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");

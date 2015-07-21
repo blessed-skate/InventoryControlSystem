@@ -1,11 +1,4 @@
-//dhtmlxError.catchError("LoadXML", function(a, b, data) {
-//	showError('${loading_err}' + '\n' + '${reload_msg}');
-//});
 dhx4.ajax.cache=true;
-
-//function doOnLoad(){
-//	showResponseXmlAlertWarning("doOnLoad");
-//}
 
 function showResponseXmlAlertError(msg) {
 	dhtmlx.alert({
@@ -78,4 +71,40 @@ function updateDHTMLXComponents(){
 	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
 //		showResponseXmlAlert("La tabla se ha refrescado...");
 	});
+}
+
+var downloadFrame;
+function downloadFile(url, params){
+	if(downloadFrame == null){
+		downloadFrame = document.createElement("iframe");
+		downloadFrame.className = "download_iframe";
+		downloadFrame.name = "download_frame";
+		downloadFrame.border = downloadFrame.frameBorder = 0;
+		document.body.appendChild(downloadFrame);		
+	}
+	
+	var downloadForm = document.createElement("FORM");
+	downloadForm.action = url;
+	downloadForm.method = "POST";
+	downloadForm.target = "download_frame";
+	document.body.appendChild(downloadForm);
+	
+	// add params to form
+	for (var a in params) {
+		var input = document.createElement("INPUT");
+		input.type = "hidden";
+		input.name = a;
+		input.value = params[a];
+		downloadForm.appendChild(input);
+		input = null;
+	}
+	
+	// submit form
+	downloadForm.submit();
+	
+	// clear form
+	window.setTimeout(function(){
+		document.body.removeChild(downloadForm);
+		downloadForm = null;
+	}, 1);
 }

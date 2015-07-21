@@ -1,10 +1,10 @@
 package mx.com.icsp.action;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.AssetResponse;
 import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsc.common.util.XmlFactory;
 import mx.com.icsp.service.AssetService;
 import mx.com.icsp.util.Constants;
+import mx.com.icsp.util.CreateXML;
 import mx.com.icsp.util.excel.ExcelWriter;
+import mx.com.icsp.util.pdf.PdfAssetWriter;
+import mx.com.icsp.util.pdf.PdfGuardWriter;
 import mx.com.icsp.util.pdf.PdfWriter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
@@ -40,84 +41,87 @@ public class ReportAction extends DispatchAction{
 	public static final String HEADER_2 = "attachment; filename=";
 	public static final String CONTENT_TYPE_PDF = "application/pdf";
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	AssetService assetService;
 	public void setAssetService(AssetService assetService) {
 		this.assetService = assetService;
 	}
 	
-	public void getAssetXml(ActionMapping arg0, ActionForm arg1,
+	public void getAssetGridFilter(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		AssetResponse assetResponse = new AssetResponse();
+		StringBuilder sb = new StringBuilder();
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		try {
+			
+			String query_radio = getParameterString(request, "query_radio");
+			long tag = getParameterLong(request, "tag");
+			Date startBillingDate = getParameterDate(request, "startBillingDate");
+			Date endBillingDate = getParameterDate(request, "endBillingDate");
+			Date startUseDate = getParameterDate(request, "startUseDate");
+			Date endUseDate = getParameterDate(request, "endUseDate");
+			
+			Object[] params = new Object[]{query_radio, tag, startBillingDate, endBillingDate, startUseDate, endUseDate};
+			
+			log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));
+			
+			Asset[] assetArray = null;
+			if(query_radio.toUpperCase().equals("TAG")){
+				Asset asset = assetService.getAssetByTag(idTransaction, tag);
+				
+				if(asset != null)
+					assetArray = new Asset[]{asset};
+			}else if(query_radio.toUpperCase().equals("BILLINGDATE")){
+				assetArray = assetService.getAssetByBillingDate(idTransaction, startBillingDate, endBillingDate);
+			}else if(query_radio.toUpperCase().equals("USEDATE")){
+				assetArray = assetService.getAssetByUseDate(idTransaction, startUseDate, endUseDate);
+			}
+			
+			if(assetArray != null && assetArray.length > 0){
+				sb.append(CreateXML.buildGeneralGrid(assetArray));
+			}else{
+				assetResponse.setResponseCode(0);
+				assetResponse.setResponseMessage("No se encontraron registros con los datos ingresados");
+				sb.append(XmlFactory.getXml(idTransaction, assetResponse));
+			}
+			
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			assetResponse.setResponseCode(100);
+			assetResponse.setResponseMessage("Error al consultar registros");
+			sb.append(XmlFactory.getXml(idTransaction, assetResponse));
+		}
+		
+		setResponse(request, response, sb.toString(), "application/xml");
+	}
+	
+	public void getAssetReport(ActionMapping arg0, ActionForm arg1,
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		long tag = getParameterLong(request, "tag");
+		log.info(logPattern.buildPattern(methodName, idTransaction, "tag", tag));
 		
-		Asset[] assetArray = assetService.getAsset(idTransaction);
-		if(assetArray != null && assetArray.length > 0){
-			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", String.valueOf(assetArray.length)));
-			try{
-				Workbook wb = new HSSFWorkbook();
-				
-				CellStyle style = wb.createCellStyle();
-				style.setBorderBottom(CellStyle.BORDER_THIN);
-				style.setBorderLeft(CellStyle.BORDER_THIN);
-				style.setBorderRight(CellStyle.BORDER_THIN);
-				style.setBorderTop(CellStyle.BORDER_THIN);
-				
-				Sheet sheet1 = wb.createSheet("Activo");
-				
-				Row row = sheet1.createRow(0);
-				row.createCell(0).setCellValue("Número de cuenta contable:");
-				row.createCell(1).setCellValue("Tipo de bien mueble:");
-				row.createCell(2).setCellValue("Descripción:");
-				row.createCell(3).setCellValue("Marca:");
-				row.createCell(4).setCellValue("Modelo:");
-				row.createCell(5).setCellValue("Número de serie:");
-				row.createCell(6).setCellValue("Material:");
-				row.createCell(7).setCellValue("Color:");
-				row.createCell(8).setCellValue("Proveedor:");
-				row.createCell(9).setCellValue("Usuario:");
-				row.createCell(10).setCellValue("Jefe de usuario:");
-				row.createCell(11).setCellValue("Número de etiqueta:");
-				row.createCell(12).setCellValue("Número de factura:");
-				row.createCell(13).setCellValue("Fecha:");
-				row.createCell(14).setCellValue("Monto y/o valor estimado:");
-				row.createCell(15).setCellValue("Fecha de uso:");
-				row.createCell(16).setCellValue("Localización:");
-				row.createCell(17).setCellValue("Ubicación:");
-				row.createCell(18).setCellValue("Seguro:");
-				
-				row.setRowStyle(style);
-				
-				int i=1;
-				for(Asset asset : assetArray){
-					Row rowData = sheet1.createRow(i++);
-					rowData.createCell(0).setCellValue(String.valueOf(asset.getTag()));
-					rowData.createCell(1).setCellValue(asset.getSubclass());
-					rowData.createCell(2).setCellValue(asset.getDescription());
-					rowData.createCell(3).setCellValue(asset.getBrand());
-					rowData.createCell(4).setCellValue(asset.getModel());
-					rowData.createCell(5).setCellValue(asset.getSerialNumber());
-					rowData.createCell(6).setCellValue(asset.getMaterial());
-					rowData.createCell(7).setCellValue(asset.getColor());
-					rowData.createCell(8).setCellValue(asset.getSupplier());
-					rowData.createCell(9).setCellValue(asset.getDirectlyResponsible());
-					rowData.createCell(10).setCellValue(asset.getGeneralManager());
-					rowData.createCell(11).setCellValue(String.valueOf(asset.getTag()));
-					rowData.createCell(12).setCellValue(asset.getBill());
-					rowData.createCell(13).setCellValue(asset.getBillingDate());
-					rowData.createCell(14).setCellValue(asset.getPrice());
-					rowData.createCell(15).setCellValue(asset.getUseDate());
-					rowData.createCell(16).setCellValue(asset.getLocation());
-					rowData.createCell(17).setCellValue(asset.getGeneralLocation());
-					rowData.createCell(18).setCellValue(asset.getSecure());
-					rowData.setRowStyle(style);
-				}
-				setResponse(request, response, CONTENT_TYPE_EXCEL, "REPORTE_"+sdf.format(new Date())+".xlsx", wb);
-			}catch(Exception e){
-				log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-			}
+		try {
+			Asset asset = assetService.getAssetByTag(idTransaction, tag);
+			if(asset != null)
+				new PdfAssetWriter().generate(idTransaction, request, response, asset);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
 		}
 	}
 	
@@ -127,16 +131,26 @@ public class ReportAction extends DispatchAction{
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 
-		String param = request.getParameter("grid_xml");
+		String grid_xml = request.getParameter("grid_xml");
 		String fileName = request.getParameter("fileName");
 		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
 		
 		String xml = null;
 		try {
-			xml = URLDecoder.decode(param, "UTF-8");
+			xml = URLDecoder.decode(grid_xml, "UTF-8");
 			new PdfWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
+			setResponseError(request, response, e.getMessage());
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage(), grid_xml), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
 		}
 	}
 	
@@ -146,15 +160,29 @@ public class ReportAction extends DispatchAction{
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 
-		String param = request.getParameter("grid_xml");
+		String grid_xml = request.getParameter("grid_xml");
 		String xml = null;
 		try {
-			xml = URLDecoder.decode(param, "UTF-8");
+			xml = URLDecoder.decode(grid_xml, "UTF-8");
 			new ExcelWriter().generate(idTransaction, request, response, xml);
 		} catch (UnsupportedEncodingException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "UnsupportedEncodingException", e.getMessage(), xml), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
 		} catch (Exception e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage(), param), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage(), grid_xml), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
 		}
 	}
 	
@@ -167,37 +195,126 @@ public class ReportAction extends DispatchAction{
 		String fileName = request.getParameter("fileName");
 		String extension = request.getParameter("extension");
 		
-		log.info(logPattern.buildPattern(methodName, idTransaction, "fileName", fileName));
-		log.info(logPattern.buildPattern(methodName, idTransaction, "extension", extension));
+		String[] params = new String[]{fileName, extension};
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));
 		
 		try {
 			Asset[] assetArray = assetService.getAsset(idTransaction);
 			new ExcelWriter().generate(idTransaction, request, response, assetArray);
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
 		}
 	}
 	
-	public void setResponse(HttpServletRequest request, HttpServletResponse response, String contentType, String fileName, Workbook wb){
+	public void getGuardPdf(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		try {
+			String directlyResponsible = getParameterString(request, "directlyResponsible");
+			String costCenter = getParameterString(request, "costCenter");
+			String area = getParameterString(request, "costCenter");
+			String department = getParameterString(request, "department");
+			
+			String[] params = new String[]{directlyResponsible, costCenter, area, department, request.getParameter("date")};
+			log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));
+			
+			Date date = getParameterDate(request, "date", new Date());
+			Asset[] assetArray = assetService.getDirectlyResponsibleAsset(idTransaction, directlyResponsible);
+			
+			if(assetArray != null && assetArray.length >0)
+				directlyResponsible = assetArray[0].getDirectlyResponsible();
+			
+			new PdfGuardWriter().generate(idTransaction, request, response, assetArray, directlyResponsible, costCenter, area, department, date);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("showResponseXmlAlertError('").append("Error al generar el reporte ").append(e.getMessage()).append("');");
+			sb.append("</script>");
+			
+			setResponseError(request, response, sb.toString());
+		}
+	}
+	
+	public void setResponse(HttpServletRequest request,
+			HttpServletResponse response, String res, String contentType) {
+		
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+	
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+		response.setContentType(contentType);
+		response.setHeader("Pragma", "no-cache");// set HTTP/1.0 no-cache
+	
+		PrintWriter out;
+	
+		try {
+			out = response.getWriter();
+			out.println(res);
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage(), res), e);
+		}	
+	}
+	
+	public void setResponseError(HttpServletRequest request, HttpServletResponse response, String msg){
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType(contentType);
-		response.setHeader("Expires", "0");
-		response.setHeader(HEADER_1, HEADER_2+fileName);// set HTTP/1.0 no-cache
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+		response.setContentType("application/javascript");
+		response.setHeader("Pragma", "no-cache");// set HTTP/1.0 no-cache
 
-		OutputStream out;
-
+		PrintWriter out;
+		
 		try {
-			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
-			wb.write(outByteStream);
-			byte[] outArray = outByteStream.toByteArray();
-			
-			out = response.getOutputStream();
-			out.write(outArray);
+			out = response.getWriter();
+			out.println(msg);
 		} catch (IOException e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage(), msg), e);
 		}
+	}
+	
+	public String getParameterString(HttpServletRequest request, String name){
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name).toUpperCase().trim() : null;
+	}
+	
+	public String getParameterString(HttpServletRequest request, String name, String def){
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? request.getParameter(name).toUpperCase().trim() : def.toUpperCase().trim();
+	}
+	
+	public int getParameterInt(HttpServletRequest request, String name){
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Integer.parseInt(request.getParameter(name)) : -1;
+	}
+	
+	public long getParameterLong(HttpServletRequest request, String name){
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Long.parseLong(request.getParameter(name)) : -1;
+	}
+	
+	public float getParameterFloat(HttpServletRequest request, String name){
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? Float.parseFloat(request.getParameter(name)) : -1;
+	}
+	
+	public Date getParameterDate(HttpServletRequest request, String name) throws ParseException{
+		return request.getParameter(name) != null && !request.getParameter(name).trim().equals("") ? sdf.parse(request.getParameter(name)) : null;
+	}
+	
+	public Date getParameterDate(HttpServletRequest request, String name, Date def) throws ParseException{
+		return request.getAttribute(name) != null ? (Date)request.getAttribute(name) : def;
 	}
 }

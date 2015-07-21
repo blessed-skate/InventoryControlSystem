@@ -27,10 +27,12 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
@@ -41,9 +43,6 @@ public class ImportAction extends DispatchAction {
 	private LogPattern logPattern = new LogPattern(Constants.domainCode, Constants.solutioNameCode, 
 			Constants.platform, Constants.tower, this.getClass().getName());
 
-	
-	static int cont = 0;
-	
 	AssetService assetService;
 	public void setAssetService(AssetService assetService) {
 		this.assetService = assetService;
@@ -63,7 +62,7 @@ public class ImportAction extends DispatchAction {
 		boolean isMultipartContent = ServletFileUpload.isMultipartContent(req);		
 
 		if (!isMultipartContent) {
-			log.info("You are not trying to upload...");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "You are not trying to upload..."));
 			return;
 		}
 		
@@ -101,8 +100,13 @@ public class ImportAction extends DispatchAction {
 					
 					try {
 						if(validateWB(response)){
-							if(response.getFileName().endsWith(".xls") || response.getFileName().endsWith("xlsx")){
-								Workbook wb = WorkbookFactory.create(fileItem.getInputStream());
+							if(response.getFileName().endsWith(".xls") || response.getFileName().endsWith(".xlsx")){
+								Workbook wb;
+								if(response.getFileName().endsWith(".xlsx"))
+									wb = (XSSFWorkbook)WorkbookFactory.create(fileItem.getInputStream());
+								else
+									wb = (HSSFWorkbook)WorkbookFactory.create(fileItem.getInputStream());
+								
 								Sheet sheet = wb.getSheetAt(sheetNumber);
 								
 								response.setSheetName(sheet.getSheetName());

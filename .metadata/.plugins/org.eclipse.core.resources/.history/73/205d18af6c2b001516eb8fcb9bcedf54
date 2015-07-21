@@ -1,0 +1,22 @@
+function updateGuardGrid(directlyResponsible){
+	try{	
+		guard_grid.clearAndLoad("myAsset.do?method=getDirectlyResponsibleAsset&directlyResponsible="+directlyResponsible, function(){});
+	}catch(err){
+		showResponseXmlAlertError(err.message);
+	}
+}
+
+function reloadDirectlyResponsibleSelect(){
+	guard_form.reloadOptions("directlyResponsible", "myAsset.do?method=getDirectlyResponsible");
+}
+
+function getAssetGuardPdf(){
+	//guard_form.send("myReport.do?method=getGuardPdf","post",function(loader, response){
+	
+	if(fileName != null && fileName != ""){
+		downloadFile("myReport.do?method=getGuardPdf", guard_form.getFormData());
+	}else{
+		showResponseXmlAlertError("Favor de ingresar un nombre de archivo valido");
+	}
+}
+

@@ -3,43 +3,43 @@
         "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<bean name="/myHome" class="mx.com.icsp.action.LoginAction">
+	<bean name="/myHome" class="mx.com.icsp.action.LoginAction" singleton="false">
 		<property name="userService" ref="userService"/>
 		<property name="assetService" ref="assetService"/>
 		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
-	<bean name="/adminUser" class="mx.com.icsp.action.UserAction">
+	<bean name="/adminUser" class="mx.com.icsp.action.UserAction" singleton="false">
 		<property name="userService" ref="userService"/>
 	</bean>
 	
-	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction">
+	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction" singleton="false">
 		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
-	<bean name="/adminCatalog" class="mx.com.icsp.action.CatalogAction">
+	<bean name="/adminCatalog" class="mx.com.icsp.action.CatalogAction" singleton="false">
 		<property name="catalogService" ref="catalogService"/>
 	</bean>
 	
-	<bean name="/myAsset" class="mx.com.icsp.action.AssetAction">
+	<bean name="/myAsset" class="mx.com.icsp.action.AssetAction" singleton="false">
 		<property name="assetService" ref="assetService"/>
 	</bean>
 	
-	<bean name="/myCatalog" class="mx.com.icsp.action.CatalogAction">
+	<bean name="/myCatalog" class="mx.com.icsp.action.CatalogAction" singleton="false">
 		<property name="catalogService" ref="catalogService"/>
 	</bean>
 	
-	<bean name="/myReport" class="mx.com.icsp.action.ReportAction">
+	<bean name="/myReport" class="mx.com.icsp.action.ReportAction" singleton="false">
 		<property name="assetService" ref="assetService"/>
 	</bean>
 	
-	<bean name="/myImport" class="mx.com.icsp.action.ImportAction">
+	<bean name="/myImport" class="mx.com.icsp.action.ImportAction" singleton="false">
 		<property name="assetService" ref="assetService"/>
 	</bean>
 	
-	<bean name="/ErrorAsync" class="mx.com.icsp.action.ErrorAsyncAction"/>
+	<bean name="/ErrorAsync" class="mx.com.icsp.action.ErrorAsyncAction" singleton="false"/>
 	
-	<bean name="/Error" class="mx.com.icsp.action.ErrorAction"/>
+	<bean name="/Error" class="mx.com.icsp.action.ErrorAction" singleton="false"/>
 		
 	
 	<!--  SERVICE  -->

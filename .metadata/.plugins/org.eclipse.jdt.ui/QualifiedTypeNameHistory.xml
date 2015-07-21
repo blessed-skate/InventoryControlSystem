@@ -31,5 +31,9 @@
 <fullyQualifiedTypeName name="mx.com.icsp.util.pdf.PdfReport"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang.ArrayUtils"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="mx.com.icsp.util.CreateXML"/>
+<fullyQualifiedTypeName name="mx.com.icsp.util.pdf.PdfAssetWriter"/>
 <fullyQualifiedTypeName name="org.apache.commons.lang.builder.ToStringBuilder"/>
 </qualifiedTypeNameHistroy>

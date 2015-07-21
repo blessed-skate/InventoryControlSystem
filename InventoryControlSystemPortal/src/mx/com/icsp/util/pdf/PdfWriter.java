@@ -84,7 +84,10 @@ public class PdfWriter {
 		for (int i = 0; i < rows.length; i++) {
 			Asset asset = new Asset();
 			ExcelCell[] cells = rows[i].getCells();
+			
 			asset.setIdLedger(cells[0].getLongValue());
+			asset.setTag(cells[0].getLongValue());
+			
 			asset.setSubclass(cells[1].getValue());
 			asset.setDescription(cells[2].getValue());
 			asset.setBrand(cells[3].getValue());
@@ -95,14 +98,15 @@ public class PdfWriter {
 			asset.setSupplier(cells[8].getValue());
 			asset.setDirectlyResponsible(cells[9].getValue());
 			asset.setGeneralManager(cells[10].getValue());
-			asset.setTag(cells[11].getLongValue());
-			asset.setBill(cells[12].getValue());
-			asset.setBillingDate(cells[13].getDateValue());
-			asset.setPrice(cells[14].getFloatValue());
-			asset.setUseDate(cells[15].getDateValue());
+			asset.setBill(cells[11].getValue());
+			asset.setBillingDate(cells[12].getDateValue());
+			asset.setPrice(cells[13].getFloatValue());
+			asset.setUseDate(cells[14].getDateValue());
+			asset.setPlace(cells[15].getValue());
 			asset.setLocation(cells[16].getValue());
 			asset.setGeneralLocation(cells[17].getValue());
 			asset.setSecure(cells[18].getValue());
+			asset.setStart(cells[19].getValue());
 			list.add(asset);
 		}
 		return list;
@@ -129,7 +133,7 @@ public class PdfWriter {
 
 			parameters.put("user", user);
 
-			InputStream inputStream = this.getClass().getResourceAsStream("report3.jrxml");
+			InputStream inputStream = this.getClass().getResourceAsStream("export.jrxml");
 			JasperReport report;
 			report = JasperCompileManager.compileReport(inputStream);
 

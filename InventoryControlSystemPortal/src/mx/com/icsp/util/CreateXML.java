@@ -25,7 +25,7 @@ public class CreateXML {
 			Constants.solutioNameCode, Constants.platform, Constants.tower,
 			this.getClass().getName());
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	protected static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	// public static void main(String[] args){
 	// String file = "a,b,c \n e,f,g";
@@ -105,7 +105,7 @@ public class CreateXML {
 						break;
 
 					case Constants.COLUMN_SERIAL_NUMBER:
-						asset.setSerialNumber(getCellStringValue(cell, "Sin numero de serie"));
+						asset.setSerialNumber(getCellStringValue(cell, "Sin número de serie"));
 						break;
 
 					case Constants.COLUMN_MATERIAL:
@@ -293,6 +293,9 @@ public class CreateXML {
 				break;
 			}
 		}
+		if(value != null && (value.trim().equals("") || value.trim().toUpperCase().equals("SN")))
+			value = null;
+		
 		return value;
 	}
 	
@@ -392,5 +395,56 @@ public class CreateXML {
 		
 		
 		return defaultDate;
+	}
+	
+	public static String buildGeneralGrid(Asset[] assetArray){
+		StringBuilder sb = new StringBuilder();
+		if(assetArray != null && assetArray.length > 0){
+			sb.append("<rows ").append("total_count=\"").append(assetArray.length).append("\" pos=\"0\"").append(">");
+			for(Asset asset : assetArray){
+				sb.append("<row id=\"" + asset.getId() + "\">");					
+				sb.append("<cell>").append(asset.getTag()).append("</cell>");
+				sb.append("<cell>").append(asset.getSubclass()).append("</cell>");
+				sb.append("<cell>").append(asset.getDescription() != null ? asset.getDescription() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getBrand()).append("</cell>");
+				sb.append("<cell>").append(asset.getModel()).append("</cell>");
+				sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
+				sb.append("<cell>").append(asset.getMaterial()).append("</cell>");
+				sb.append("<cell>").append(asset.getColor()).append("</cell>");
+				sb.append("<cell>").append(asset.getSupplier()).append("</cell>");
+				sb.append("<cell>").append(asset.getDirectlyResponsible() != null ? asset.getDirectlyResponsible() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getGeneralManager() != null ? asset.getGeneralManager() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getBill()).append("</cell>");
+				sb.append("<cell>").append(sdf.format(asset.getBillingDate())).append("</cell>");
+				sb.append("<cell>").append(asset.getPrice()).append("</cell>");
+				sb.append("<cell>").append(sdf.format(asset.getUseDate())).append("</cell>");
+				sb.append("<cell>").append(asset.getPlace() != null ? asset.getPlace() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getLocation() != null ? asset.getLocation() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getGeneralLocation() != null ? asset.getGeneralLocation() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getSecure() != null ? asset.getSecure() : "").append("</cell>");
+				sb.append("<cell>").append(asset.getStart() != null ? asset.getStart() : "").append("</cell>");
+				sb.append("</row>");
+			}
+			sb.append("</rows>");
+		} 
+		return sb.toString();
+	}
+	
+	public static String buildGuardGrid(Asset[] assetArray){
+		StringBuilder sb = new StringBuilder();
+		sb.append("<rows ").append("total_count=\"").append(assetArray.length).append("\" pos=\"0\"").append(">");
+		for (Asset asset : assetArray) {
+			sb.append("<row id=\"" + asset.getId() + "\">");
+			sb.append("<cell>").append(asset.getTag()).append("</cell>");
+			sb.append("<cell>").append(asset.getSubclass()).append("</cell>");
+			sb.append("<cell>").append(asset.getDescription()).append("</cell>");
+			sb.append("<cell>").append(asset.getBrand()).append("</cell>");
+			sb.append("<cell>").append(asset.getModel()).append("</cell>");
+			sb.append("<cell>").append(asset.getSerialNumber()).append("</cell>");
+			sb.append("<cell>").append(asset.getPrice()).append("</cell>");
+			sb.append("</row>");
+		}
+		sb.append("</rows>");
+		return sb.toString();
 	}
 }

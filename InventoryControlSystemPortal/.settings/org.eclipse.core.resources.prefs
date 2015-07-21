@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/struts-config.xml=UTF-8
-encoding//src/mx/com/icsp/util/pdf/report3.jrxml=UTF-8
+encoding//src/mx/com/icsp/util/pdf/barcode.jrxml=UTF-8
+encoding//src/mx/com/icsp/util/pdf/export.jrxml=UTF-8
 encoding//src/mx/com/icsp/util/pdf/test.jrxml=UTF-8

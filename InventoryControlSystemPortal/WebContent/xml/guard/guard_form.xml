@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items>
-	<item type="settings" position="label-left" labelWidth="120"
-		inputWidth="200" />
+	<item type="settings" position="label-left" labelWidth="150"
+		inputWidth="300" />
 	<item type="select" label="Responsable directo" name="directlyResponsible"
 		connector="myAsset.do?method=getDirectlyResponsible"/>
 	<item type="input" label="Centro de costos" name="costCenter"
@@ -10,5 +10,9 @@
 		maxLength="50" required="true" />
 	<item type="input" label="Departamento" name="department"
 		maxLength="50" required="true" />
-<!-- 	<item type="button" name="updateGuardGrid" value="Obtener activos" />	 -->
+	<item type="calendar" dateFormat="%d/%m/%Y" name="date" label="Fecha"/>
+	<item type="newcolumn" />
+	<item type="block" inputWidth="auto">
+		<item type="button" name="getAssetGuardPdf" value="Generar" width="100" />
+	</item>
 </items>

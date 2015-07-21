@@ -6,7 +6,7 @@ function importExcel(){
 	try{
 		import_grid.clearAll();
 		import_excel_window = dhxWin.createWindow({
-			id : "exportExcelWindow",
+			id : "importExcelWindow",
 			left : 0,
 			right : 0,
 			width : 500,
@@ -35,15 +35,18 @@ function importExcel(){
 				import_grid.loadXMLString(extra.param);
 				import_toolbar.setValue("file", file.name);
 				updateDHTMLXComponents();
+				dhxWin.window("importExcelWindow").close();
 			}else{
 				showResponseXmlAlertError("<b>Ocurrio un error cargar el archivo</b>: "+file.name + " " + (extra != null ? extra.info : ""));
 				updateDHTMLXComponents();
+				dhxWin.window("importExcelWindow").close();
 			}
 		});
 		
 		myVault.attachEvent("onUploadFail", function(file, extra){
 			showResponseXmlAlertError("<b>Ocurrio un error cargar el archivo</b>: "+file.name + " " + (extra != null ? extra.info : ""));
 			updateDHTMLXComponents();
+			dhxWin.window("importExcelWindow").close();
 		});
 		
 		myVault.attachEvent("onBeforeFileAdd", function(file){
@@ -73,30 +76,9 @@ function importExcel(){
 
 	}catch(err){
 		showResponseXmlAlertError(err.message);
+		dhxWin.window("importExcelWindow").close();
 	}
 }
-
-function saveFileImported(){
-	var textFileValue = import_toolbar.getValue("file");
-	if(textFileValue != null && textFileValue != ""){
-		var loader = window.dhx4.ajax.post("myImport.do", "method=saveFile&fileName="+textFileValue);
-		
-		console.log(loader.xmlDoc.responseXML);
-		alert(loader.xmlDoc.responseXML);
-		
-		var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
-		var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
-		if(responseCode == 0){
-			showResponseXmlAlert(responseMessage);
-			insert_form.clear();
-		}else{
-			showResponseXmlAlertError(responseMessage);
-		}
-	}else{
-		showResponseXmlAlertError("Por favor importe algun archivo");
-	} 
-}
-
 
 function setExcelHeader(){
 	alert(import_excel_toolbar.getItemState("header"));

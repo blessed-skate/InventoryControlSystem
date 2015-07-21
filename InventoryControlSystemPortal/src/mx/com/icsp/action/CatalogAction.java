@@ -48,18 +48,12 @@ public class CatalogAction extends DispatchAction {
 		String idLedger = request.getParameter("idLedger");
 		
 		Ledger[] ledgerArray = catalogService.getLedger(idTransaction, idLedger);
-		boolean sel = false;
 		
 		if(ledgerArray != null && ledgerArray.length > 0){
 			sb.append("<data>");
+			sb.append("<item value=\"").append(-1).append("\" label=\"").append("Seleccionar").append("\" selected=\"true\"/>");
 			for(Ledger ledger : ledgerArray){
-				if(!sel){
-					sb.append("<item value=\"").append(-1).append("\" label=\"").append("Seleccionar").append("\" selected=\"true\"/>");
-					sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\"/>");
-					sel = !sel;
-				}else{
-					sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\" />");
-				}
+				sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\" />");
 			}
 			sb.append("</data>");
 		}

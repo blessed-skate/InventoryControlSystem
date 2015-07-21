@@ -28,6 +28,10 @@ public interface AssetDao {
 	
 	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = (SELECT FCDIRECTLYRESPONSIBLE FROM cisdb.tacisasset WHERE FITAG = #{tag})";
 	
+	static final String SELASSETBYBILLINGDATE = " WHERE TAAT.FDBILLINGDATE between #{startDate} and #{endDate} order by TAAT.FDBILLINGDATE asc";
+	
+	static final String SELASSETBYUSEDATE = " WHERE TAAT.FDUSEDATE between #{startDate} and #{endDate} order by TAAT.FDUSEDATE asc";
+	
 	static final String ORDERBY = " ORDER BY FIIDASSET ASC";
 
 	static final String SELASSETBYIDTAG = " WHERE FITAG = #{tag}";
@@ -47,8 +51,7 @@ public interface AssetDao {
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
 			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place} WHERE FITAG=#{tag}";
 	
-	static final String SELDIRRESP = "select distinct(FCDIRECTLYRESPONSIBLE) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset"
-								   + " group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC;";
+	static final String SELDIRRESP = "select distinct(IF(FCDIRECTLYRESPONSIBLE is not null,FCDIRECTLYRESPONSIBLE, '')) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC";
 
 	@Select(SELASSET+ORDERBY)
 	@Options(statementType = StatementType.CALLABLE)
@@ -77,4 +80,12 @@ public interface AssetDao {
 	@Select(SELASSET+SELASSETBYDIRECTLYRESPONSIBLE)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract List<Asset> getDirectlyResponsibleAsset(Map<String, Object> params);
+
+	@Select(SELASSET+SELASSETBYBILLINGDATE)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getAssetByBillingDate(Map<String, Object> params);
+	
+	@Select(SELASSET+SELASSETBYUSEDATE)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getAssetByUseDate(Map<String, Object> params);
 }

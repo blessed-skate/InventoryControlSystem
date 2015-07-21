@@ -1,0 +1,121 @@
+package mx.com.icsp.util.pdf;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import mx.com.icsc.common.Asset;
+import mx.com.icsc.common.User;
+import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.util.Constants;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.log4j.Logger;
+
+public class PdfGuardWriter {
+	
+	private Logger log = Logger.getLogger(this.getClass());
+	private LogPattern logPattern = new LogPattern(Constants.domainCode,
+			Constants.solutioNameCode, Constants.platform, Constants.tower,
+			this.getClass().getName());
+	
+	private String fileName, userName = "";
+	private User user;
+	private JasperPrint print;
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+	public void generate(String idTransaction, HttpServletRequest request, HttpServletResponse response, Asset[] assetArray, String directlyResponsible, String costCenter, String area, String department, Date date){
+		
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		try {
+			user = request.getSession().getAttribute("user") != null ? (User)request.getSession().getAttribute("user") : new User();
+			if(user.getName() != null && !user.getName().equals("")){
+				userName = userName + user.getName();
+				if(user.getLastName() != null && !user.getLastName().equals(""))
+					userName = userName + user.getLastName();
+			}else{
+				userName = "Anonimo";
+			}
+			
+			fileName = "RESGUARDO ITSH " + directlyResponsible + "_" + sdf.format(date);
+			
+			List<Asset> list = Arrays.asList(assetArray);
+					
+			createReport(idTransaction, list, directlyResponsible, costCenter, area, department, date);
+			outputPdf(idTransaction, response, fileName);
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+	}
+	
+	public void createReport(String idTransaction, List<Asset> list, String directlyResponsible, String costCenter, String area, String department, Date date) {
+
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+
+		try {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+			
+			parameters.put("directlyResponsible", directlyResponsible);
+			parameters.put("costCenter", costCenter);
+			parameters.put("area", area);
+			parameters.put("department", department);
+			parameters.put("date", date);
+
+			InputStream inputStream = this.getClass().getResourceAsStream("guard.jrxml");
+			JasperReport report;
+			report = JasperCompileManager.compileReport(inputStream);
+
+			print = JasperFillManager.fillReport(report, parameters, dataSource);			
+		} catch (JRException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction,
+					"JRException", e.getMessage()), e);
+		}
+	}
+	
+	public void createGuard(String idTransaction, HttpServletResponse response,
+			String fileName, List<Asset> arrayList) {
+		
+	}
+	
+	private void outputPdf(String idTransaction, HttpServletResponse response, String fileName){
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		fileName = fileName.toLowerCase().contains(".pdf") ? fileName : fileName + ".pdf";
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-Disposition", "attachment; filename="+fileName);// set HTTP/1.0 no-cache
+		response.setHeader("Expires", "0");
+		
+		try {			
+			OutputStream outStream;
+			outStream = response.getOutputStream();
+
+			JasperExportManager.exportReportToPdfStream(print, outStream);
+
+		} catch (JRException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "JRException", e.getMessage()), e);
+		} catch (IOException e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
+		}
+	}
+}

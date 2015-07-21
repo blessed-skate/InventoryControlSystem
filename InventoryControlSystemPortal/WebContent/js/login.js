@@ -1,9 +1,8 @@
 var login_form;
-var dhxWins;
+
 function doOnLoad() {
-	dhxWins = new dhtmlXWindows();
-	dhxWins.attachViewportTo("winVP");
-	var login_window = dhxWins.createWindow("loginWindow", 0, 100, 400, 280);
+	dhxWin = new dhtmlXWindows();
+	var login_window = dhxWin.createWindow("loginWindow", 0, 100, 400, 280);
 	login_window.setText("Sistema de Control de Inventarios");
 	// login_window.setModal(true);
 	login_window.button('park').hide();

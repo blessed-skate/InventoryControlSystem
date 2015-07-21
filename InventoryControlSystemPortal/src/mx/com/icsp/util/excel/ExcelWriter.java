@@ -1,8 +1,6 @@
 package mx.com.icsp.util.excel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import mx.com.icsc.common.Asset;
 import mx.com.icsc.common.util.LogPattern;
+import mx.com.icsp.service.PropertyServiceImpl;
 import mx.com.icsp.util.Constants;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -24,6 +23,8 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
 
@@ -41,9 +42,10 @@ public class ExcelWriter{
 	private Sheet sheet;
 	private String fileName, extension;
 	private int header;
-	private CellStyle cellStyleDate, styleBorder;
+	private CellStyle styleDate, styleHeader, styleDecimalNumber;
 	private CreationHelper creationHelper;
 	private Font font;
+	int EXCEL_COLUMN_LENGTH = Integer.parseInt(PropertyServiceImpl.map.get("EXCEL_COLUMN_LENGTH").getValue());
 	
 	public void generate(String idTransaction, HttpServletRequest request, HttpServletResponse response, String xml){
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
@@ -79,46 +81,67 @@ public class ExcelWriter{
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		try {
+			log.info(logPattern.buildPattern(methodName, idTransaction, "assetArray", assetArray.length));
 			fileName = request.getParameter("fileName");
 			extension = request.getParameter("extension");
+			log.info(logPattern.buildPattern(methodName, idTransaction, "createExcel"));
 			createExcel();
+			log.info(logPattern.buildPattern(methodName, idTransaction, "createHeader"));
 			createHeader();
+			log.info(logPattern.buildPattern(methodName, idTransaction, "rowsPrint"));
 			rowsPrint(assetArray);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "autoSizeColumn"));
 			autoSizeColumn();
+			log.info(logPattern.buildPattern(methodName, idTransaction, "outputExcel"));
 			outputExcel(idTransaction, response, fileName+"."+extension);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "End outputExcel..."));
 		} catch (Exception e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 	}
 	
 	private void createExcel(){
-		wb = new HSSFWorkbook();
-		cellStyleDate = wb.createCellStyle();
-		styleBorder = wb.createCellStyle();
+		if(extension.endsWith("xlsx")){
+			wb = new SXSSFWorkbook();
+			((SXSSFWorkbook) wb).setCompressTempFiles(true);
+			sheet = (SXSSFSheet) wb.createSheet("Activo");
+			((SXSSFSheet) sheet).setRandomAccessWindowSize(500);
+		}
+		else{
+			wb = new HSSFWorkbook();
+			sheet = (Sheet) wb.createSheet("Activo");
+		}
+		
+		styleDate = wb.createCellStyle();
+		styleHeader = wb.createCellStyle();
+		styleDecimalNumber = wb.createCellStyle();
+		
 		font = wb.createFont();
 		
-		styleBorder.setBorderBottom(CellStyle.BORDER_MEDIUM_DASHED);
-		styleBorder.setBorderLeft(CellStyle.BORDER_THIN);
-		styleBorder.setBorderRight(CellStyle.BORDER_THIN);
-		styleBorder.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
+		styleHeader.setBorderBottom(CellStyle.BORDER_MEDIUM_DASHED);
+		styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
+		styleHeader.setBorderRight(CellStyle.BORDER_THIN);
+		styleHeader.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
 		
-		styleBorder.setTopBorderColor(IndexedColors.BLACK.getIndex());
-		styleBorder.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-		styleBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
-		styleBorder.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 		
-		styleBorder.setAlignment(CellStyle.ALIGN_CENTER);
-		styleBorder.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		styleHeader.setAlignment(CellStyle.ALIGN_CENTER);
+		styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		
-		styleBorder.setWrapText(true);
-		styleBorder.setFillBackgroundColor(HSSFColor.YELLOW.index);
+		styleHeader.setWrapText(true);
+		styleHeader.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+		styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		
 		font.setBold(true);
-		styleBorder.setFont(font);
+		styleHeader.setFont(font);
 		
 		creationHelper = wb.getCreationHelper();
-		cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/MM/yyyy"));
-		sheet = wb.createSheet("Activo");
+		styleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/MM/yyyy"));
+		
+		styleDecimalNumber.setDataFormat(creationHelper.createDataFormat().getFormat("$#,##0.00"));
 	}
 	
 	private void createHeader(){
@@ -146,7 +169,7 @@ public class ExcelWriter{
 		row.createCell(19).setCellValue("Incio");
 		
 		for(int i=0; i < row.getLastCellNum(); i++){
-			row.getCell(i).setCellStyle(styleBorder);
+			row.getCell(i).setCellStyle(styleHeader);
 		}
 	}
 	
@@ -170,15 +193,15 @@ public class ExcelWriter{
 			rowData.createCell(11).setCellValue(asset.getBill());
 			
 			Cell cellDate1 = rowData.createCell(12);
-			cellDate1.setCellStyle(cellStyleDate);
+			cellDate1.setCellStyle(styleDate);
 			cellDate1.setCellValue(asset.getBillingDate());
 			
 			Cell cellNumeric = rowData.createCell(13);
-			cellNumeric.setCellType(Cell.CELL_TYPE_NUMERIC);
+			cellNumeric.setCellStyle(styleDecimalNumber);
 			cellNumeric.setCellValue(asset.getPrice());
 			
 			Cell cellDate2 = rowData.createCell(14);
-			cellDate2.setCellStyle(cellStyleDate);
+			cellDate2.setCellStyle(styleDate);
 			cellDate2.setCellValue(asset.getUseDate());
 			
 			rowData.createCell(15).setCellValue(asset.getPlace());
@@ -204,7 +227,7 @@ public class ExcelWriter{
 	}
 	
 	private void autoSizeColumn(){
-		for(int i=0; i < sheet.getRow(0).getLastCellNum(); i++){
+		for(int i=0; i < EXCEL_COLUMN_LENGTH; i++){
 			sheet.autoSizeColumn(i);
 		}
 	}
@@ -213,19 +236,17 @@ public class ExcelWriter{
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/ms-excel");
+		if(extension.endsWith("xlsx"))
+			response.setContentType("application/vnd.ms-excel");
+		else
+			response.setContentType("application/x-ms-excel"); // or application/x-ms-excel"
+		
 		response.setHeader("Expires", "0");
 		response.setHeader("Content-Disposition", "attachment; filename="+fileName);// set HTTP/1.0 no-cache
 
-		OutputStream out;
-
 		try {
-			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
-			wb.write(outByteStream);
-			byte[] outArray = outByteStream.toByteArray();
-			
-			out = response.getOutputStream();
-			out.write(outArray);
+			wb.write(response.getOutputStream());
+			wb.close();
 		} catch (IOException e) {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "IOException", e.getMessage()), e);
 		}

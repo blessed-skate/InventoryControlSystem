@@ -24,4 +24,8 @@
 	<item type="input" label="Ubicacion" name="generalLocation" maxLength="100"/>
 	<item type="input" label="Seguro" name="secure" maxLength="100"/>
 	<item type="input" label="Inicio" name="start" maxLength="100"/>
+	<item type="newcolumn" />
+	<item type="block" inputWidth="auto">
+		<item type="button" name="getAssetReport" value="Reporte" width="70"/>
+	</item>
 </items>

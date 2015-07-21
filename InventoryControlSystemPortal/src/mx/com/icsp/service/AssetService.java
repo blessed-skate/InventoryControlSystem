@@ -1,5 +1,7 @@
 package mx.com.icsp.service;
 
+import java.util.Date;
+
 import mx.com.icsc.common.Asset;
 import mx.com.icsc.common.AssetResponse;
 
@@ -13,4 +15,8 @@ public interface AssetService {
 	public AssetResponse insertAsset(String idTransaction, Asset[] assetArray);
 	public Asset[] getDirectlyResponsible(String idTransaction);
 	public Asset[] getDirectlyResponsibleAsset(String idTransaction, String tag);
+	public Asset[] getAssetByBillingDate(String idTransaction,
+			Date startDate, Date endDate);
+	public Asset[] getAssetByUseDate(String idTransaction,
+			Date startDate, Date endDate);
 }

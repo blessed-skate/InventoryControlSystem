@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="404" key="DIALOG_X_ORIGIN"/>
+		<item value="247" key="DIALOG_Y_ORIGIN"/>
+	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="id" key="selection"/>
+		<item value="Float" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="id"/>
-			<item value="fileName"/>
-			<item value="tag"/>
-			<item value="image"/>
-			<item value="cantidad"/>
-			<item value="print"/>
-			<item value="deployment"/>
-			<item value="ojdbc"/>
+			<item value="float"/>
+			<item value="place"/>
+			<item value="param"/>
+			<item value="gerParameter"/>
+			<item value="ger"/>
+			<item value="getAssetByTag"/>
+			<item value="price"/>
+			<item value="bill"/>
 		</list>
 		<list key="replacehistory">
+			<item value="getParameter"/>
+			<item value="get"/>
 			<item value=""/>
 			<item value="import_excel_window"/>
 			<item value="headerDiv"/>
 			<item value="header_layout"/>
 			<item value="login_form"/>
 			<item value="login_window"/>
-			<item value="windowLogin"/>
-			<item value="home_tabbar"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

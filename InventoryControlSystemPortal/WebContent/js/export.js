@@ -37,6 +37,7 @@ function getAssetGridPdf(){
 	var fileName = export_pdf_form.getItemValue("fileName");
 	if(fileName != null && fileName != ""){
 		export_grid.toExcel("myReport.do?method=getAssetGridPdf&fileName="+fileName);
+		dhxWin.window("exportPdfWindow").close();
 	}else{
 		showResponseXmlAlertError("Favor de ingresar un nombre de archivo valido");
 	}
@@ -79,16 +80,14 @@ function getAssetGridExcel(){
 		var header = export_excel_form.getItemValue("header");
 		var extension = export_excel_form.getItemValue("extension");
 		export_grid.toExcel("myReport.do?method=getAssetGridExcel&header="+header+"&fileName="+fileName+"&extension="+extension);
+		dhxWin.window("exportExcelWindow").close();
 	}else{
 		showResponseXmlAlertError("Favor de ingresar un nombre de archivo valido");
 	}
 }
 
 function exportDb(){
-	var dhxWins2 = new dhtmlXWindows();
-	dhxWins2.attachViewportTo("mainDiv");
-
-	var export_db_window = dhxWins2.createWindow({
+	var export_db_window = dhxWin.createWindow({
 		id : "exportDbWindow",
 		left : 0,
 		right : 0,
@@ -120,8 +119,8 @@ function getAssetDbExcel(){
 	export_db_form.validate();
 	var fileName = export_db_form.getItemValue("fileName");
 	if(fileName != null && fileName != ""){
-		var extension = export_db_form.getItemValue("extension");
-		export_grid.toExcel("myReport.do?method=getAssetDbExcel&fileName="+fileName+"&extension="+extension);
+		downloadFile("myReport.do?method=getAssetDbExcel", export_db_form.getFormData());
+		dhxWin.window("exportDbWindow").close();
 	}else{
 		showResponseXmlAlertError("Favor de ingresar un nombre de archivo valido");
 	}
@@ -131,4 +130,34 @@ function refreshExportGrid(){
 	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
 		showResponseXmlAlert("La tabla se ha refrescado...");
 	});
+}
+
+function doQueryFormAcept(){
+	query_form.send("myReport.do?method=getAssetGridFilter","post",function(loader, response){
+		try{
+			if(loader.xmlDoc.responseXML.childNodes[0].childNodes != null && loader.xmlDoc.responseXML.childNodes[0].nodeName == "assetResponse"){
+				export_grid.clearAll();
+				var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+				var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
+				if(responseCode == 0){
+					showResponseXmlAlert(responseMessage);
+				}else{
+					showResponseXmlAlertError(responseMessage);
+				}
+			}else if(loader.xmlDoc.responseXML.childNodes[0].childNodes != null && loader.xmlDoc.responseXML.childNodes[0].nodeName == "rows"){
+				export_grid.clearAll();
+				export_grid.parse(loader.xmlDoc.responseXML);
+			}else{
+				export_grid.clearAll();
+				showResponseXmlAlertError("Ocurrio un error al realizar la consulta");
+			}
+		}catch(err){
+			export_grid.clearAll();
+			showResponseXmlAlertError(err.message);
+		}
+	});
+}
+
+function getAssetReport(){
+	downloadFile("myReport.do?method=getAssetReport", search_form.getFormData());
 }

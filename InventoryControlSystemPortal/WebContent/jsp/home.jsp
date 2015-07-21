@@ -158,14 +158,12 @@ body{
 		});
 		
 		export_grid = query_layout.cells("b").attachGrid();
-// 		export_grid.enableSmartRendering(true);
 		export_grid.loadXML("xml/grid.xml");
 		export_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 		export_grid.attachHeader("#text_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan,#numeric_filter,#rspan,#rspan,#rspan,#rspan,#rspan,#rspan");
  		export_grid.setNumberFormat("0, 000.00",14,".",",");
  		export_grid.setDateFormat("%d/%m/%Y");
- 		export_grid.setPagingSkin("bricks");
-		export_grid.init();
+ 		export_grid.init();
 		export_grid.enableAutoHeight();
 		export_grid.attachFooter(" , , , , , , , , , , , ,Total,#stat_total, , , , , , ");
 		export_grid.attachFooter(" , , , , , , , , , , , ,Maximo,#stat_max, , , , , , ");
@@ -174,6 +172,7 @@ body{
 		export_grid.attachFooter(" , , , , , , , , , , , ,Registros,#stat_count, , , , , , ");
 		
 		export_grid.loadXML("myAsset.do?method=getAsset");
+		export_grid.enableSmartRendering(true);
 		
 		//Reports
 		import_toolbar = home_tabbar.tabs("a3").attachToolbar({
@@ -182,7 +181,7 @@ body{
 		});
 		
 		import_grid = home_tabbar.tabs("a3").attachGrid();
-// 		import_grid.enableSmartRendering(true);
+		import_grid.enableSmartRendering(true);
 		import_grid.loadXML("xml/grid.xml");
 		import_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 		export_grid.setNumberFormat("0, 000.00",14,".",",");
@@ -192,30 +191,23 @@ body{
 		
 		
 		//Resguardos
-		guard_toolbar = home_tabbar.tabs("a4").attachToolbar({
-			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/import/import_toolbar.xml"
-		});
-		
 		guard_layout = home_tabbar.tabs("a4").attachLayout({
 		    pattern: "2E",
 		    cells: [
-		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [true, true], height: 180}
+		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [true, true], height: 200}
 		        ,{id: "b", text: "Activos", collapse: false, fixSize: [true, true]}
 		    ]
 		});
 		
 		guard_form = guard_layout.cells("a").attachForm();
 		guard_form.load("xml/guard/guard_form.xml");
-// 		guard_form.attachEvent("onButtonClick", function(name){
-// 			window[name]();
-// 		});
+		guard_form.attachEvent("onButtonClick", function(name){
+			window[name]();
+		});
 		
 		guard_form.attachEvent("onInputChange", function(name, value, form){
 			if(name == "directlyResponsible"){
 				updateGuardGrid(value);
-		    }else if(name == ""){
-		    	
 		    }
 		});
 		
