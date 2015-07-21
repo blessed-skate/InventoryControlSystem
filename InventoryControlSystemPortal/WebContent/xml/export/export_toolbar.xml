@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item id="export" type="buttonSelect" img="new.gif" imgdis="new_dis.gif"
+		text="Exportar">
+		<item type="button" id="export_excel" text="Excel" img="stylesheet.gif"
+			action="exportExcel" />
+		<item type="button" id="export_pdf" text="Pdf" img="ico_pdf_18.gif"
+			action="exportPdf" />
+	</item>
+	<item id="sep1" type="separator" />
+	<item type="button" id="refresh" text="Actualizar" img="redo.gif" 
+			action="refreshExportGrid" />
+	<item id="sep2" type="separator" />
+	<item type="button" id="exportDb" text="Exportar Base de datos" img="stylesheet.gif"
+			action="exportDb" />
+<!-- 	<item id="new" type="buttonSelect" img="open.gif" imgdis="open_dis.gif" -->
+<!-- 		text="Importar" action="importDocumentSelect"> -->
+<!-- 		<item type="button" id="import_xml" text="XML" img="database.gif" -->
+<!-- 			action="importNewDocument" /> -->
+<!-- 		<item type="button" id="import_excel" text="Excel" img="stylesheet.gif" -->
+<!-- 			action="importNewDocument" /> -->
+<!-- 		<item type="button" id="import_text" text="Texto delimitado" img="text_document.gif" -->
+<!-- 			action="importNewDocument" /> -->
+<!-- 	</item> -->
+</toolbar>

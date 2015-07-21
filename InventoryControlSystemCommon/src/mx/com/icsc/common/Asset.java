@@ -24,11 +24,12 @@ public class Asset {
 	private String location;
 	private Date useDate;
 	private float price;
+	private String place;
 	private String generalLocation;
 	private String secure;
+	private String start;
 	private Date registerDate;
 	private Date lastUpdate;
-	
 	public long getId() {
 		return id;
 	}
@@ -143,6 +144,12 @@ public class Asset {
 	public void setPrice(float price) {
 		this.price = price;
 	}
+	public String getPlace() {
+		return place;
+	}
+	public void setPlace(String place) {
+		this.place = place;
+	}
 	public String getGeneralLocation() {
 		return generalLocation;
 	}
@@ -155,6 +162,12 @@ public class Asset {
 	public void setSecure(String secure) {
 		this.secure = secure;
 	}
+	public String getStart() {
+		return start;
+	}
+	public void setStart(String start) {
+		this.start = start;
+	}
 	public Date getRegisterDate() {
 		return registerDate;
 	}
@@ -166,5 +179,5 @@ public class Asset {
 	}
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
-	}
+	}	
 }

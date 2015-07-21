@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="130" inputWidth="200" />
+	<item type="input" label="Nombre del archivo" name="fileName"
+		maxLength="50" required="true" />
+	<item type="button" name="getAssetGridPdf" value="Exportar"
+		width="100" />
+</items>
