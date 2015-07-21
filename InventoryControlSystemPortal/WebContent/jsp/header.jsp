@@ -14,19 +14,20 @@
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
 <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script>
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxGrid/codebase/ext/dhtmlxgrid_srnd.js"></script>
+<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 
-<script type="text/javascript" src="js/asset.js"></script>
-<script type="text/javascript" src="js/query.js"></script>
-<script type="text/javascript" src="js/report.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript" src="js/asset.js"></script>
+<script type="text/javascript" src="js/export.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
+<script type="text/javascript" src="js/guard.js"></script>
 <script type="text/javascript" src="js/menu.js"></script>
 <script type="text/javascript" src="js/catUser.js"></script>
 <script type="text/javascript" src="js/catProperty.js"></script>
 <script type="text/javascript" src="js/catRole.js"></script>
 <script type="text/javascript" src="js/catLedger.js"></script>
-
-<script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />
@@ -95,15 +96,15 @@ h2{
 
 </head>
 <body>
-	<div id="headerDiv">
-		<h2>Instituto tecnologico de Huaichinango, Pue.</h2>
-		<h3>Sistema para el control de inventarios.</h3>
-		<logic:present name="user">
-			<h4 align="right">
-				Bienvenido
-				<bean:write name="user" property="name" />
-			</h4>
-		</logic:present>
-	</div>
+<!-- 	<div id="headerDiv"> -->
+<!-- 		<h2>Instituto tecnologico de Huaichinango, Pue.</h2> -->
+<!-- 		<h3>Sistema para el control de inventarios.</h3> -->
+<%-- 		<logic:present name="user"> --%>
+<!-- 			<h4 align="right"> -->
+<!-- 				Bienvenido -->
+<%-- 				<bean:write name="user" property="name" /> --%>
+<!-- 			</h4> -->
+<%-- 		</logic:present> --%>
+<!-- 	</div> -->
 </body>
 </html>

@@ -17,7 +17,7 @@ public interface PropertyDao {
 	// + "#{username, mode=IN, jdbcType=VARCHAR}"
 	// + ")}";
 
-	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value' from cisdb.CTCISPROPERTY";
+	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value', FCDEFAULT as 'defaultValue' from CISDB.CTCISPROPERTY";
 	
 	static final String INSPROPERTY = "INSERT INTO cisdb.CTCISPROPERTY (FCIDPROPERTY, FCVALUE) VALUES (#{key},#{value})";
 

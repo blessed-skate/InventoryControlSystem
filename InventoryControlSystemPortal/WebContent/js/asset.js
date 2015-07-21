@@ -1,11 +1,12 @@
-function doInsertFormSave(){
+function saveForm(){
 	insert_form.send("myAsset.do?method=insertAsset","post",function(loader, response){
 		try{
-			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
-			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
 			if(responseCode == 0){
 				showResponseXmlAlert(responseMessage);
-				insert_form.clear();
+				clearInsertForm();
+				updateDHTMLXComponents();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}
@@ -27,12 +28,12 @@ function fillTag(value){
 	insert_form.setItemValue("tag", insert_form.getItemValue("idLedger")+value);
 }
 
-function doInsertFormValidate(){
+function validateForm(){
 	insert_form.validate();
 }
 
-function doInsertFormCancel(){
-	showConfirm("Cancelar","¿Desea cancelar la operacion, se perdera la informacion capturada?", clearInsertForm);
+function cancelForm(){
+	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearInsertForm);
 }
 
 function clearInsertForm(){
@@ -42,16 +43,16 @@ function clearInsertForm(){
 }
 
 
-function doOnNewItem(){
+function newAsset(){
 	insert_form.unlock();
 	insert_form.clear();
 	insert_form.setItemFocus("idLedger");
 }
 
-function doOnQueryItem(){
+function searchAsset(){
 	search_form.clear();
 	search_form.lock();
-	search_form.load("myAsset.do?method=getAssetById&idAsset="+search_toolbar.getValue("query_item_input"), function(){
+	search_form.load("myAsset.do?method=getAssetByTag&tag="+search_toolbar.getValue("seacrh_item_input"), function(){
 		var idLedger = search_form.getItemValue("idLedger");
 		if(idLedger != null && idLedger != ""){
 			showResponseXmlAlert("Se abrio el registro");
@@ -61,7 +62,7 @@ function doOnQueryItem(){
 	});
 }
 
-function doOnUpdateItem(){
+function enabledAssetForm(){
 	var idLedger = search_form.getItemValue("idLedger");
 	if(idLedger != null && idLedger != ""){
 		search_form.unlock();
@@ -69,6 +70,25 @@ function doOnUpdateItem(){
 	}else{
 		showResponseXmlAlertError("No se encontro informacion con los datos ingresados");
 	}
+}
+
+function updateAsset(){
+	search_form.send("myAsset.do?method=updateAsset","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
+			if(responseCode == 0){
+				search_form.clear();
+				search_form.lock();
+				updateDHTMLXComponents();
+				showResponseXmlAlert(responseMessage);
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
 }
 
 //dhtmlxError.catchError("load", function(a, b, data) {

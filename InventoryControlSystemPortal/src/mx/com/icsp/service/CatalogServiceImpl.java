@@ -26,49 +26,6 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public Material[] getMaterial(String idTransaction) {
-		String methodName = new Throwable().getStackTrace()[0].getMethodName();
-		
-		Material[] materialArray = null;
-		try {
-			List<Material> list = catalogDao.getMaterial();
-			materialArray = list.toArray(new Material[list.size()]);
-		} catch (Exception e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-		}
-		return materialArray;
-	}
-
-	@Override
-	public Color[] getColor(String idTransaction) {
-		String methodName = new Throwable().getStackTrace()[0].getMethodName();
-		
-		Color[] colorArray = null;
-		try {
-			List<Color> list = catalogDao.getColor();
-			colorArray = list.toArray(new Color[list.size()]);
-		} catch (Exception e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-		}
-		return colorArray;
-	}
-
-	@Override
-	public AssetType[] getAssetType(String idTransaction, String idLedger) {
-		String methodName = new Throwable().getStackTrace()[0].getMethodName();
-		
-		AssetType[] assetTypeArray = null;
-		try {
-			List<AssetType> list = catalogDao.getAssetType(idLedger);
-			assetTypeArray = list.toArray(new AssetType[list.size()]);
-		} catch (Exception e) {
-			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
-		}
-
-		return assetTypeArray;
-	}
-
-	@Override
 	public Ledger[] getLedger(String idTransaction, String idLedger) {
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 		

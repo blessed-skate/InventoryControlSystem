@@ -30,18 +30,14 @@
 		<property name="defaultTargetUrl" value="/myHome.do" />
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
-	
-	<bean name="/Error" class="mx.com.icsp.action.ErrorAction">
-<!-- 		<property name="authenticationProcessingFilter" ref="authenticationProcessingFilter"/> -->
-	</bean>
 
 	<bean id="accessDeniedHandlerImpl" class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
-<!-- 		<property name="errorPage" value="/Error.do?method=errorProcess&amp;code=2" /> -->
+		<property name="errorPage" value="/ErrorAsync.do?method=fail&amp;code=2" />
 	</bean>
 
 	<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"
 		id="authenticationEntryPoint">
-		<property name="loginFormUrl" value="/Error.do?method=errorProcess&amp;code=3" />
+		<property name="loginFormUrl" value="/ErrorAsync.do?method=fail&amp;code=3" />
 		<property name="forceHttps" value="false" />
 		<property name="serverSideRedirect" value="true" />
 	</bean>
@@ -67,7 +63,7 @@
 
 	<bean class="org.acegisecurity.concurrent.ConcurrentSessionFilter"
 		id="concurrentSessionFilter">
-		<property name="expiredUrl" value="/Error.do?method=errorProcess&amp;code=5" />
+		<property name="expiredUrl" value="/ErrorAsync.do?method=fail&amp;code=5" />
 		<property name="sessionRegistry">
 			<ref local="sessionRegistry" />
 		</property>		 

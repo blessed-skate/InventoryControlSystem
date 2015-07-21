@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="/WEB-INF/tags-conf/struts-html.tld" prefix="html"%>
 <%@taglib uri="/WEB-INF/tags-conf/struts-logic.tld" prefix="logic"%>
+<jsp:include page="header.jsp"></jsp:include>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,51 +16,24 @@
 
 <link rel="icon" href="imgs/icon.png" type="image/png" />
 
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script>
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script>
+<!-- <script type="text/javascript" -->
+<!-- 	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcommon.js"></script> -->
+<!-- <script type="text/javascript" -->
+<!-- 	src="js/dhtmlx/sources/dhtmlxCommon/codebase/dhtmlxcontainer.js"></script> -->
+	
+<!-- <script type="text/javascript" -->
+<!-- 	src="js/dhtmlx/sources/dhtmlxForm/codebase/dhtmlxform.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" /> -->
 
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxForm/codebase/dhtmlxform.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
+<!-- <script type="text/javascript" -->
+<!-- 	src="js/dhtmlx/sources/dhtmlxWindows/codebase/dhtmlxwindows.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" /> -->
 
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxWindows/codebase/dhtmlxwindows.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />
-
-<script>
-	var login_form;
-	var dhxWins;
-	function doOnLoad() {
-		dhxWins = new dhtmlXWindows();
-		dhxWins.attachViewportTo("winVP");
-		var login_window = dhxWins.createWindow("loginWindow", 0, 100, 400, 280);
-		login_window.setText("Sistema de Control de Inventarios");
-// 		login_window.setModal(true);
-		login_window.button('park').hide();
-		login_window.button('minmax').hide();
-		login_window.button('close').hide();
-		login_window.centerOnScreen();
-
-		login_form = login_window.attachForm();
-		login_form.loadStruct("xml/login_form.xml");
-
-		login_form.attachEvent("onButtonClick", function(id) {
-			if (id == "login") {
-				document.getElementById("j_username").value = login_form
-						.getItemValue("username");
-				document.getElementById("j_password").value = login_form
-						.getItemValue("password");
-// 				alert("Set " + document.getElementById("j_username").value
-// 						+ document.getElementById("j_password").value);
-				login_form_hidden.submit();
-			}
-		});
-	}
-</script>
+<!-- <script type="text/javascript" src="js/util.js"></script>		 -->
+<!-- <script type="text/javascript" src="js/login.js"></script> -->
+	
 <style>
 body {
 	background-color: #deefff;
@@ -78,5 +52,8 @@ div#winVP {
 		<input name="j_username" type="hidden" id="j_username" /> <input
 			name="j_password" type="hidden" id="j_password" />
 	</form>
+	<div>Error:
+		<html:errors name="ERROR_MESSAGE" />
+	</div>
 </body>
 </html>

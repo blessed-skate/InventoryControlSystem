@@ -39,117 +39,28 @@ public class CatalogAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response){
 		
 		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
 		StringBuilder sb = new StringBuilder();
 		
 		String idLedger = request.getParameter("idLedger");
 		
 		Ledger[] ledgerArray = catalogService.getLedger(idTransaction, idLedger);
-		boolean sel = false;
 		
 		if(ledgerArray != null && ledgerArray.length > 0){
 			sb.append("<data>");
+			sb.append("<item value=\"").append(-1).append("\" label=\"").append("Seleccionar").append("\" selected=\"true\"/>");
 			for(Ledger ledger : ledgerArray){
-				if(!sel){
-					sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\" selected=\"true\"/>");
-					sel = !sel;
-				}else{
-					sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\" />");
-				}
+				sb.append("<item value=\"").append(ledger.getIdSubclass()).append("\" label=\"").append(ledger.getDescription()).append("\" />");
 			}
 			sb.append("</data>");
 		}
 		
 		setResponse(request, response, sb);
 	}
-	
-	public void getMaterial(ActionMapping arg0, ActionForm arg1,
-			HttpServletRequest request, HttpServletResponse response){
 		
-		String idTransaction = request.getSession().getId();
-		StringBuilder sb = new StringBuilder();
-		
-		Material[] materialArray = catalogService.getMaterial(idTransaction);
-		boolean sel = false;
-		
-		if(materialArray != null && materialArray.length > 0){
-			sb.append("<data>");
-			for(Material material : materialArray){
-				if(!sel){
-					sb.append("<item value=\"").append(material.getId()).append("\" label=\"").append(material.getDescription()).append("\" selected=\"true\"/>");
-					sel = !sel;
-				}else{
-					sb.append("<item value=\"").append(material.getId()).append("\" label=\"").append(material.getDescription()).append("\" />");
-				}
-			}
-			sb.append("</data>");
-		}else{
-			sb.append("<data>");
-			sb.append("<item value=\"").append(1).append("\" label=\"").append("OTRO").append("\" selected=\"true\"/>");
-			sb.append("</data>");
-		}
-		
-		setResponse(request, response, sb);
-	}
-	
-	public void getAssetType(ActionMapping arg0, ActionForm arg1,
-			HttpServletRequest request, HttpServletResponse response){
-		
-		String idTransaction = request.getSession().getId();
-		StringBuilder sb = new StringBuilder();
-		
-		String idLedger = request.getParameter("idLedger");
-		
-		AssetType[] assetTypeArray = catalogService.getAssetType(idTransaction, idLedger);
-		boolean sel = false;
-		
-		if(assetTypeArray != null && assetTypeArray.length > 0){
-			sb.append("<data>");
-			for(AssetType assetType : assetTypeArray){
-				if(!sel){
-					sb.append("<item value=\"").append(assetType.getSubclass()).append("\" label=\"").append(assetType.getDescription()).append("\" selected=\"true\"/>");
-					sel = !sel;
-				}else{
-					sb.append("<item value=\"").append(assetType.getSubclass()).append("\" label=\"").append(assetType.getDescription()).append("\" />");
-				}
-			}
-			sb.append("</data>");
-		}else{
-//			sb.append("<data>");
-//			sb.append("<item value=\"").append(1).append("\" label=\"").append("OTRO").append("\" selected=\"true\"/>");
-//			sb.append("</data>");
-		}
-		
-		setResponse(request, response, sb);
-	}
-	
-	public void getColor(ActionMapping arg0, ActionForm arg1,
-			HttpServletRequest request, HttpServletResponse response){
-		
-		String idTransaction = request.getSession().getId();
-		StringBuilder sb = new StringBuilder();
-		
-		Color[] colorArray = catalogService.getColor(idTransaction);
-		boolean sel = false;
-		
-		if(colorArray != null && colorArray.length > 0){
-			sb.append("<data>");
-			for(Color color : colorArray){
-				if(!sel){
-					sb.append("<item value=\"").append(color.getId()).append("\" label=\"").append(color.getDescription()).append("\" selected=\"true\"/>");
-					sel = !sel;
-				}else{
-					sb.append("<item value=\"").append(color.getId()).append("\" label=\"").append(color.getDescription()).append("\" />");
-				}
-			}
-			sb.append("</data>");
-		}else{
-			sb.append("<data>");
-			sb.append("<item value=\"").append(1).append("\" label=\"").append("OTRO").append("\" selected=\"true\"/>");
-			sb.append("</data>");
-		}
-		setResponse(request, response, sb);
-	}
-	
 	public void setResponse(HttpServletRequest request, HttpServletResponse response, StringBuilder sb){
 		String idTransaction = request.getSession().getId();
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
