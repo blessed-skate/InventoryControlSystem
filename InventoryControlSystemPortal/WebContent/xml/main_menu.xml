@@ -6,7 +6,7 @@
 <!--         </item> -->
         <item id="catalogs" text="Catalogos">
         	<item id="user" text="Usuarios"/>
-            <item id="material" text="Material"/>
+            <item id="ledger" text="Material"/>
             <item id="property" text="Propiedades"/>
             <item id="role" text="Roles"/>
         </item>

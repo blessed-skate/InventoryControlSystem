@@ -57,7 +57,7 @@ body {
 	
 	// Catalogos...
 	var dhxWinsUser, cat_user_window, cat_user_layout, cat_user_form, cat_user_grid, cat_user_toolbar;
-// 	var dhxWinsMaterial, cat_material_window, cat_material_layout, cat_material_form, cat_material_grid, cat_material_toolbar;
+	var dhxWinsLedger, cat_ledger_window, cat_ledger_layout, cat_ledger_form, cat_ledger_grid, cat_ledger_toolbar;
 	var dhxWinsProperty, cat_property_window, cat_property_layout, cat_property_form, cat_property_grid, cat_property_toolbar;
 	var dhxWinsRole, cat_role_window, cat_role_layout, cat_role_form, cat_role_grid, cat_role_toolbar;
 	
@@ -86,8 +86,8 @@ body {
 			case "user":
 				catUsers();
 				break;
-			case "material":
-// 				catMaterial();
+			case "ledger":
+				catLedger();
 				break;
 			case "property":
 				catProperty();
@@ -246,7 +246,6 @@ body {
  		guard_grid.setDateFormat("%d/%m/%Y");
 		guard_grid.init();
 		guard_grid.enableAutoHeight();
-		
 		guard_grid.loadXML("myAsset.do?method=getAsset");
 	}
 </script>

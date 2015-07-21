@@ -24,9 +24,13 @@ public interface UserDao {
 			+ "fclastname lastname, fcsex sex, fdbirth birth, fdregisterdate registerdate, fdlastupdate lastupdate "
 			+ "FROM cisdb.TACISUSER" ;
 
-	static final String INSUSER = "INSERT INTO cisdb.TACISUSER (FCUSERNAME, FCPASSWORD, FCAUTHORITY, FCENABLED, FCNAME, FCLASTNAME, FDBIRTH)"
-			+ "VALUES (#{username},#{password},#{authority},#{enabled},#{name},#{lastName},#{birth})";
+	static final String INSUSER = "INSERT INTO cisdb.TACISUSER (FCUSERNAME, FCPASSWORD, FCAUTHORITY, FCENABLED, FCNAME, FCLASTNAME, FCSEX, FDBIRTH)"
+			+ "VALUES (#{username},#{password},#{authority},#{enabled},#{name},#{lastName},#{sex},#{birth})";
 	
+	static final String UPDUSER = "UPDATE cisdb.TACISUSER SET FCUSERNAME=#{username}, FCPASSWORD=#{password}, FCAUTHORITY=#{authority}, FCENABLED=#{enabled}, FCNAME=#{name}, FCLASTNAME=#{lastName},"
+			+ " FCSEX=#{sex}, FDBIRTH=#{birth} WHERE FIIDUSER=#{id}";
+			
+	static final String DELUSER = "DELETE FROM cisdb.TACISUSER WHERE FIIDUSER=#{idUser}";
 	
 	@Select(SPCISSELUSER)
 	@Options(statementType = StatementType.CALLABLE)
@@ -39,5 +43,13 @@ public interface UserDao {
 	@Insert(INSUSER)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract int insertUser(User user);
+
+	@Insert(UPDUSER)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract int updateUser(User user);
+
+	@Insert(DELUSER)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract int deleteUser(int idUser);
 
 }

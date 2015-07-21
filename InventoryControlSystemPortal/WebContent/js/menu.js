@@ -2,9 +2,9 @@ function catUsers(){
 	doCreateCatUserWindow();
 }
 
-//function catMaterial(){
-//	doCreateCatMaterial();
-//}
+function catLedger(){
+	doCreateCatLedger();
+}
 
 function catProperty(){
 	doCreateCatProperty();

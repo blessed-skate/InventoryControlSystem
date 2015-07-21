@@ -24,6 +24,7 @@
 <script type="text/javascript" src="js/catUser.js"></script>
 <script type="text/javascript" src="js/catProperty.js"></script>
 <script type="text/javascript" src="js/catRole.js"></script>
+<script type="text/javascript" src="js/catLedger.js"></script>
 
 <script type="text/javascript" src="js/dhtmlx/sources/dhtmlxVault/codebase/dhtmlxvault.js"></script>
 
