@@ -65,4 +65,30 @@ public class UserServiceImpl implements UserService{
 		return reponseCode;
 	}
 
+	@Override
+	public int updateUser(String idTransaction, User user) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();		
+		int reponseCode = -1;
+		try{
+			reponseCode = userDao.updateUser(user);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
+	}
+
+	@Override
+	public int deleteUser(String idTransaction, int idUser) {
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();		
+		int reponseCode = -1;
+		try{
+			reponseCode = userDao.deleteUser(idUser);
+			log.info(logPattern.buildPattern(methodName, idTransaction, "reponseCode", String.valueOf(reponseCode)));
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return reponseCode;
+	}
+
 }

@@ -49,7 +49,7 @@ public interface AssetDao {
 	static final String UPDASSET = "UPDATE CISDB.TACISASSET SET FCDESCRIPTION=#{description},FCBRAND=#{brand},FCMODEL=#{model},"
 			+ "FCSERIALNUMBER=#{serialNumber}, FCMATERIAL=#{material}, FCCOLOR=#{color},FCSUPPLIER=#{supplier}, FCGENERALMANAGER=#{generalManager},"
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
-			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place} WHERE FITAG=#{tag}";
+			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place},FDLASTUPDATE=CURRENT_TIMESTAMP WHERE FITAG=#{tag}";
 	
 	static final String SELDIRRESP = "select distinct(IF(FCDIRECTLYRESPONSIBLE is not null,FCDIRECTLYRESPONSIBLE, '')) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC";
 

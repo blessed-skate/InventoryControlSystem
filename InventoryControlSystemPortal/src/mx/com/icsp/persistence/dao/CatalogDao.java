@@ -2,10 +2,7 @@ package mx.com.icsp.persistence.dao;
 
 import java.util.List;
 
-import mx.com.icsc.common.AssetType;
-import mx.com.icsc.common.Color;
 import mx.com.icsc.common.Ledger;
-import mx.com.icsc.common.Material;
 
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;

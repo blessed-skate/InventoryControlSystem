@@ -1,0 +1,256 @@
+var adminServiceWindow,adminServiceWindow2,adminServiceLayout, menuUser;
+function doCreateCatUserWindow(){
+	dhxWinsUser = new dhtmlXWindows();
+	dhxWinsUser.attachViewportTo("mainDiv");
+
+	cat_user_window = dhxWinsUser.createWindow({
+		id : "catUserWindow",
+		left : 0,
+		right : 0,
+		width : 800,
+		height : 300,
+		center : true,
+		move : false,
+		modal : true,
+		resize : false,
+		caption : "Catalogo de usuarios",
+		header : true
+	});
+	cat_user_window.button('park').hide();
+	cat_user_window.button('minmax').hide();
+	cat_user_window.keepInViewport(true);
+
+	cat_user_layout = cat_user_window.attachLayout({
+		pattern: "1C",
+		cells: [ {id: "a", text: "Usuarios", header: false} ]
+	});
+
+	cat_user_toolbar = cat_user_layout.cells("a").attachToolbar({
+		icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+		xml: "xml/cat_user_toolbar.xml" 
+	});
+	cat_user_toolbar.attachEvent("onClick", function(id){
+		switch (id){
+		case "new_item":
+			createAdminUserAction(1,"");
+			break;
+		default:
+			showError("ERROR...");
+		}
+	});
+
+	createContextMenu();
+	
+	createGrid();
+}
+
+function createAdminUserAction(action, rId){
+	adminServiceWindow=new dhtmlXWindows();
+	var wtitle=null;
+	var width=400, height=480;
+	if(action==1){
+		wtitle="Insertar nuevo usuario";
+	}else if(action==2){
+		wtitle="Actualizar datos usuario";
+	}else if(action==3){
+		wtitle="Eliminar usuario";
+		height=250;
+	}
+	adminServiceWindow2=adminServiceWindow.createWindow('adminServiceWindow2',0,20,width,height);
+	adminServiceWindow.window('adminServiceWindow2').setText(wtitle);
+	adminServiceWindow.window('adminServiceWindow2').denyMove();
+	adminServiceWindow.window('adminServiceWindow2').denyResize();
+	adminServiceWindow.window('adminServiceWindow2').centerOnScreen();
+	adminServiceWindow.window('adminServiceWindow2').button('park').hide();
+	adminServiceWindow.window('adminServiceWindow2').setModal(1);
+	adminServiceLayout=adminServiceWindow2.attachLayout('1C');
+	adminServiceLayout.cells('a').hideHeader();
+	adminServiceLayout.cells('a').fixSize(1,1);
+	cat_user_form = adminServiceLayout.cells("a").attachForm();
+	if(action==1){
+		cat_user_form.load("xml/cat_user_form.xml");
+		cat_user_form.attachEvent("onButtonClick", function(name){
+			cat_user_form.validate();
+		});
+	}else if(action==2){
+		var listXMLString='<items>'
+			+'<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />'
+			+'<item type="input" label="ID usuario" required="true" name="idUser" maxLength="100" validate="NotEmpty" value="'+rId+'" disabled="true"/>'
+			+'<item type="input" label="Nombre usuario" required="true" name="username" maxLength="100" validate="NotEmpty" value="'+cat_user_grid.cells(rId,0).getValue()+'"/>'
+			+'<item type="password" label="Contraseña" required="true" name="passUser" maxLength="100" validate="NotEmpty"/>'
+			+'<item type="select" label="Role" name="authority" required="true">'
+			+'<option text="Administrador" value="ROLE_ADMIN"/>'
+			+'<option text="Usuario" value="ROLE_USER"/>'
+			+'</item>'
+			+'<item type="input" label="Nombre(s)" required="true" name="nameUser" maxLength="100" validate="NotEmpty" value="'+cat_user_grid.cells(rId,2).getValue()+'"/>'
+			+'<item type="input" label="Apellido(s)" required="true" name="lastnameUser" maxLength="100" validate="NotEmpty" value="'+cat_user_grid.cells(rId,3).getValue()+'"/>'
+			+'<item type="calendar" dateFormat="%d/%m/%Y" name="birthUser" label="Fecha de Nacimiento" />'
+			+'<item type="fieldset" name="dataSexUser" label="Sexo" inputWidth="auto">'
+			+'<item type="radio" name="sexUser" label="Masculino" value="M" position="label-right" checked="true"/>'
+			+'<item type="newcolumn" />'
+			+'<item type="radio" name="sexUser" label="Femenino" value="F" position="label-right"/>'
+			+'</item>'
+			+'<item type="fieldset" name="dataStatusUser" label="Estatus del usuario" inputWidth="auto">'
+			+'<item type="radio" name="statusUser" label="Habilitado" value="1" position="label-right" checked="true"/>'
+			+'<item type="newcolumn" />'
+			+'<item type="radio" name="statusUser" label="Deshabilitado" value="0" position="label-right"/>'
+			+'</item>'
+			+'<item type="block" inputWidth="auto">'
+			+'<item type="button" name="doUpdateFormUpdateUser" value="Actualizar" width="70"/>'
+			+'</item>'
+			+'</items>';
+		cat_user_form.loadStruct(listXMLString, function(){});
+		cat_user_form.attachEvent("onButtonClick", function(name){
+			cat_user_form.validate();
+		});
+	}else if(action==3){
+		var listXMLString='<items>'
+			+'<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />'
+			+'<item type="input" label="ID usuario" required="true" name="idUser" maxLength="100" validate="NotEmpty" value="'+cat_user_grid.cells(rId,0).getValue()+'"/>'
+			+'<item type="input" label="Nombre usuario" required="true" name="username" maxLength="100" validate="NotEmpty" value="'+cat_user_grid.cells(rId,1).getValue()+'"/>'
+			+'<item type="block" inputWidth="auto">'
+			+'<item type="button" name="doDeleteFormUpdateUser" value="Eliminar" width="70"/>'
+			+'</item>'
+			+'</items>';
+		cat_user_form.loadStruct(listXMLString, function(){});
+		cat_user_form.attachEvent("onButtonClick", function(name){
+			cat_user_form.validate();
+		});
+	}
+	
+	cat_user_form.attachEvent("onAfterValidate", function(status){
+		if(status){
+			if(action==1){
+				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"Seguro?",
+					callback:function(result){
+						if(result){
+							doInsertFormSaveUser();
+						}
+					}
+				});				
+			}else if(action==2){
+				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"Seguro?",
+					callback:function(result){
+						if(result){
+							doUpdateFormSaveUser();
+						}
+					}
+				});
+			}else if(action==3){
+				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"¿Esta seguro que desea eliminar el usuario?",
+					callback:function(result){
+						if(result){
+							doDeleteFormSaveUser();
+						}
+					}
+				});
+			}			
+		}else{
+			showResponseXmlAlertError("<b>Error, validar que los campos esten correctos...</b>");
+		}
+	});
+
+}
+
+function doInsertFormSaveUser(){
+	cat_user_form.send("adminUser.do?method=insertUser","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			if(responseCode == 0){
+				showResponseXmlAlert(responseMessage);
+				adminServiceWindow.window('adminServiceWindow2').close();
+				createGrid();
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
+}
+
+function doUpdateFormSaveUser(){
+	cat_user_form.send("adminUser.do?method=updateUser","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			if(responseCode == 0){
+				showResponseXmlAlert(responseMessage);
+				adminServiceWindow.window('adminServiceWindow2').close();
+				createGrid();
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
+}
+
+function doDeleteFormSaveUser(){
+	cat_user_form.send("adminUser.do?method=deleteUser","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			if(responseCode == 0){
+				showResponseXmlAlert(responseMessage);
+				adminServiceWindow.window('adminServiceWindow2').close();
+				createGrid();
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
+}
+
+function doOnNewItemUser(){
+	cat_user_form.unlock();
+	cat_user_form.clear();
+	cat_user_form.setItemFocus("username");
+}
+
+function createGrid(){
+	cat_user_grid = cat_user_layout.cells("a").attachGrid();
+	cat_user_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+	cat_user_grid.setHeader("Nombre Usuario, Role, Nombre(s), Apellido(s), Sexo, Fecha Naciemiento, Registro, Última actualización");
+//	cat_user_grid.attachHeader("#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter");
+	cat_user_grid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro");
+	cat_user_grid.setInitWidths("80,100,100,120,100,100,80,80");
+	cat_user_grid.setColSorting("str,str,str,str,str,str,str,str");
+	cat_user_grid.setColAlign("left,left,left,left,letf,left,left,left");
+	cat_user_grid.enableContextMenu(menuUser);
+	cat_user_grid.init();
+	cat_user_grid.enableAutoHeight();
+	try{
+		cat_user_grid.loadXML("adminUser.do?method=getUsers");
+	}catch(err){
+		showResponseXmlAlertError('<b>Ocurrio un error al recuperar los registros:<b><br/>'+ err.message);
+	}
+	cat_user_grid.attachEvent("onRowDblClicked", function(rId, cInd){
+		createAdminUserAction(2, rId);
+	});
+}
+
+function createContextMenu(){
+	try{
+		menuUser = new dhtmlXMenuObject();
+		menuUser.setIconsPath("../common/images/");
+		menuUser.renderAsContextMenu();
+		menuUser.addNewChild(null, 0, "1", "Actualizar Usuario");
+		menuUser.addNewChild(null, 0, "2", "Eliminar Usuario");
+		menuUser.attachEvent("onClick", function onButtonClick(menuitemId, type){
+			var idUser = cat_user_grid.contextID.split("_")[0];
+			if(menuitemId==1){
+				 createAdminUserAction(2, idUser);
+			}else if(menuitemId==2){				
+				createAdminUserAction(3, idUser);
+			}
+		});
+	}catch(err){
+		showResponseXmlAlertError(err.message);
+	}
+}
+

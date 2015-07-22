@@ -13,7 +13,11 @@
 		<property name="userService" ref="userService"/>
 	</bean>
 	
-	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction" singleton="false">
+	<bean name="/adminRole" class="mx.com.icsp.action.RoleAction">
+		<property name="roleService" ref="roleService"/>
+	</bean>
+	
+	<bean name="/adminProperty" class="mx.com.icsp.action.PropertyAction">
 		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
@@ -35,6 +39,10 @@
 	
 	<bean name="/myImport" class="mx.com.icsp.action.ImportAction" singleton="false">
 		<property name="assetService" ref="assetService"/>
+	</bean>
+	
+	<bean name="/myProperty" class="mx.com.icsp.action.PropertyAction">
+		<property name="propertyService" ref="propertyService"/>
 	</bean>
 	
 	<bean name="/ErrorAsync" class="mx.com.icsp.action.ErrorAsyncAction" singleton="false"/>

@@ -1,1 +1,10 @@
+/ApplicationResources.properties
+/ds.xml
+/authentication.xml
+/security.xml
+/action.xml
+/.gitignore
+/NewFile.xml
+/log4j.xml
 /mx/
+/spring.xml

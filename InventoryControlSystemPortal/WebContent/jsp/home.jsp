@@ -7,7 +7,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Sistema de control de Inventarios</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -59,6 +58,11 @@ body{
 	var guard_grid;
 	var dhxWin;
 	
+	// Catalogos...
+	var dhxWinsUser, cat_user_window, cat_user_layout, cat_user_form, cat_user_grid, cat_user_toolbar;
+	var dhxWinsLedger, cat_ledger_window, cat_ledger_layout, cat_ledger_form, cat_ledger_grid, cat_ledger_toolbar;
+	var dhxWinsProperty, cat_property_window, cat_property_layout, cat_property_form, cat_property_grid, cat_property_toolbar;
+	var dhxWinsRole, cat_role_window, cat_role_layout, cat_role_form, cat_role_grid, cat_role_toolbar;
 	function logOut(){
 		logout_form_hidden.submit();
 	}
@@ -73,7 +77,25 @@ body{
 			xml: "xml/main_menu.xml"
 		});
 		main_menu.attachEvent("onClick", function(id, zoneId, cas){
-			window[id]();
+			switch (id){
+			case "user":
+				catUsers();
+				break;
+			case "ledger":
+				catLedger();
+				break;
+			case "property":
+				catProperty();
+				break;
+			case "role":
+				catRole();
+				break;
+			case "logOut":
+				logOut();
+				break;
+			default:
+				showError("ERROR...");
+			}
 		});
 		
 		home_tabbar = main_div.cells("a").attachTabbar();
@@ -171,7 +193,7 @@ body{
 		export_grid.attachFooter(" , , , , , , , , , , , ,Promedio,#stat_average, , , , , , ");
 		export_grid.attachFooter(" , , , , , , , , , , , ,Registros,#stat_count, , , , , , ");
 		
-		export_grid.loadXML("myAsset.do?method=getAsset");
+// 		export_grid.loadXML("myAsset.do?method=getAsset");
 		export_grid.enableSmartRendering(true);
 		
 		//Reports
@@ -184,7 +206,7 @@ body{
 		import_grid.enableSmartRendering(true);
 		import_grid.loadXML("xml/grid.xml");
 		import_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
-		export_grid.setNumberFormat("0, 000.00",14,".",",");
+		import_grid.setNumberFormat("0, 000.00",14,".",",");
 		import_grid.setDateFormat("%d/%m/%Y");
 		import_grid.init();
 		import_grid.enableAutoHeight();
@@ -224,6 +246,8 @@ body{
 		guard_grid.attachFooter(" , , , , ,Minimo,#stat_min");
 		guard_grid.attachFooter(" , , , , ,Promedio,#stat_average");
 		guard_grid.attachFooter(" , , , , ,Registros,#stat_count");
+		
+		updateDHTMLXComponents();
 	}
 </script>
 </head>

@@ -128,7 +128,7 @@ function getAssetDbExcel(){
 
 function refreshExportGrid(){
 	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
-		showResponseXmlAlert("La tabla se ha refrescado...");
+		showResponseXmlAlert("Se han cargado todos los activos");
 	});
 }
 

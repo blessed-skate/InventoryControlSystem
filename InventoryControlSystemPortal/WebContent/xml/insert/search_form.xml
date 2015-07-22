@@ -27,5 +27,7 @@
 	<item type="newcolumn" />
 	<item type="block" inputWidth="auto">
 		<item type="button" name="getAssetReport" value="Reporte" width="70"/>
+		<item type="button" name="updateAsset" value="Guardar" width="70"/>
+		<item type="button" name="cancelUpdateForm" value="Cancelar" width="70"/>
 	</item>
 </items>

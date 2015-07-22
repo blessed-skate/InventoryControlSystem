@@ -36,10 +36,19 @@ function cancelForm(){
 	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearInsertForm);
 }
 
+function cancelUpdateForm(){
+	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearUpdateForm);
+}
+
 function clearInsertForm(){
 	insert_form.clear();
 	insert_form.reloadOptions("idSubclass", "myCatalog.do?method=getLedger&idLedger=");
 	insert_form.lock();
+}
+
+function clearUpdateForm(){
+	search_form.clear();
+	search_form.lock();
 }
 
 

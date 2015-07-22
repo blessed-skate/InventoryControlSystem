@@ -8,7 +8,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Sistema de control de Inventarios</title>
 
 <!-- <script type="text/javascript" src="js/dhtmlx/codebase/dhtmlx.js"></script> -->
 <!-- <link rel="stylesheet" type="text/css" -->
@@ -36,7 +35,7 @@
 	
 <style>
 body {
-	background-color: #deefff;
+	background-color: #ffffff;
 }
 
 div#winVP {

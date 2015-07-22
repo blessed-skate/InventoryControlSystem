@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Sistema de control de Inventarios</title>
+<title>Sistema de control de Inventarios ITSH</title>
 
 <link rel="icon" href="imgs/icon.png" type="image/png" />
 
@@ -23,41 +23,49 @@
 <script type="text/javascript" src="js/export.js"></script>
 <script type="text/javascript" src="js/import.js"></script>
 <script type="text/javascript" src="js/guard.js"></script>
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/catUser.js"></script>
+<script type="text/javascript" src="js/catProperty.js"></script>
+<script type="text/javascript" src="js/catRole.js"></script>
+<script type="text/javascript" src="js/catLedger.js"></script>
 
 <link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_web.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxMenu/codebase/skins/dhtmlxmenu_dhx_web.css" />
+	href="js/dhtmlx/codebase/dhtmlx.css" />
 
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxTabbar/codebase/skins/dhtmlxtabbar_dhx_web.css" />
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_web.css" /> -->
+	
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_web.css" /> -->
+	
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxMenu/codebase/skins/dhtmlxmenu_dhx_web.css" /> -->
 
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxToolbar/codebase/skins/dhtmlxtoolbar_dhx_web.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_web.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" />
-	
-<script type="text/javascript"
-	src="js/dhtmlx/sources/dhtmlxCalendar/codebase/dhtmlxcalendar.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_web.css" />	
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxTabbar/codebase/skins/dhtmlxtabbar_dhx_web.css" /> -->
 
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxEditor/codebase/skins/dhtmlxeditor_dhx_web.css" />
-
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxMessage/codebase/skins/dhtmlxmessage_dhx_terrace.css" />
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxToolbar/codebase/skins/dhtmlxtoolbar_dhx_web.css" /> -->
 	
-<link rel="stylesheet" type="text/css"
-	href="js/dhtmlx/sources/dhtmlxVault/codebase/skins/dhtmlxvault_dhx_web.css" />
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_web.css" /> -->
+	
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxForm/codebase/skins/dhtmlxform_dhx_web.css" /> -->
+	
+<!-- <script type="text/javascript" -->
+<!-- 	src="js/dhtmlx/sources/dhtmlxCalendar/codebase/dhtmlxcalendar.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_web.css" />	 -->
+
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxEditor/codebase/skins/dhtmlxeditor_dhx_web.css" /> -->
+
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxMessage/codebase/skins/dhtmlxmessage_dhx_terrace.css" /> -->
+	
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="js/dhtmlx/sources/dhtmlxVault/codebase/skins/dhtmlxvault_dhx_web.css" /> -->
 	
 <style type="text/css">
 div#headerDiv {

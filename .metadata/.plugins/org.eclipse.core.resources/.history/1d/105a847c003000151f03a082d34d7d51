@@ -1,0 +1,48 @@
+var login_form;
+
+function doOnLoad() {
+	dhxWin = new dhtmlXWindows();
+	var login_window = dhxWin.createWindow("loginWindow", 0, 0, 700, 500);
+	var loginLayout = login_window.attachLayout("2E");
+	
+	var cell_1 = loginLayout.cells("a");
+	cell_1.setHeight("220");
+	cell_1.setWidth("700");
+	
+	var cell_2 = loginLayout.cells("a");
+	
+	login_form = login_window.attachForm();
+	login_form.loadStruct("xml/login_form.xml");
+	login_form.setItemFocus("username");
+
+	login_form.attachEvent("onButtonClick", function(id) {
+		if (id == "login") {
+			sendLoginForm();
+		}
+	});
+	
+	login_form.attachEvent("onKeyup", function(inp, ev, name, value) {
+		if (ev.keyCode == 13 && name == "password") {
+			sendLoginForm();
+		}
+	});
+	
+	login_window.denyResize();
+	login_window.denyMove();
+	login_window.setModal(1);
+	login_window.hideHeader();
+	login_window.centerOnScreen();
+	
+//	login_window.button('park').hide();
+//	login_window.button('minmax').hide();
+//	login_window.button('close').hide();
+//	login_window.setText("Sistema de Control de Inventarios");
+}
+
+function sendLoginForm() {
+	document.getElementById("j_username").value = login_form
+			.getItemValue("username");
+	document.getElementById("j_password").value = login_form
+			.getItemValue("password");
+	login_form_hidden.submit();
+}
