@@ -32,12 +32,16 @@ function validateForm(){
 	insert_form.validate();
 }
 
+function validateUpdateForm(){
+	search_form.validate();
+}
+
 function cancelForm(){
-	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearInsertForm);
+	showConfirm("Confirmar","¿Desea cancelar la operación, se perdera la información capturada?", clearInsertForm);
 }
 
 function cancelUpdateForm(){
-	showConfirm("Cancelar","¿Desea cancelar la operación, se perdera la información capturada?", clearUpdateForm);
+	showConfirm("Confirmar","¿Desea cancelar la operación, se perdera la información capturada?", clearUpdateForm);
 }
 
 function clearInsertForm(){
@@ -59,14 +63,15 @@ function newAsset(){
 }
 
 function searchAsset(){
+//	showResponseXmlAlertWarning(search_toolbar.getValue("search_item_input"));
 	search_form.clear();
 	search_form.lock();
-	search_form.load("myAsset.do?method=getAssetByTag&tag="+search_toolbar.getValue("seacrh_item_input"), function(){
+	search_form.load("myAsset.do?method=getAssetByTag&tag="+search_toolbar.getValue("search_item_input"), function(){
 		var idLedger = search_form.getItemValue("idLedger");
 		if(idLedger != null && idLedger != ""){
-			showResponseXmlAlert("Se abrio el registro");
+			showResponseXmlAlert("Se abrio el registro correctamente");
 		}else{
-			showResponseXmlAlertError("No se encontro informacion con los datos ingresados");
+			showResponseXmlAlertWarning("No se encontro información con los datos ingresados");
 		}
 	});
 }
@@ -77,12 +82,12 @@ function enabledAssetForm(){
 		search_form.unlock();
 		search_form.setItemFocus("description");
 	}else{
-		showResponseXmlAlertError("No se encontro informacion con los datos ingresados");
+		showResponseXmlAlertWarning("No se encontro información con los datos ingresados");
 	}
 }
 
 function updateAsset(){
-	search_form.send("myAsset.do?method=updateAsset","post",function(loader, response){
+	search_form.send("myAsset.do?method=updateAsset","get",function(loader, response){
 		try{
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
 			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
@@ -97,6 +102,32 @@ function updateAsset(){
 		}catch(err){
 			showResponseXmlAlertError(err.message);
 		}
+	});
+}
+
+function deleteAsset(){
+	var tag = search_form.getItemValue("tag");
+	showConfirm("Confirmar","¿Desea eliminar el registro con el No. de etiqueta "+tag+"?", function(){
+		search_form.send("myAsset.do?method=deleteAsset","post",function(loader, response){
+			try{
+				var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+				var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[3].childNodes[0].data;
+				if(responseCode == 0){
+					showResponseXmlAlert(responseMessage);
+					search_form.clear();
+					search_form.lock();
+					updateDHTMLXComponents();
+				}else{
+					showResponseXmlAlertError(responseMessage);
+					search_form.clear();
+					search_form.lock();
+				}
+			}catch(err){
+				showResponseXmlAlertError(err.message);
+				search_form.clear();
+				search_form.lock();
+			}
+		});
 	});
 }
 

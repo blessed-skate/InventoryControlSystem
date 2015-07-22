@@ -2,6 +2,7 @@ package mx.com.icsp.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -248,6 +249,9 @@ public class AssetAction extends DispatchAction {
 				String model = getParameterString(request, "model", "Sin modelo");
 				String serialNumber = getParameterString(request, "serialNumber", "Sin número de serie");
 				
+				log.info("Serial number: " + request.getParameter("serialNumber"));
+				log.info("Decode serial numer: " + URLDecoder.decode(request.getParameter("serialNumber"), "UTF-8"));
+				
 				String material = getParameterString(request,"material");
 				String color = getParameterString(request,"color");
 				
@@ -307,6 +311,42 @@ public class AssetAction extends DispatchAction {
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 			assetResponse.setResponseCode(103);
 			assetResponse.setResponseMessage("Error al insertar registro");
+		}
+		setResponse(request, response, XmlFactory.getXml(idTransaction, assetResponse), "application/xml");
+	}
+	
+	public void deleteAsset(ActionMapping arg0, ActionForm arg1,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		AssetResponse assetResponse = new AssetResponse();
+		String idTransaction = request.getSession().getId();
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		log.info(logPattern.buildPattern(methodName, idTransaction, "Init"));
+		
+		try {
+			
+			long tag = getParameterLong(request,"tag");
+			if(tag == -1){
+				assetResponse.setResponseCode(99);
+				assetResponse.setResponseMessage("El numero de etiqueta no puede ser nulo");
+			}else{
+				log.info(logPattern.buildPattern(methodName, idTransaction, "tag", tag));
+	
+				int responseCode = assetService.deleteAsset(idTransaction, tag);
+				log.info(logPattern.buildPattern(methodName, idTransaction, "responseCode", responseCode));
+				if (responseCode == 1) {
+					assetResponse.setResponseCode(0);
+					assetResponse.setResponseMessage("Se elimino el registro con la etiqueta " + tag);
+				} else {
+					assetResponse.setResponseCode(101);
+					assetResponse.setResponseMessage("Error al eliminar el registro con la etiqueta " + tag);
+				}
+			}
+		} catch (Exception e) {
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+			assetResponse.setResponseCode(103);
+			assetResponse.setResponseMessage("Error al eliminar registro");
 		}
 		setResponse(request, response, XmlFactory.getXml(idTransaction, assetResponse), "application/xml");
 	}

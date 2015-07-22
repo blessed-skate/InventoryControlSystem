@@ -5,6 +5,7 @@ import java.util.Map;
 
 import mx.com.icsc.common.Asset;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -51,6 +52,8 @@ public interface AssetDao {
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
 			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place},FDLASTUPDATE=CURRENT_TIMESTAMP WHERE FITAG=#{tag}";
 	
+	static final String DELASSET = "DELETE FROM CISDB.TACISASSET WHERE FITAG=#{tag}";
+	
 	static final String SELDIRRESP = "select distinct(IF(FCDIRECTLYRESPONSIBLE is not null,FCDIRECTLYRESPONSIBLE, '')) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC";
 
 	@Select(SELASSET+ORDERBY)
@@ -88,4 +91,8 @@ public interface AssetDao {
 	@Select(SELASSET+SELASSETBYUSEDATE)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract List<Asset> getAssetByUseDate(Map<String, Object> params);
+
+	@Delete(DELASSET)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract int deleteAsset(Map<String, Object> params);
 }

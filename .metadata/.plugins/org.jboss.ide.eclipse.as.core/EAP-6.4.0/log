@@ -549,3 +549,10 @@ org.eclipse.debug.core.DebugException: Terminate failed
 
 !ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-07-21 14:13:29.182
 !MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2015-07-22 11:38:13.923
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2015-07-22 11:38:33.878
+!MESSAGE Server Startup Succeeded

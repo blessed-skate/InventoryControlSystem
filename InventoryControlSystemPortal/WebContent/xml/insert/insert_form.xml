@@ -3,11 +3,11 @@
 	<item type="settings" position="label-left" labelWidth="120"
 		inputWidth="200" />
 	<item type="input" label="Cuenta contable" required="true" name="idLedger" maxLength="3" validate="NotEmpty,ValidNumeric">
-		<note width="150">Tres digitos del grupo</note>
+		<note width="200">Tres digitos del grupo</note>
 	</item>
 	<item type="select" label="Subclase" name="idSubclass" required="true"/>
 	<item type="input" label="No. de etiqueta" required="true" name="tag" maxLength="12" disabled="true" validate="NotEmpty,ValidNumeric">
-		<note width="150">El cosecutivo se genera al guardar el registro</note>
+		<note width="200">El cosecutivo se genera al guardar el registro</note>
 	</item>
 	
 	<item type="input" label="Descripcion" required="true" name="description" maxLength="100" validate="NotEmpty"/>
@@ -30,7 +30,7 @@
 	<item type="input" label="Inicio" name="start" maxLength="100"/>
 	<item type="newcolumn" />
 	<item type="block" inputWidth="auto">
-		<item type="button" name="validateForm" value="Validar" width="70"/>
+<!-- 		<item type="button" name="validateForm" value="Validar" width="70"/> -->
 <!-- 		<item type="newcolumn" /> -->
 		<item type="button" name="saveForm" value="Guardar" width="70"/>
 <!-- 		<item type="newcolumn" /> -->

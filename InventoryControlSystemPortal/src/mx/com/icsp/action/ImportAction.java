@@ -119,7 +119,7 @@ public class ImportAction extends DispatchAction {
 								if(response.isState()){
 									AssetResponse assetResponse = assetService.insertAsset(idTransaction, assetList.toArray(new Asset[assetList.size()]));
 									if(assetResponse.getResponseCode() == Constants.SUCCESS_RESPONSE){
-										response.setInfo(response.getInfo() +" ["+assetResponse.getResponseMessage()+"] ");
+										response.setInfo(response.getInfo() +" -"+assetResponse.getResponseMessage()+"- ");
 									}else{
 										response.setInfo(assetResponse.getResponseMessage());
 										response.setParam("");

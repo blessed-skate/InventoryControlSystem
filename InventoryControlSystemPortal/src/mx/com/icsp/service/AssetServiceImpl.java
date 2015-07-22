@@ -68,7 +68,6 @@ public class AssetServiceImpl implements AssetService{
 		int reponseCode = -1;
 		int cont = 0;
 		
-		
 		if(assetArray != null && assetArray.length > 0){
 			for(Asset asset: assetArray){			
 				try{
@@ -225,5 +224,21 @@ public class AssetServiceImpl implements AssetService{
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
 		}
 		return assetArray;
+	}
+
+	@Override
+	public int deleteAsset(String idTransaction, long tag) {
+		
+		String methodName = new Throwable().getStackTrace()[0].getMethodName();
+		
+		int response = 0;
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("tag", tag);
+			response = assetDao.deleteAsset(params);					
+		}catch(Exception e){
+			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);
+		}
+		return response;
 	}
 }

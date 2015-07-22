@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar>
+	<item type="button" id="seacrh_item_button" text="Buscar" img="redo.gif"
+		action="searchAsset" />
+	<item type="buttonInput" id="seacrh_item_input" 
+		action="" />
+	<item type="separator" />
+	<item type="button" id="update_item_button" text="Modificar" img="cut.gif"
+		action="enabledAssetForm" />
+<!-- 	<item type="separator" /> -->
+<!-- 	<item type="button" id="report_item_button" text="Reporte" img="cut.gif" -->
+<!-- 		action="getAssetReport" /> -->
+</toolbar>

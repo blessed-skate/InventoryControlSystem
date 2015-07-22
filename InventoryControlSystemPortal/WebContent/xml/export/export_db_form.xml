@@ -4,7 +4,7 @@
 	<item type="input" label="Nombre del archivo" name="fileName"
 		maxLength="50" required="true" />
 	<item type="select" label="Extension" name="extension">
-		<option text="*.xls" value="xls" />
+<!-- 		<option text="*.xls" value="xls" /> -->
 		<option text="*.xlsx" value="xlsx" />
 	</item>
 	<item type="button" name="getAssetDbExcel" value="Exportar"

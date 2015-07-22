@@ -19,4 +19,5 @@ public interface AssetService {
 			Date startDate, Date endDate);
 	public Asset[] getAssetByUseDate(String idTransaction,
 			Date startDate, Date endDate);
+	public int deleteAsset(String idTransaction, long tag);
 }

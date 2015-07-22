@@ -33,4 +33,11 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>com.jaspersoft.studio.babel.editor.rbeNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>standalone.xml</name>
+			<type>1</type>
+			<location>/Users/IvanXVI/server/EAP-6.4.0/standalone/configuration/standalone.xml</location>
+		</link>
+	</linkedResources>
 </projectDescription>

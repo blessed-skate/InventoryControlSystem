@@ -2,14 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="/WEB-INF/tags-conf/struts-bean.tld" prefix="bean"%>
 <%@taglib uri="/WEB-INF/tags-conf/struts-logic.tld" prefix="logic"%>
+<%@taglib uri="http://acegisecurity.org/authz" prefix="authz"%>
 <jsp:include page="header.jsp"></jsp:include>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 			
 <style>
 div.gridbox div.ftr td {
@@ -23,18 +22,18 @@ div.gridbox_light table.hdr td {
 }
 
 div#mainDiv {
-	position: relative;
+/* 	position: relative; */
 	margin-top: 20px;
 	margin-left: 20px;
 	width: 1000px;
 	height: 600px;
-	display: block;
+/* 	display: block; */
 	margin-left: auto;
 	margin-right: auto;
 }
 
 body{
-	background-color: #deefff;
+	background-color: #999999;
 }
 
 </style>
@@ -76,6 +75,7 @@ body{
 			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
 			xml: "xml/main_menu.xml"
 		});
+		
 		main_menu.attachEvent("onClick", function(id, zoneId, cas){
 			switch (id){
 			case "user":
@@ -99,7 +99,6 @@ body{
 		});
 		
 		home_tabbar = main_div.cells("a").attachTabbar();
-// 		home_tabbar = new dhtmlXTabBar("homeTabbar");
 		
 		home_tabbar.addTab("a1", "Alta", null, null, true);
 		home_tabbar.addTab("a2", "Reportes");
@@ -110,8 +109,8 @@ body{
 		insert_layout = home_tabbar.tabs("a1").attachLayout({
 		    pattern: "2U",
 		    cells: [
-		        {id: "a", text: "Nuevo Registro", header: false, collapse: false, fixSize: [true, true]}
-		        ,{id: "b", text: "Buscar", header: false, width: 500, collapse: false, fixSize: [true, true]}
+		        {id: "a", text: "Nuevo Registro", header: false, collapse: false, fixSize: [1, 1]}
+		        ,{id: "b", text: "Buscar", header: false, width: 500, collapse: false, fixSize: [1, 1]}
 // 		        ,{id: "c", text: "Lista", collapse: false, fixSize: [true, true]}
 		    ]
 		});
@@ -161,8 +160,8 @@ body{
 		query_layout = home_tabbar.tabs("a2").attachLayout({
 		    pattern: "2E",
 		    cells: [
-		        {id: "a", text: "Filtro", header: true, height: 180},
-		        {id: "b", text: "Resultado", header: false}
+		        {id: "a", text: "Filtro", header: true, fixSize: [1, 1], height: 180},
+		        {id: "b", text: "Resultado", header: false, fixSize: [1, 1]}
 		    ]
 		});
 		
@@ -216,8 +215,8 @@ body{
 		guard_layout = home_tabbar.tabs("a4").attachLayout({
 		    pattern: "2E",
 		    cells: [
-		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [true, true], height: 200}
-		        ,{id: "b", text: "Activos", collapse: false, fixSize: [true, true]}
+		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [1, 1], height: 200}
+		        ,{id: "b", text: "Activos", collapse: false, fixSize: [1, 1]}
 		    ]
 		});
 		
@@ -234,7 +233,7 @@ body{
 		});
 		
 		guard_grid = guard_layout.cells("b").attachGrid();
-// 		guard_grid.enableSmartRendering(true);
+		guard_grid.enableSmartRendering(true);
 		guard_grid.loadXML("xml/guard/guard_grid.xml");
 		guard_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
  		guard_grid.setNumberFormat("$ 0,000.00",7,".",",");
@@ -247,14 +246,34 @@ body{
 		guard_grid.attachFooter(" , , , , ,Promedio,#stat_average");
 		guard_grid.attachFooter(" , , , , ,Registros,#stat_count");
 		
-		updateDHTMLXComponents();
+// 		updateDHTMLXComponents();
+		defineRole();
 	}
+		
 </script>
+<authz:authorize ifNotGranted="ROLE_ADMIN, ROLE_USER" ifAllGranted="ROLE_QUERY">
+	<script type="text/javascript">
+		function defineRole(){
+			home_tabbar.tabs("a1").disable("a2");
+			home_tabbar.tabs("a3").disable();
+			main_menu.removeItem("catalogs");
+		}
+	</script>
+</authz:authorize>
+<authz:authorize ifNotGranted="ROLE_ADMIN, ROLE_QUERY" ifAllGranted="ROLE_USER" >
+	<script type="text/javascript">
+		function defineRole(){
+			main_menu.removeItem("catalogs");
+		}
+	</script>
+</authz:authorize>
+
 </head>
 <body onload="doOnLoad();">
 	<div id="mainDiv"></div>
 	<form action="j_acegi_logout" method="post"
 		name="logout_form_hidden">
 	</form>
+	
 </body>
 </html>

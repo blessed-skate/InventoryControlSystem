@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-07-21T21:36:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guard" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="241d6a99-2d77-43a3-b0d7-b9b43b4590cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="205"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="47b7021a-3e5e-4af2-adf4-a48b0d0bbdb7"/>
+	<parameter name="directlyResponsible" class="java.lang.String"/>
+	<parameter name="costCenter" class="java.lang.String"/>
+	<parameter name="area" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="date" class="java.util.Date"/>
+	<field name="tag" class="java.lang.Long"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="price" class="java.lang.Float"/>
+	<field name="serialNumber" class="java.lang.String"/>
+	<field name="bill" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="380" splitType="Stretch">
+			<staticText>
+				<reportElement style="table" x="0" y="0" width="100" height="20" uuid="afbd2e88-3c9a-4a60-8f73-031b7e7c599a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Empleado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="0" y="20" width="100" height="20" uuid="2cb9aede-fabd-4457-9e3d-baf6c1845af8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Centro de Costos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="0" y="40" width="100" height="20" uuid="7e789958-bd8f-433e-ba52-d72adc310fa7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Área usuaria:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="0" y="60" width="100" height="20" uuid="212de785-eda5-42db-9c7f-1a808466d1a7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Departamento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="0" y="80" width="100" height="20" uuid="8485119d-dc16-4586-b27c-428f6186397a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement style="table" x="100" y="0" width="472" height="20" uuid="083ed741-9cc0-42c5-a052-7acf54a283de"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{directlyResponsible}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="table" x="100" y="20" width="472" height="20" uuid="93499f78-4b14-443a-a000-07bde272d91e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{costCenter}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="table" x="100" y="60" width="472" height="20" uuid="d38419b0-4b56-49a3-bbca-251494dd028d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="table" x="100" y="40" width="472" height="20" uuid="5788b722-0afa-49c0-958c-8df725fa1514"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{area}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement style="table" x="100" y="80" width="472" height="20" uuid="eaf661a4-d798-482c-8953-daed72052717"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="105" width="572" height="270" uuid="3cca3dc0-4ce2-485b-9813-3463b84c0dc0"/>
+				<textElement textAlignment="Justified">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<text><![CDATA[Recibí del Instituto Tecnológico Superior de Huauchinango, el (los) bien (es) descrito (s) a continuación, en el entendido de que quedan bajo mi resguardo comprometiéndome a:
+	-Utilizarlo (s) exclusivamente para uso oficial.
+	-Informar inmediatamente al Jefe de Departamento del Almacén del Instituto Tecnológico Superior de Huauchinango al que estoy adscrito, así como a mi superior jerárquico del robo, extravío o daño del (los) bien (s); en tal caso se realizarán los trámites establecidos en la normatividad aplicable.
+	-Responder por los daños o desperfectos a el (los) bien (es) cuando el (los) mismo (s) sea (n) el resultado de la negligencia o dolo en su uso.
+
+Todo Servidor Público que tenga un bien bajo su resguardo se hará responsable del mismo. Lo  anterior con fundamento a lo establecido en: La Constitución Política de los Estados Unidos Mexicanos en su Artículo 108, en la Constitución Política del Estado Libre y Soberano de Puebla en sus Artículos 124 Fracción II y 125 Fracción I, en la Ley de Responsabilidades de los Servidores Públicos del Estado de Puebla en sus Artículos 1 Fracciones I, II y III, 2, 49 y 50 Fracciones I, III, IV, V, IX y XI, en la Ley Federal del Trabajo en el Artículo 47 Fracciones V y VI, en la Ley General de Contabilidad Gubernamental en sus Artículos 15 Fracción VII, 23 Fracciones II y III, 27 y 28, y en los lineamientos dirigidos a asegurar que el sistema de contabilidad gubernamental facilite el registro y control de los inventarios de los bienes muebles e inmuebles de los entes públicos emitidos por el Consejo Nacional de Armonización Contable (C.O.N.A.C.).
+
+El uso de los bienes bajo su responsabilidad será exclusivamente para el desempeño de la naturaleza de sus funciones, en el caso de un mal  uso, deterioro y maltrato de los mismos será sujeto a las sanciones que señala Ley de Responsabilidad de Servidores Públicos del Estado de Puebla.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement style="table_TH" x="0" y="0" width="100" height="40" uuid="de9ef17d-2451-43b9-a93c-747bc1d1d84d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. inventario
+(C.O.N.A.C.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="100" y="0" width="203" height="40" uuid="fab72ead-6012-4c91-b5e6-6881573f3cfe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción del bien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="303" y="0" width="92" height="40" uuid="32fd5e6f-bb8f-4eb0-979b-be37fb6a0737"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. de serie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="395" y="0" width="93" height="40" uuid="401620f8-d0d9-4b6d-980e-a8a7af63e465"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="488" y="0" width="84" height="40" uuid="993d3da1-63a4-4cbb-a0a4-22e693e95172"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="table_TD" x="0" y="0" width="100" height="20" uuid="57cca987-d349-41d5-93a5-1163aac4464d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tag}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table_TD" x="100" y="0" width="203" height="20" uuid="d7dcbc67-f58e-4f4b-bb6d-b21666284965"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table_TD" x="303" y="0" width="92" height="20" uuid="166acaf0-d13a-4bff-9016-b51c3b2d0fe4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serialNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table_TD" x="395" y="0" width="93" height="20" uuid="53a1afd3-9d25-4bf0-a97b-a8cf7f550fff"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement style="table_TD" x="488" y="0" width="84" height="20" uuid="f5904634-f74a-421f-83a0-2166213ed784"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="234" y="0" width="100" height="20" uuid="e09c4ad5-d05b-4193-a349-a038e3f86b81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>

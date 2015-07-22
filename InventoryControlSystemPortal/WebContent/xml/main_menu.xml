@@ -14,6 +14,7 @@
         <item id="logOut" text="Salir"/> 
     </item>
     <item id="help" text="Ayuda">
+    	<item id="about" text="Manual de usuario"/>
         <item id="about" text="Acerca de..."/>
     </item>
 </menu>

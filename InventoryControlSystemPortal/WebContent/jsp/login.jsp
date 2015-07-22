@@ -35,7 +35,7 @@
 	
 <style>
 body {
-	background-color: #ffffff;
+	background-color: #999999;
 }
 
 div#winVP {

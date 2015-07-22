@@ -2,12 +2,12 @@ var login_form;
 
 function doOnLoad() {
 	dhxWin = new dhtmlXWindows();
-	var login_window = dhxWin.createWindow("loginWindow", 0, 0, 720, 420);
+	var login_window = dhxWin.createWindow("loginWindow", 0, 0, 740, 420);
 	var loginLayout = login_window.attachLayout("2E");
 	
 	var cell_1 = loginLayout.cells("a");
-	cell_1.setHeight("225");
-	cell_1.setWidth("720");
+	cell_1.setHeight("240");
+//	cell_1.setWidth("725");
 	cell_1.hideHeader();
 	cell_1.fixSize(1,1);
 	cell_1.attachURL("imgs/logo2.png");
