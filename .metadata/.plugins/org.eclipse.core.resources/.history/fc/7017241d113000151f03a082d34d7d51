@@ -7,7 +7,7 @@ public class User {
 	private String username;
 	private String password;
 	private String authority;
-	private String enabled;
+	private int enabled;
 	private String name;
 	private String lastName;
 	private char sex;
@@ -38,10 +38,10 @@ public class User {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
-	public String getEnabled() {
+	public int isEnabled() {
 		return enabled;
 	}
-	public void setEnabled(String enabled) {
+	public void setEnabled(int enabled) {
 		this.enabled = enabled;
 	}
 	public String getName() {

@@ -81,7 +81,7 @@ public class UserAction extends DispatchAction{
 			String username = gerParameterString(request, "username");
 			String password = gerParameterString(request, "passUser");
 			String authority = gerParameterString(request, "authority");
-			String enabled = gerParameterString(request, "statusUser");
+			int enabled = gerParameterString(request, "statusUser");
 			String name = gerParameterString(request,"nameUser");
 			String lastName = gerParameterString(request,"lastnameUser");
 			String sex = gerParameterString(request, "sexUser");
@@ -143,7 +143,7 @@ public class UserAction extends DispatchAction{
 			String username = gerParameterString(request, "username");
 			String password = gerParameterString(request, "passUser");
 			String authority = gerParameterString(request, "authority");
-			String enabled = gerParameterString(request, "statusUser");
+			int enabled = gerParameterInt(request, "statusUser");
 			String name = gerParameterString(request,"nameUser");
 			String lastName = gerParameterString(request,"lastnameUser");
 			String sex = gerParameterString(request, "sexUser");
