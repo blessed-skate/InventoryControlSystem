@@ -221,10 +221,10 @@ public class ReportAction extends DispatchAction{
 		String methodName = new Throwable().getStackTrace()[0].getMethodName();
 
 		try {
-			String directlyResponsible = getParameterString(request, "directlyResponsible");
-			String costCenter = getParameterString(request, "costCenter");
-			String area = getParameterString(request, "costCenter");
-			String department = getParameterString(request, "department");
+			String directlyResponsible = getParameterString(request, "directlyResponsible", "");
+			String costCenter = getParameterString(request, "costCenter", "");
+			String area = getParameterString(request, "area", "");
+			String department = getParameterString(request, "department", "");
 			
 			String[] params = new String[]{directlyResponsible, costCenter, area, department, request.getParameter("date")};
 			log.info(logPattern.buildPattern(methodName, idTransaction, "params", ToStringBuilder.reflectionToString(params)));

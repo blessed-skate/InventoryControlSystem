@@ -32,7 +32,7 @@
 	</bean>
 
 	<bean id="accessDeniedHandlerImpl" class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
-		<property name="errorPage" value="/ErrorAsync.do?method=fail&amp;code=2" />
+		<property name="errorPage" value="/Error.do?method=fail&amp;code=2" />
 	</bean>
 
 	<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"

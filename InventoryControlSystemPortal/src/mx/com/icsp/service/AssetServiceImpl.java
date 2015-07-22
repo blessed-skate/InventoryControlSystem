@@ -176,7 +176,10 @@ public class AssetServiceImpl implements AssetService{
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("tag", tag);
-			list = assetDao.getDirectlyResponsibleAsset(params);
+			if(tag != null && !tag.trim().equals(""))
+				list = assetDao.getDirectlyResponsibleAsset(params);
+			else
+				list = assetDao.getDirectlyResponsibleAssetNull();
 			assetArray = list.toArray(new Asset[list.size()]);
 		}catch(Exception e){
 			log.error(logPattern.buildPattern(methodName, idTransaction, "Exception", e.getMessage()), e);

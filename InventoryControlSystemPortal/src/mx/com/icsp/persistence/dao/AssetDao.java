@@ -29,6 +29,8 @@ public interface AssetDao {
 	
 	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = (SELECT FCDIRECTLYRESPONSIBLE FROM cisdb.tacisasset WHERE FITAG = #{tag})";
 	
+	static final String SELASSETBYDIRECTLYRESPONSIBLENULL = " WHERE TAAT.FCDIRECTLYRESPONSIBLE IS NULL";
+	
 	static final String SELASSETBYBILLINGDATE = " WHERE TAAT.FDBILLINGDATE between #{startDate} and #{endDate} order by TAAT.FDBILLINGDATE asc";
 	
 	static final String SELASSETBYUSEDATE = " WHERE TAAT.FDUSEDATE between #{startDate} and #{endDate} order by TAAT.FDUSEDATE asc";
@@ -95,4 +97,8 @@ public interface AssetDao {
 	@Delete(DELASSET)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract int deleteAsset(Map<String, Object> params);
+
+	@Select(SELASSET+SELASSETBYDIRECTLYRESPONSIBLENULL)
+	@Options(statementType = StatementType.CALLABLE)
+	public abstract List<Asset> getDirectlyResponsibleAssetNull();
 }
