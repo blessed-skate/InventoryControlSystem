@@ -8,6 +8,7 @@
 	<item type="select" label="Role" name="authority" required="true">
 	 	<option text="Administrador" value="ROLE_ADMIN"/>
 	 	<option text="Usuario" value="ROLE_USER"/>
+	 	<option text="Consulta" value="ROLE_QUERY"/>
 	</item>
 	
 	<item type="input" label="Nombre(s)" required="true" name="nameUser" maxLength="100" validate="NotEmpty"/>

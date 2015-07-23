@@ -17,9 +17,11 @@ function doOnLoad() {
 	cell_2.fixSize(1,1);
 	
 	login_form = cell_2.attachForm();
-	login_form.loadStruct("xml/login_form.xml");
+	login_form.loadStruct("xml/login_form.xml", function(name){
+		login_form.setItemLabel("error", document.getElementById("error").value);
+	})
 	login_form.setItemFocus("username");
-	login_form.setFontSize("15px");
+	login_form.setFontSize("14px");
 	
 	login_form.attachEvent("onButtonClick", function(id) {
 		if (id == "login") {

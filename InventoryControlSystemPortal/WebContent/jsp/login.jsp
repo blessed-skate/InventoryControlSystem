@@ -42,6 +42,10 @@ div#winVP {
 	position: relative;
 	height: 450px;	
 }
+
+.error {
+	color: red;	
+}
 </style>
 </head>
 <body onload="doOnLoad();">
@@ -51,6 +55,6 @@ div#winVP {
 		<input name="j_username" type="hidden" id="j_username" /> <input
 			name="j_password" type="hidden" id="j_password" />
 	</form>
-	<div><html:errors name="ERROR_MESSAGE" /></div>
+	<input name="error" type="hidden" id="error" value="<html:errors/>" />
 </body>
 </html>

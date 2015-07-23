@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>Sistema de control de Inventarios ITSH</title>
+<title>Sistema Control de Inventarios ITSH</title>
 
 <link rel="icon" href="imgs/icon.png" type="image/png" />
 
