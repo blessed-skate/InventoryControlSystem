@@ -25,7 +25,7 @@ div#mainDiv {
 /* 	position: relative; */
 	margin-top: 20px;
 	margin-left: 20px;
-	width: 1000px;
+	width: 1100px;
 	height: 600px;
 /* 	display: block; */
 	margin-left: auto;
@@ -110,7 +110,7 @@ body{
 		    pattern: "2U",
 		    cells: [
 		        {id: "a", text: "Nuevo Registro", header: false, collapse: false, fixSize: [1, 1]}
-		        ,{id: "b", text: "Buscar", header: false, width: 500, collapse: false, fixSize: [1, 1]}
+		        ,{id: "b", text: "Buscar", header: false, width: 550, collapse: false, fixSize: [1, 1]}
 // 		        ,{id: "c", text: "Lista", collapse: false, fixSize: [true, true]}
 		    ]
 		});
@@ -215,7 +215,7 @@ body{
 		guard_layout = home_tabbar.tabs("a4").attachLayout({
 		    pattern: "2E",
 		    cells: [
-		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [1, 1], height: 200}
+		        {id: "a", text: "Responsable directo", collapse: false, fixSize: [1, 1], height: 170}
 		        ,{id: "b", text: "Activos", collapse: false, fixSize: [1, 1]}
 		    ]
 		});
@@ -264,6 +264,13 @@ body{
 	<script type="text/javascript">
 		function defineRole(){
 			main_menu.removeItem("catalogs");
+		}
+	</script>
+</authz:authorize>
+<authz:authorize ifNotGranted="ROLE_USER, ROLE_QUERY" ifAllGranted="ROLE_ADMIN" >
+	<script type="text/javascript">
+		function defineRole(){
+			
 		}
 	</script>
 </authz:authorize>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+    <head>
+        <column width="100" type="ron" align="right" sort="int">Cuenta contable</column>
+        <column width="180" type="ro" align="left" sort="str">Tipo de bien</column>
+        <column width="250" type="ro" align="left" sort="str">Descripcion</column>
+        <column width="110" type="ro" align="left" sort="str">Marca</column>
+        <column width="110" type="ro" align="left" sort="str">Modelo</column>
+        <column width="160" type="ro" align="left" sort="str">Serie</column>
+        <column width="100" type="ron" align="right" sort="int">Valor</column>
+        <settings>
+            <colwidth>px</colwidth>
+        </settings>
+    </head>
+</rows>

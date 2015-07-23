@@ -37,7 +37,7 @@
 
 	<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"
 		id="authenticationEntryPoint">
-		<property name="loginFormUrl" value="/ErrorAsync.do?method=fail&amp;code=3" />
+		<property name="loginFormUrl" value="/Error.do?method=fail&amp;code=3" />
 		<property name="forceHttps" value="false" />
 		<property name="serverSideRedirect" value="true" />
 	</bean>

@@ -10,7 +10,7 @@
 		maxLength="50" required="true" />
 	<item type="input" label="Departamento" name="department"
 		maxLength="50" required="true" />
-	<item type="calendar" dateFormat="%d/%m/%Y" name="date" label="Fecha"/>
+<!-- 	<item type="calendar" dateFormat="%d/%m/%Y" name="date" label="Fecha"/> -->
 	<item type="newcolumn" />
 	<item type="block" inputWidth="auto">
 		<item type="button" name="getAssetGuardPdf" value="Generar" width="100" />

@@ -22,12 +22,12 @@ public interface AssetDao {
 			+ " TAAT.FDUSEDATE useDate, TAAT.FNPRICE price, IF(TAAT.FCGENERALLOCATION IS NOT NULL, TAAT.FCGENERALLOCATION, '') generalLocation,"
 			+ " IF(TAAT.FCSECURE IS NOT NULL, TAAT.FCSECURE, '') secure, IF(TAAT.FCSTART IS NOT NULL, TAAT.FCSTART, '') start, "
 			+ " IF(TAAT.FCPLACE IS NOT NULL, TAAT.FCPLACE, '') place, TAAT.FDREGISTERDATE registerDate, TAAT.FDLASTUPDATE lastUpdate"
-			+ " FROM" + " CISDB.TACISASSET TAAT "
-			+ " INNER JOIN CISDB.CTCISLEDGER CTLE ON"
+			+ " FROM" + " ICSDB.TAICSASSET TAAT "
+			+ " INNER JOIN ICSDB.CTICSLEDGER CTLE ON"
 			+ " TAAT.FIIDLEDGER = CTLE.FIIDLEDGER AND"
 			+ " TAAT.FCSUBCLASS = CTLE.FCSUBCLASS";
 	
-	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = (SELECT FCDIRECTLYRESPONSIBLE FROM cisdb.tacisasset WHERE FITAG = #{tag})";
+	static final String SELASSETBYDIRECTLYRESPONSIBLE = " WHERE TAAT.FCDIRECTLYRESPONSIBLE = (SELECT FCDIRECTLYRESPONSIBLE FROM ICSDB.taICSasset WHERE FITAG = #{tag})";
 	
 	static final String SELASSETBYDIRECTLYRESPONSIBLENULL = " WHERE TAAT.FCDIRECTLYRESPONSIBLE IS NULL";
 	
@@ -39,24 +39,24 @@ public interface AssetDao {
 
 	static final String SELASSETBYIDTAG = " WHERE FITAG = #{tag}";
 	
-	static final String SELTAG = "SELECT CONCAT(#{idLedger}, #{idSubclass}, IF( MAX(FITAG) IS NULL, '00001', LPAD(SUBSTR(MAX(FITAG), 6) + 1, 5, '0'))) tag FROM CISDB.TACISASSET"
+	static final String SELTAG = "SELECT CONCAT(#{idLedger}, #{idSubclass}, IF( MAX(FITAG) IS NULL, '00001', LPAD(SUBSTR(MAX(FITAG), 6) + 1, 5, '0'))) tag FROM ICSDB.TAICSASSET"
 			+ " WHERE FIIDLEDGER = #{idLedger} AND FCSUBCLASS = #{idSubclass}";
 
-	static final String INSASSET = "Insert into CISDB.TACISASSET (FIIDLEDGER,FCSUBCLASS,FCDESCRIPTION,FCBRAND,FCMODEL,FCSERIALNUMBER,FCMATERIAL,FCCOLOR,"
+	static final String INSASSET = "Insert into ICSDB.TAICSASSET (FIIDLEDGER,FCSUBCLASS,FCDESCRIPTION,FCBRAND,FCMODEL,FCSERIALNUMBER,FCMATERIAL,FCCOLOR,"
 			+ "FCSUPPLIER,FCGENERALMANAGER,FCDIRECTLYRESPONSIBLE,FITAG,FCBILL,FDBILLINGDATE,FCLOCATION,FDUSEDATE,FNPRICE,FCGENERALLOCATION,FCSECURE,FCSTART,FCPLACE) "
 			+ "values "
 			+ "(#{idLedger}, #{idSubclass}, #{description}, #{brand}, #{model}, #{serialNumber}, #{material}, #{color},"
 			+ "#{supplier}, #{generalManager}, #{directlyResponsible}, #{tag},"
 			+ "#{bill}, #{billingDate}, #{location}, #{useDate}, #{price}, #{generalLocation}, #{secure}, #{start}, #{place})";
 	
-	static final String UPDASSET = "UPDATE CISDB.TACISASSET SET FCDESCRIPTION=#{description},FCBRAND=#{brand},FCMODEL=#{model},"
+	static final String UPDASSET = "UPDATE ICSDB.TAICSASSET SET FCDESCRIPTION=#{description},FCBRAND=#{brand},FCMODEL=#{model},"
 			+ "FCSERIALNUMBER=#{serialNumber}, FCMATERIAL=#{material}, FCCOLOR=#{color},FCSUPPLIER=#{supplier}, FCGENERALMANAGER=#{generalManager},"
 			+ "FCDIRECTLYRESPONSIBLE=#{directlyResponsible}, FCBILL=#{bill},FDBILLINGDATE=#{billingDate},FCLOCATION=#{location},FDUSEDATE=#{useDate},"
 			+ "FNPRICE=#{price},FCGENERALLOCATION=#{generalLocation},FCSECURE=#{secure},FCSTART=#{start},FCPLACE=#{place},FDLASTUPDATE=CURRENT_TIMESTAMP WHERE FITAG=#{tag}";
 	
-	static final String DELASSET = "DELETE FROM CISDB.TACISASSET WHERE FITAG=#{tag}";
+	static final String DELASSET = "DELETE FROM ICSDB.TAICSASSET WHERE FITAG=#{tag}";
 	
-	static final String SELDIRRESP = "select distinct(IF(FCDIRECTLYRESPONSIBLE is not null,FCDIRECTLYRESPONSIBLE, '')) directlyResponsible , min(FITAG) 'tag' from cisdb.tacisasset group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC";
+	static final String SELDIRRESP = "select distinct(IF(FCDIRECTLYRESPONSIBLE is not null,FCDIRECTLYRESPONSIBLE, '')) directlyResponsible , min(FITAG) 'tag' from ICSDB.taICSasset group by FCDIRECTLYRESPONSIBLE ORDER BY 1 ASC";
 
 	@Select(SELASSET+ORDERBY)
 	@Options(statementType = StatementType.CALLABLE)

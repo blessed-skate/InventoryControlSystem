@@ -11,16 +11,16 @@ import org.apache.ibatis.mapping.StatementType;
 
 public interface RoleDao {
 
-	// static final String SPCISSELUSER = "{CALL CISDB.SPCISSELUSER("
+	// static final String SPICSSELUSER = "{CALL ICSDB.SPICSSELUSER("
 	// + "#{username, mode=IN, jdbcType=VARCHAR}"
 	// + ")}";
 
 
-	static final String SPCISSELROLES = "SELECT FIIDROLE 'id', FCROLE role, FCDESCRIPTION description, FDREGISTERDATE registerdate, FDLASTUPDATE lastupdate FROM cisdb.CTCISROLE";
+	static final String SPICSSELROLES = "SELECT FIIDROLE 'id', FCROLE role, FCDESCRIPTION description, FDREGISTERDATE registerdate, FDLASTUPDATE lastupdate FROM ICSDB.CTICSROLE";
 
-	static final String INSROLE = "INSERT INTO cisdb.CTCISROLE (FCROLE, FCDESCRIPTION) VALUES (#{role},#{description})";
+	static final String INSROLE = "INSERT INTO ICSDB.CTICSROLE (FCROLE, FCDESCRIPTION) VALUES (#{role},#{description})";
 	
-	@Select(SPCISSELROLES)
+	@Select(SPICSSELROLES)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract List<Role> getRoles();
 	

@@ -20,7 +20,7 @@ function doOnLoad() {
 	login_form.loadStruct("xml/login_form.xml");
 	login_form.setItemFocus("username");
 	login_form.setFontSize("15px");
-
+	
 	login_form.attachEvent("onButtonClick", function(id) {
 		if (id == "login") {
 			sendLoginForm();

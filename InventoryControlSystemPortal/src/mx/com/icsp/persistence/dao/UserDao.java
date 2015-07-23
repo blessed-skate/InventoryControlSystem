@@ -12,27 +12,27 @@ import org.apache.ibatis.mapping.StatementType;
 
 public interface UserDao {
 
-	static final String SPCISSELUSER = "SELECT FIIDUSER 'id', fcusername username, fcauthority authority, fcenabled enabled, fcname 'name', "
+	static final String SPICSSELUSER = "SELECT FIIDUSER 'id', fcusername username, fcauthority authority, fcenabled enabled, fcname 'name', "
 			+ "fclastname lastname, fcsex sex, fdbirth birth, fdregisterdate registerdate, fdlastupdate lastupdate "
-			+ "FROM cisdb.TACISUSER WHERE fcusername = #{username}";
+			+ "FROM ICSDB.TAICSUSER WHERE fcusername = #{username}";
 	
-	static final String SPCISSELUSERS = "SELECT FIIDUSER 'id', IF(fcusername IS NOT NULL, fcusername, '') username, IF(fcauthority IS NOT NULL, fcauthority, '') authority, IF(fcenabled IS NOT NULL, fcenabled, '0') enabled, IF(fcname IS NOT NULL, fcname, '') 'name', "
+	static final String SPICSSELUSERS = "SELECT FIIDUSER 'id', IF(fcusername IS NOT NULL, fcusername, '') username, IF(fcauthority IS NOT NULL, fcauthority, '') authority, IF(fcenabled IS NOT NULL, fcenabled, '0') enabled, IF(fcname IS NOT NULL, fcname, '') 'name', "
 			+ "IF(fclastname IS NOT NULL, fclastname, '') lastname, IF(fcsex IS NOT NULL, fcsex, 'M') sex, IF(fdbirth IS NOT NULL, fdbirth, CURRENT_TIMESTAMP) birth, IF(fdregisterdate IS NOT NULL, fdregisterdate, CURRENT_TIMESTAMP) registerdate, IF(fdlastupdate IS NOT NULL, fdlastupdate, CURRENT_TIMESTAMP) lastupdate "
-			+ "FROM cisdb.TACISUSER ORDER BY 1 ASC" ;
+			+ "FROM ICSDB.TAICSUSER ORDER BY 1 ASC" ;
 
-	static final String INSUSER = "INSERT INTO cisdb.TACISUSER (FCUSERNAME, FCPASSWORD, FCAUTHORITY, FCENABLED, FCNAME, FCLASTNAME, FCSEX, FDBIRTH)"
+	static final String INSUSER = "INSERT INTO ICSDB.TAICSUSER (FCUSERNAME, FCPASSWORD, FCAUTHORITY, FCENABLED, FCNAME, FCLASTNAME, FCSEX, FDBIRTH)"
 			+ "VALUES (#{username},#{password},#{authority},#{enabled},#{name},#{lastName},#{sex},#{birth})";
 	
-	static final String UPDUSER = "UPDATE cisdb.TACISUSER SET FCUSERNAME=#{username}, FCPASSWORD=#{password}, FCAUTHORITY=#{authority}, FCENABLED=#{enabled}, FCNAME=#{name}, FCLASTNAME=#{lastName},"
+	static final String UPDUSER = "UPDATE ICSDB.TAICSUSER SET FCUSERNAME=#{username}, FCPASSWORD=#{password}, FCAUTHORITY=#{authority}, FCENABLED=#{enabled}, FCNAME=#{name}, FCLASTNAME=#{lastName},"
 			+ " FCSEX=#{sex}, FDBIRTH=#{birth}, FDLASTUPDATE=CURRENT_TIMESTAMP WHERE FIIDUSER=#{id}";
 			
-	static final String DELUSER = "DELETE FROM cisdb.TACISUSER WHERE FIIDUSER=#{idUser}";
+	static final String DELUSER = "DELETE FROM ICSDB.TAICSUSER WHERE FIIDUSER=#{idUser}";
 	
-	@Select(SPCISSELUSER)
+	@Select(SPICSSELUSER)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract User getUser(Map<String, Object> params);
 	
-	@Select(SPCISSELUSERS)
+	@Select(SPICSSELUSERS)
 	@Options(statementType = StatementType.CALLABLE)
 	public abstract List<User> getUsers();
 	

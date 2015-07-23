@@ -32,8 +32,8 @@
 	<item type="block" inputWidth="auto">
 <!-- 		<item type="button" name="validateForm" value="Validar" width="70"/> -->
 <!-- 		<item type="newcolumn" /> -->
-		<item type="button" name="saveForm" value="Guardar" width="70"/>
+		<item type="button" name="saveForm" value="Guardar" width="100"/>
 <!-- 		<item type="newcolumn" /> -->
-		<item type="button" name="cancelForm" value="Cancelar" width="70"/>
+		<item type="button" name="cancelForm" value="Cancelar" width="100"/>
 	</item>
 </items>

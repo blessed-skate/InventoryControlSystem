@@ -1,4 +1,17 @@
+function replaceAccent(form){
+	var array = ["description", "brand", "model", "serialNumber", "material", "color",
+			"supplier", "generalManager", "directlyResponsible", "bill", "location",
+			"place", "generalLocation", "secure", "start" ];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
 function saveForm(){
+	replaceAccent(insert_form);	
 	insert_form.send("myAsset.do?method=insertAsset","post",function(loader, response){
 		try{
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
@@ -17,11 +30,15 @@ function saveForm(){
 }
 
 function reloadSelect(value){
-	insert_form.reloadOptions("idSubclass", "myCatalog.do?method=getLedger&idLedger="+value);
-	if(insert_form.getItemValue("idSubclass") != "-1")
-		insert_form.setItemValue("tag", value+insert_form.getItemValue("idSubclass"));
-	else
-		insert_form.setItemValue("tag", value);
+	try{
+		insert_form.reloadOptions("idSubclass", "myCatalog.do?method=getLedger&idLedger="+value);
+		if(insert_form.getItemValue("idSubclass") != "-1")
+			insert_form.setItemValue("tag", value+insert_form.getItemValue("idSubclass"));
+		else
+			insert_form.setItemValue("tag", value);
+	}catch(e){
+		window.location.reload(true);
+	}
 }
 
 function fillTag(value){
@@ -87,6 +104,7 @@ function enabledAssetForm(){
 }
 
 function updateAsset(){
+	replaceAccent(search_form);
 	search_form.send("myAsset.do?method=updateAsset","get",function(loader, response){
 		try{
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;

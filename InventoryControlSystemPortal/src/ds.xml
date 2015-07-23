@@ -4,6 +4,6 @@
 
 <beans>
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:/jdbc/CISPORTAL/CIS_PORTAL_USER/CISDB" />
+		<property name="jndiName" value="java:/jdbc/ICSPORTAL/ICS_PORTAL_USER/ICSDB" />
 	</bean>
 </beans>

@@ -2,12 +2,16 @@ function updateGuardGrid(directlyResponsible){
 	try{	
 		guard_grid.clearAndLoad("myAsset.do?method=getDirectlyResponsibleAsset&directlyResponsible="+directlyResponsible, function(){});
 	}catch(err){
-		showResponseXmlAlertError(err.message);
+		window.location.reload(true);
 	}
 }
 
 function reloadDirectlyResponsibleSelect(){
-	guard_form.reloadOptions("directlyResponsible", "myAsset.do?method=getDirectlyResponsible");
+	try{
+		guard_form.reloadOptions("directlyResponsible", "myAsset.do?method=getDirectlyResponsible");
+	}catch(e){
+		window.location.reload(true);
+	}
 }
 
 function getAssetGuardPdf(){

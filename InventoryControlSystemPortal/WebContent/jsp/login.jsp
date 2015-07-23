@@ -51,8 +51,6 @@ div#winVP {
 		<input name="j_username" type="hidden" id="j_username" /> <input
 			name="j_password" type="hidden" id="j_password" />
 	</form>
-	<div>Error:
-		<html:errors name="ERROR_MESSAGE" />
-	</div>
+	<div><html:errors name="ERROR_MESSAGE" /></div>
 </body>
 </html>

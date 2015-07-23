@@ -13,13 +13,13 @@ import org.apache.ibatis.mapping.StatementType;
 
 public interface PropertyDao {
 
-	// static final String SPCISSELUSER = "{CALL CISDB.SPCISSELUSER("
+	// static final String SPICSSELUSER = "{CALL ICSDB.SPICSSELUSER("
 	// + "#{username, mode=IN, jdbcType=VARCHAR}"
 	// + ")}";
 
-	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value', FCDEFAULT as 'defaultValue' from CISDB.CTCISPROPERTY";
+	static final String SELPROPERTY = "select FCIDPROPERTY as 'key', FCVALUE as 'value', FCDEFAULT as 'defaultValue' from ICSDB.CTICSPROPERTY";
 	
-	static final String INSPROPERTY = "INSERT INTO cisdb.CTCISPROPERTY (FCIDPROPERTY, FCVALUE) VALUES (#{key},#{value})";
+	static final String INSPROPERTY = "INSERT INTO ICSDB.CTICSPROPERTY (FCIDPROPERTY, FCVALUE) VALUES (#{key},#{value})";
 
 	@Select(SELPROPERTY)
 	@Options(statementType=StatementType.PREPARED)

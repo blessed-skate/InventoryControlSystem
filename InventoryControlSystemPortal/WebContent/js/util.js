@@ -87,6 +87,8 @@ function downloadFile(url, params){
 	downloadForm.action = url;
 	downloadForm.method = "POST";
 	downloadForm.target = "download_frame";
+	downloadForm.acceptCharset = "utf-8";  
+	downloadForm.enctype = "application/x-www-form-urlencoded";
 	document.body.appendChild(downloadForm);
 	
 	// add params to form
@@ -94,7 +96,7 @@ function downloadFile(url, params){
 		var input = document.createElement("INPUT");
 		input.type = "hidden";
 		input.name = a;
-		input.value = params[a];
+		input.value = stripVowelAccent(params[a]);
 		downloadForm.appendChild(input);
 		input = null;
 	}
@@ -107,4 +109,53 @@ function downloadFile(url, params){
 		document.body.removeChild(downloadForm);
 		downloadForm = null;
 	}, 1);
+}
+
+function stripVowelAccent(str) {
+	if (str != null && str != "") {
+		var rExps = [ {
+			re : /[\xC0-\xC6]/g,
+			ch : 'A'
+		}, {
+			re : /[\xE0-\xE6]/g,
+			ch : 'a'
+		}, {
+			re : /[\xC8-\xCB]/g,
+			ch : 'E'
+		}, {
+			re : /[\xE8-\xEB]/g,
+			ch : 'e'
+		}, {
+			re : /[\xCC-\xCF]/g,
+			ch : 'I'
+		}, {
+			re : /[\xEC-\xEF]/g,
+			ch : 'i'
+		}, {
+			re : /[\xD2-\xD6]/g,
+			ch : 'O'
+		}, {
+			re : /[\xF2-\xF6]/g,
+			ch : 'o'
+		}, {
+			re : /[\xD9-\xDC]/g,
+			ch : 'U'
+		}, {
+			re : /[\xF9-\xFC]/g,
+			ch : 'u'
+		}, {
+			re : /[\xD1]/g,
+			ch : 'N'
+		}, {
+			re : /[\xF1]/g,
+			ch : 'n'
+		} ];
+
+		for (var i = 0, len = rExps.length; i < len; i++)
+			str = str.replace(rExps[i].re, rExps[i].ch);
+
+		return str;
+	} else {
+		return "";
+	}
 }
