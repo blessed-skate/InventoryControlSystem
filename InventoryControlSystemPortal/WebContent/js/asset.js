@@ -1,15 +1,3 @@
-function replaceAccent(form){
-	var array = ["description", "brand", "model", "serialNumber", "material", "color",
-			"supplier", "generalManager", "directlyResponsible", "bill", "location",
-			"place", "generalLocation", "secure", "start" ];
-	
-	for (var i = 0, len = array.length; i < len; i++){
-		var value = array[i];
-		var replace = form.getItemValue(value);
-		form.setItemValue(value, stripVowelAccent(replace));
-	}
-}
-
 function saveForm(){
 	replaceAccent(insert_form);	
 	insert_form.send("myAsset.do?method=insertAsset","post",function(loader, response){
@@ -148,7 +136,3 @@ function deleteAsset(){
 		});
 	});
 }
-
-//dhtmlxError.catchError("load", function(a, b, data) {
-//	showResponseXmlAlertError('${loading_err}' + '\n' + '${reload_msg}');
-//});

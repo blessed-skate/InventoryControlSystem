@@ -18,6 +18,7 @@ function getAssetGuardPdf(){
 	var directlyResponsible = guard_form.getItemValue("directlyResponsible");
 	if(directlyResponsible != null && directlyResponsible != "" && directlyResponsible != -1){
 		if(guard_form.validate())
+			replaceGuardAccent(guard_form);
 			downloadFile("myReport.do?method=getGuardPdf", guard_form.getFormData());
 	}else{
 		showResponseXmlAlertError("Favor de seleccione un responsable");

@@ -159,5 +159,6 @@ function doQueryFormAcept(){
 }
 
 function getAssetReport(){
+	replaceAccent(search_form);
 	downloadFile("myReport.do?method=getAssetReport", search_form.getFormData());
 }

@@ -96,7 +96,7 @@ function downloadFile(url, params){
 		var input = document.createElement("INPUT");
 		input.type = "hidden";
 		input.name = a;
-		input.value = stripVowelAccent(params[a]);
+		input.value = params[a];
 		downloadForm.appendChild(input);
 		input = null;
 	}
@@ -109,6 +109,28 @@ function downloadFile(url, params){
 		document.body.removeChild(downloadForm);
 		downloadForm = null;
 	}, 1);
+}
+
+function replaceAccent(form){
+	var array = ["description", "brand", "model", "serialNumber", "material", "color",
+			"supplier", "generalManager", "directlyResponsible", "bill", "location",
+			"place", "generalLocation", "secure", "start" ];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function replaceGuardAccent(form){
+	var array = ["costCenter", "area", "department"];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
 }
 
 function stripVowelAccent(str) {
