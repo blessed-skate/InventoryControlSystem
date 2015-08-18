@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />
+	<item type="input" label="Id Cuenta Contable" required="true" name="idLedger" maxLength="3" validate="[0-9]+"/>
+	<item type="input" label="Subclase" required="true" name="subclass" maxLength="2" validate="[0-9]+"/>
+	<item type="input" label="Descripcion" required="true" name="description" maxLength="200" validate="NotEmpty"/>
+</items>

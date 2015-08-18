@@ -4,8 +4,8 @@
 		text="Exportar">
 		<item type="button" id="export_excel" text="Excel" img="stylesheet.gif"
 			action="exportExcel" />
-		<item type="button" id="export_pdf" text="Pdf" img="ico_pdf_18.gif"
-			action="exportPdf" />
+<!-- 		<item type="button" id="export_pdf" text="Pdf" img="ico_pdf_18.gif" -->
+<!-- 			action="exportPdf" /> -->
 	</item>
 	<item id="sep1" type="separator" />
 	<item type="button" id="refresh" text="Actualizar" img="redo.gif" 

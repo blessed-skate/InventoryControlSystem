@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+    <item id="file" text="Archivo" img="other.gif">
+<!--         <item id="new" text="Nuevo" img="new.gif" imgdis="new_dis.gif"> -->
+<!--             <hotkey>Ctrl+N</hotkey> -->
+<!--         </item> -->
+        <item id="catalogs" text="Catalogos">
+        	<item id="user" text="Usuarios" img="paste.gif"/>
+            <item id="ledger" text="Cuenta contable" img="database.gif"/>
+            <item id="property" text="Propiedades del sistema" img="settings.gif"/>
+        </item>
+        <item id="ms2" type="separator"/>
+        <item id="logOut" text="Salir"/> 
+    </item>
+    <item id="help" text="Ayuda">
+    	<item id="userM" text="Manual de usuario"/>
+        <item id="about" text="Acerca de..."/>
+    </item>
+</menu>

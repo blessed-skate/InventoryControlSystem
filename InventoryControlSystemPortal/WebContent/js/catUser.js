@@ -39,9 +39,9 @@ function doCreateCatUserWindow(){
 		}
 	});
 
-	createContextMenu();
+	createContextMenuUser();
 	
-	createGrid();
+	createUserGrid();
 }
 
 function createAdminUserAction(action, rId){
@@ -89,10 +89,11 @@ function createAdminUserAction(action, rId){
 			+'<item type="select" label="Role" name="authority" required="true">'
 			+'<option text="Administrador" value="ROLE_ADMIN"/>'
 			+'<option text="Usuario" value="ROLE_USER"/>'
+			+'<option text="Consulta" value="ROLE_QUERY"/>'
 			+'</item>'
 			+'<item type="input" label="Nombre(s)" required="true" name="nameUser" maxLength="50" validate="NotEmpty" value="'+cat_user_grid.cells(rId,2).getValue()+'"/>'
 			+'<item type="input" label="Apellido(s)" required="true" name="lastnameUser" maxLength="50" validate="NotEmpty" value="'+cat_user_grid.cells(rId,3).getValue()+'"/>'
-			+'<item type="calendar" dateFormat="%d/%m/%Y" name="birthUser" label="Fecha de Nacimiento" />'
+			+'<item type="calendar" dateFormat="%d/%m/%Y" name="birthUser" label="Fecha de Nacimiento" value="'+cat_user_grid.cells(rId,5).getValue()+'"/>'
 			+'<item type="fieldset" name="dataSexUser" label="Sexo" inputWidth="auto">'
 			+'<item type="radio" name="sexUser" label="Masculino" value="M" position="label-right" checked="true"/>'
 			+'<item type="newcolumn" />'
@@ -108,8 +109,9 @@ function createAdminUserAction(action, rId){
 			+'</item>'
 			+'</items>';
 		cat_user_form.loadStruct(listXMLString, function(){});
-		if(cat_user_form.validate()){
+		
 			cat_user_form.attachEvent("onButtonClick", function(name){
+				if(cat_user_form.validate()){
 				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"¿Desea actualizar el usuario?",
 					callback:function(result){
 						if(result){
@@ -117,8 +119,9 @@ function createAdminUserAction(action, rId){
 						}
 					}
 				});	
+				}
 			});
-		}
+			
 	}else if(action==3){
 		var listXMLString='<items>'
 			+'<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />'
@@ -177,6 +180,7 @@ function createAdminUserAction(action, rId){
 }
 
 function doInsertFormSaveUser(){
+	replaceUserAccent(cat_user_form);
 	cat_user_form.send("adminUser.do?method=insertUser","post",function(loader, response){
 		try{
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
@@ -184,7 +188,7 @@ function doInsertFormSaveUser(){
 			if(responseCode == 0){
 				showResponseXmlAlert(responseMessage);
 				adminServiceWindow.window('adminServiceWindow2').close();
-				createGrid();
+				createUserGrid();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}
@@ -195,6 +199,7 @@ function doInsertFormSaveUser(){
 }
 
 function doUpdateFormSaveUser(){
+	replaceUserAccent(cat_user_form);
 	cat_user_form.send("adminUser.do?method=updateUser","post",function(loader, response){
 		try{
 			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
@@ -202,7 +207,7 @@ function doUpdateFormSaveUser(){
 			if(responseCode == 0){
 				showResponseXmlAlert(responseMessage);
 				adminServiceWindow.window('adminServiceWindow2').close();
-				createGrid();
+				createUserGrid();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}
@@ -220,7 +225,7 @@ function doDeleteFormSaveUser(){
 			if(responseCode == 0){
 				showResponseXmlAlert(responseMessage);
 				adminServiceWindow.window('adminServiceWindow2').close();
-				createGrid();
+				createUserGrid();
 			}else{
 				showResponseXmlAlertError(responseMessage);
 			}
@@ -236,7 +241,7 @@ function doOnNewItemUser(){
 	cat_user_form.setItemFocus("username");
 }
 
-function createGrid(){
+function createUserGrid(){
 	cat_user_grid = cat_user_layout.cells("a").attachGrid();
 	cat_user_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
 	cat_user_grid.setHeader("Usuario, Role, Nombre(s), Apellido(s), Sexo, Naciemiento, Registro, Última actualización");
@@ -258,7 +263,7 @@ function createGrid(){
 	});
 }
 
-function createContextMenu(){
+function createContextMenuUser(){
 	try{
 		menuUser = new dhtmlXMenuObject();
 		menuUser.setIconsPath("../common/images/");

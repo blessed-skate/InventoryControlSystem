@@ -1,11 +1,15 @@
 package mx.com.icsc.common;
 
+import java.util.Date;
+
+
 public class Ledger {
 	
 	private int id;
 	private String idSubclass;
 	private String description;
-	
+	private Date lastUpdate;
+	private Date registerDate;
 	public int getId() {
 		return id;
 	}
@@ -24,5 +28,18 @@ public class Ledger {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+	
 	
 }

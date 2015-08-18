@@ -102,7 +102,11 @@ function downloadFile(url, params){
 	}
 	
 	// submit form
-	downloadForm.submit();
+	try{
+		downloadForm.submit();
+	}catch(e){
+		showResponseXmlAlertError("Ocurrio un error al enviar el formulario");
+	}
 	
 	// clear form
 	window.setTimeout(function(){
@@ -125,6 +129,26 @@ function replaceAccent(form){
 
 function replaceGuardAccent(form){
 	var array = ["costCenter", "area", "department"];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function replaceUserAccent(form){
+	var array = ["nameUser", "lastnameUser"];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function replaceLedgerAccent(form){
+	var array = ["description"];
 	
 	for (var i = 0, len = array.length; i < len; i++){
 		var value = array[i];

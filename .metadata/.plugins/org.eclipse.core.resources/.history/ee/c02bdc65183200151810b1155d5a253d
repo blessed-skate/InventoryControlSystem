@@ -1,0 +1,53 @@
+var dhxWinsAbout, about_window, about_layout;
+function doCreateCatProperty(){	
+	dhxWinsAbout = new dhtmlXWindows();
+	dhxWinsAbout.attachViewportTo("mainDiv");
+
+	about_window = dhxWinsAbout.createWindow({
+		id : "aboutWindow",
+		left : 0,
+		right : 0,
+		width : 1000,
+		height : 600,
+		center : true,
+		move : false,
+		modal : true,
+		resize : false,
+		caption : "Acerca...",
+		header : true
+	});
+	about_window.button('park').hide();
+	about_window.button('minmax').hide();
+	about_window.keepInViewport(true);
+
+	about_layout = about_window.attachLayout({
+	    pattern: "2U",
+	    cells: [
+	        {id: "a", text: "Acerca...", header: false, width: 370},
+	    ]
+	});
+	
+	cat_property_form = cat_property_layout.cells("a").attachForm();
+	cat_property_form.load("xml/cat_property_form.xml");
+	cat_property_form.attachEvent("onButtonClick", function(name){
+		window[name]();
+	});
+	cat_property_form.lock();
+	
+	cat_property_toolbar = cat_property_layout.cells("a").attachToolbar({
+		icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
+		xml: "xml/cat_property_toolbar.xml" 
+	});
+	
+	cat_property_grid = cat_property_layout.cells("b").attachGrid();
+	cat_property_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+	cat_property_grid.setHeader("Id Propiedad,Valor");
+	cat_property_grid.attachHeader("#text_filter,#text_filter");
+	cat_property_grid.setColTypes("ro,ro");
+	cat_property_grid.setInitWidths("150,150");
+	cat_property_grid.setColSorting("str,str");
+	cat_property_grid.setColAlign("left,left");
+	cat_property_grid.init();
+	cat_property_grid.enableAutoHeight();
+	cat_property_grid.loadXML("adminProperty.do?method=getPropertys");
+}

@@ -6,37 +6,37 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Float" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="float"/>
-			<item value="place"/>
-			<item value="param"/>
-			<item value="gerParameter"/>
-			<item value="ger"/>
-			<item value="getAssetByTag"/>
-			<item value="price"/>
-			<item value="bill"/>
+			<item value="rig"/>
+			<item value="&quot;ERROR_MESSAGE&quot;"/>
+			<item value="send"/>
+			<item value="CIS"/>
+			<item value="CISDB"/>
+			<item value="to_"/>
+			<item value="to_timestamp(&apos;2015-07-21 21:18:22.0&apos;,&apos;null&apos;)"/>
+			<item value="to_timestamp(&apos;2015-06-24 16:54:06.0&apos;,&apos;null&apos;)"/>
 		</list>
 		<list key="replacehistory">
+			<item value="ActionErrors.GLOBAL_MESSAGE"/>
+			<item value="ICS"/>
+			<item value="ICSDB"/>
+			<item value="null"/>
+			<item value="icsdb"/>
 			<item value="getParameter"/>
 			<item value="get"/>
 			<item value=""/>
-			<item value="import_excel_window"/>
-			<item value="headerDiv"/>
-			<item value="header_layout"/>
-			<item value="login_form"/>
-			<item value="login_window"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="265" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="909" key="DIALOG_X_ORIGIN"/>
-		<item value="117" key="DIALOG_Y_ORIGIN"/>
+		<item value="644" key="DIALOG_X_ORIGIN"/>
+		<item value="74" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

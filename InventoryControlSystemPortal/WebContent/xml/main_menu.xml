@@ -7,13 +7,13 @@
         <item id="catalogs" text="Catalogos">
         	<item id="user" text="Usuarios" img="paste.gif"/>
             <item id="ledger" text="Cuenta contable" img="database.gif"/>
-            <item id="property" text="Propiedades del sistema" img="settings.gif"/>
+<!--             <item id="property" text="Propiedades del sistema" img="settings.gif"/> -->
         </item>
         <item id="ms2" type="separator"/>
         <item id="logOut" text="Salir"/> 
     </item>
-    <item id="help" text="Ayuda">
-    	<item id="about" text="Manual de usuario"/>
-        <item id="about" text="Acerca de..."/>
-    </item>
+<!--     <item id="help" text="Ayuda"> -->
+<!--     	<item id="userM" text="Manual de usuario"/> -->
+<!--         <item id="about" text="Acerca de..."/> -->
+<!--     </item> -->
 </menu>

@@ -45,6 +45,9 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
   </listener>
+  <session-config>
+        <session-timeout>60</session-timeout>
+  </session-config>
   <error-page>
 	  <error-code>401</error-code>
 	  <location>/Error.do?code=401</location>

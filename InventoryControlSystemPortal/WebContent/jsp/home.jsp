@@ -72,8 +72,11 @@ body{
 		
 		main_div = new dhtmlXLayoutObject("mainDiv", "1C");
 		main_menu = main_div.cells("a").attachMenu({
-			icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
-			xml: "xml/main_menu.xml"
+			icon_path: "imgs/dhtmlx/dhtmlxToolbar/"
+		});
+		
+		main_menu.loadStruct("xml/main_menu.xml", function(){
+			defineRoleMenu();
 		});
 		
 		main_menu.attachEvent("onClick", function(id, zoneId, cas){
@@ -92,6 +95,9 @@ body{
 				break;
 			case "logOut":
 				logOut();
+				break;
+			case "about":
+				about();
 				break;
 			default:
 				showError("ERROR...");
@@ -256,6 +262,8 @@ body{
 		function defineRole(){
 			home_tabbar.tabs("a1").disable("a2");
 			home_tabbar.tabs("a3").disable();
+		}
+		function defineRoleMenu(){
 			main_menu.removeItem("catalogs");
 		}
 	</script>
@@ -263,6 +271,9 @@ body{
 <authz:authorize ifNotGranted="ROLE_ADMIN, ROLE_QUERY" ifAllGranted="ROLE_USER" >
 	<script type="text/javascript">
 		function defineRole(){
+		
+		}
+		function defineRoleMenu(){
 			main_menu.removeItem("catalogs");
 		}
 	</script>
@@ -271,6 +282,9 @@ body{
 	<script type="text/javascript">
 		function defineRole(){
 			
+		}
+		function defineRoleMenu(){
+		
 		}
 	</script>
 </authz:authorize>

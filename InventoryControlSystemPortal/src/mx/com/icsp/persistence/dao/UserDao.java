@@ -1,3 +1,4 @@
+
 package mx.com.icsp.persistence.dao;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public interface UserDao {
 			+ "fclastname lastname, fcsex sex, fdbirth birth, fdregisterdate registerdate, fdlastupdate lastupdate "
 			+ "FROM ICSDB.TAICSUSER WHERE fcusername = #{username}";
 	
-	static final String SPICSSELUSERS = "SELECT FIIDUSER 'id', IF(fcusername IS NOT NULL, fcusername, '') username, IF(fcauthority IS NOT NULL, fcauthority, '') authority, IF(fcenabled IS NOT NULL, fcenabled, '0') enabled, IF(fcname IS NOT NULL, fcname, '') 'name', "
+	static final String SPICSSELUSERS = "SELECT FIIDUSER 'id', IF(fcusername IS NOT NULL, fcusername, '') username, "
+			+ "CASE fcauthority WHEN 'ROLE_ADMIN' THEN 'Administrador' WHEN 'ROLE_QUERY' THEN 'Consulta' ELSE 'Usuario' END authority, "
+			+ "IF(fcenabled IS NOT NULL, fcenabled, '0') enabled, IF(fcname IS NOT NULL, fcname, '') 'name', "
 			+ "IF(fclastname IS NOT NULL, fclastname, '') lastname, IF(fcsex IS NOT NULL, fcsex, 'M') sex, IF(fdbirth IS NOT NULL, fdbirth, CURRENT_TIMESTAMP) birth, IF(fdregisterdate IS NOT NULL, fdregisterdate, CURRENT_TIMESTAMP) registerdate, IF(fdlastupdate IS NOT NULL, fdlastupdate, CURRENT_TIMESTAMP) lastupdate "
 			+ "FROM ICSDB.TAICSUSER ORDER BY 1 ASC" ;
 

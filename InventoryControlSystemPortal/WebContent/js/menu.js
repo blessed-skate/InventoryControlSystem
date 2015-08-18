@@ -14,6 +14,10 @@ function catRole(){
 	doCreateCatRole();
 }
 
+function aboutSystem(){
+	doCreateAbout();
+}
+
 function logOut(){
 	showError("Saliendo...");
 }

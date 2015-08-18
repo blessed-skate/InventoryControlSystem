@@ -1,7 +1,7 @@
+var adminServiceWindow,adminServiceWindow2,adminServiceLayout,menuLedger;
 function doCreateCatLedger(){	
 	dhxWinsLedger = new dhtmlXWindows();
 	dhxWinsLedger.attachViewportTo("mainDiv");
-
 	cat_ledger_window = dhxWinsLedger.createWindow({
 		id : "catLedgerWindow",
 		left : 0,
@@ -19,44 +19,166 @@ function doCreateCatLedger(){
 	cat_ledger_window.button('minmax').hide();
 	cat_ledger_window.keepInViewport(true);
 
-	cat_ledger_layout = cat_ledger_window.attachLayout({
-	    pattern: "2U",
-	    cells: [
-	        {id: "a", text: "Nueva cuenta contable", header: false, width: 370},
-	        {id: "b", text: "Cuentas contables", header: false}
-	    ]
-	});
-	
-	cat_ledger_form = cat_ledger_layout.cells("a").attachForm();
-	cat_ledger_form.load("xml/cat_ledger_form.xml");
-	cat_ledger_form.attachEvent("onButtonClick", function(name){
-		window[name]();
-	});
-	cat_ledger_form.lock();
-	
+	cat_ledger_layout = cat_ledger_window.attachLayout({pattern: "1C", cells: [{id: "a", text: "Nueva cuenta contable", header: false, width: 370}]});
+
 	cat_ledger_toolbar = cat_ledger_layout.cells("a").attachToolbar({
 		icon_path: "imgs/dhtmlx/dhtmlxToolbar/",
 		xml: "xml/cat_ledger_toolbar.xml" 
 	});
-	
-	cat_ledger_grid = cat_ledger_layout.cells("b").attachGrid();
-	cat_ledger_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
-	cat_ledger_grid.setHeader("&nbsp;, Nombre Usuario, Contraseña, Role, Enable, Nombre(s), Apellido(s), Sexo, Fecha Naciemiento, Fecha Registro, Fecha Ultima Actualizacion");
-	cat_ledger_grid.attachHeader("#rspan,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter,#text_filter");
-	cat_ledger_grid.setColTypes("sub_row_grid,ro,ro,ro,ro,ro,ro,ro,price,ro,ro");
-	cat_ledger_grid.setInitWidths("30,80,100,100,120,80,100,80,80,*,*");
-	cat_ledger_grid.setColSorting("na,int,str,str,str,str,str,str,str,str,str");
-	cat_ledger_grid.setColAlign("left,left,left,left,left,letf,left,left,left,left,left");
-	cat_ledger_grid.init();
-	cat_ledger_grid.enableAutoHeight();
+
+	cat_ledger_toolbar.attachEvent("onClick", function(id){
+		switch (id){
+		case "new_item":
+			createAdminLedgerAction(1,"");
+			break;
+		default:
+			showError("ERROR...");
+		}
+	});
+
+	createContextMenuLedger();	
+	createLedgerGrid();	
+}
+
+function createAdminLedgerAction(action, rId){
+	adminServiceWindow=new dhtmlXWindows();
+	var wtitle=null;
+	var width=400, height=200;
+	if(action==1){
+		wtitle="Insertar nueva cuenta contable";
+	}else if(action==2){
+		wtitle="Actualizar Cuenta contable";
+		height=230;
+	}
+	adminServiceWindow2=adminServiceWindow.createWindow('adminServiceWindow2',0,20,width,height);
+	adminServiceWindow.window('adminServiceWindow2').setText(wtitle);
+	adminServiceWindow.window('adminServiceWindow2').denyMove();
+	adminServiceWindow.window('adminServiceWindow2').denyResize();
+	adminServiceWindow.window('adminServiceWindow2').centerOnScreen();
+	adminServiceWindow.window('adminServiceWindow2').button('park').hide();
+	adminServiceWindow.window('adminServiceWindow2').setModal(1);
+	adminServiceLayout=adminServiceWindow2.attachLayout('1C');
+	adminServiceLayout.cells('a').hideHeader();
+	adminServiceLayout.cells('a').fixSize(1,1);
+	cat_ledger_form = adminServiceLayout.cells("a").attachForm();
+
+	if(action==1){
+		cat_ledger_form.load("xml/cat_ledger_form.xml");
+		cat_ledger_form.attachEvent("onButtonClick", function(name){
+			if(cat_ledger_form.validate()){
+				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"¿Desea insertar una nueva cuenta contable?",
+					callback:function(result){
+						if(result){
+							doInsertFormSaveLedger();
+						}
+					}
+				});
+			}
+		});
+	}else if(action==2){
+		var listXMLString='<items>'
+			+'<item type="settings" position="label-left" labelWidth="120" inputWidth="200" />'
+			+'<item type="input" label="Id Cuenta Contable" required="true" name="idLedger" maxLength="3" disabled="true" value="'+cat_ledger_grid.cells(rId,0).getValue()+'"/>'
+			+'<item type="input" label="Subclase" required="true" name="subclass" maxLength="2" disabled="true" value="'+cat_ledger_grid.cells(rId,1).getValue()+'"/>'
+			+'<item type="input" label="Descripcion" required="true" name="description" maxLength="200" validate="NotEmpty" value="'+cat_ledger_grid.cells(rId,2).getValue()+'"/>'
+			+'<item type="block" inputWidth="auto">'
+			+'<item type="button" name="doUpdateFormSaveLedger" value="Actualizar" width="70"/>'
+			+'</item>'
+			+'</items>';
+		cat_ledger_form.loadStruct(listXMLString, function(){});
+		cat_ledger_form.attachEvent("onButtonClick", function(name){
+			if(cat_ledger_form.validate()){
+				dhtmlx.confirm({title:"",ok:"Si",cancel:"No",text:"¿Desea actualizar la cuenta contable " + rId + "?",
+					callback:function(result){
+						if(result){
+							doUpdateFormSaveLedger();
+						}
+					}
+				});
+			}
+		});
+	}
 }
 
 function doInsertFormSaveLedger(){
-	showError("Insertando nuevo usuario...");
+	replaceLedgerAccent(cat_ledger_form);
+	cat_ledger_form.send("adminCatalog.do?method=insertLedger","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			if(responseCode == 0){
+				showResponseXmlAlert(responseMessage);
+				adminServiceWindow.window('adminServiceWindow2').close();
+				createLedgerGrid();
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
+}
+
+function doUpdateFormSaveLedger(){
+	replaceLedgerAccent(cat_ledger_form);
+	cat_ledger_form.send("adminCatalog.do?method=updateLedger","post",function(loader, response){
+		try{
+			var responseCode = loader.xmlDoc.responseXML.childNodes[0].childNodes[0].childNodes[0].data;
+			var responseMessage = loader.xmlDoc.responseXML.childNodes[0].childNodes[1].childNodes[0].data;
+			if(responseCode == 0){
+				showResponseXmlAlert(responseMessage);
+				adminServiceWindow.window('adminServiceWindow2').close();
+				createLedgerGrid();
+			}else{
+				showResponseXmlAlertError(responseMessage);
+			}
+		}catch(err){
+			showResponseXmlAlertError(err.message);
+		}
+	});
 }
 
 function doOnNewItemLedger(){
 	cat_ledger_form.unlock();
 	cat_ledger_form.clear();
 	cat_ledger_form.setItemFocus("username");
+}
+
+function createLedgerGrid(){
+	cat_ledger_grid = cat_ledger_layout.cells("a").attachGrid();
+	cat_ledger_grid.setImagePath("js/dhtmlx/skins/web/imgs/dhxgrid_web/");
+	cat_ledger_grid.setHeader("Id, Subclase, Descripción, Registro, Actualización");
+	cat_ledger_grid.attachHeader("#text_filter,#rspan,#rspan,#rspan,#rspan");
+	cat_ledger_grid.setColTypes("ro,ro,ro,ro,ro");
+	cat_ledger_grid.setInitWidths("80,100,270,120,80");
+	cat_ledger_grid.setColSorting("int,str,str,str,str");
+	cat_ledger_grid.setColAlign("left,left,left,left,letf");
+	cat_ledger_grid.enableContextMenu(menuLedger);
+	cat_ledger_grid.init();
+	cat_ledger_grid.enableAutoHeight();
+	try{
+		cat_ledger_grid.loadXML("adminCatalog.do?method=getLedgers");
+	}catch(err){
+		showResponseXmlAlertError('<b>Ocurrio un error al recuperar los registros:<b><br/>'+ err.message);
+	}
+	cat_ledger_grid.attachEvent("onRowDblClicked", function(rId, cInd){
+		createAdminLedgerAction(2, rId);
+	});
+}
+
+function createContextMenuLedger(){
+	try{
+		menuLedger = new dhtmlXMenuObject();
+		menuLedger.setIconsPath("../common/images/");
+		menuLedger.renderAsContextMenu();
+		menuLedger.addNewChild(null, 0, "1", "Actualizar cuenta contable");
+		menuLedger.attachEvent("onClick", function onButtonClick(menuitemId, type){
+			var idLedger = cat_ledger_grid.contextID.split("_")[0];
+			if(menuitemId==1){
+				createAdminLedgerAction(2, idLedger);
+			}
+		});
+	}catch(err){
+		showResponseXmlAlertError(err.message);
+	}
 }

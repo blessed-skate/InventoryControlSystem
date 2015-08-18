@@ -127,9 +127,13 @@ function getAssetDbExcel(){
 }
 
 function refreshExportGrid(){
-	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
-		showResponseXmlAlert("Se han cargado todos los activos");
-	});
+	try{
+		export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
+			showResponseXmlAlert("Se han cargado todos los activos");
+		});
+	}catch(e){
+		showResponseXmlAlertError("Ocurrio un error al obtener los activos");
+	}
 }
 
 function doQueryFormAcept(){

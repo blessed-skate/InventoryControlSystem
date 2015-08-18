@@ -1,0 +1,197 @@
+dhx4.ajax.cache=true;
+
+function showResponseXmlAlertError(msg) {
+	dhtmlx.alert({
+		title : "Error",
+		type : "alert-error",
+		text : msg
+	});
+}
+
+function showResponseXmlAlertWarning(msg) {
+	dhtmlx.alert({
+		title : "Warning",
+		type : "alert-warning",
+		text : msg
+	});
+}
+
+function showResponseXmlAlert(msg) {
+	dhtmlx.alert({
+		title : "Alerta",
+		type : "alert",
+		text : msg
+	});
+}
+
+function showConfirmWarning(title, question) {
+	dhtmlx.confirm({
+		title : title,
+		type : "confirm-warning",
+		text : question,
+		callback : function(result) {
+			dhtmlx.message("Result: " + result)
+		}
+	});
+}
+
+function showConfirmError(title, question) {
+	dhtmlx.confirm({
+		title : title,
+		type : "confirm-error",
+		text : question,
+		callback : function(result) {
+			dhtmlx.message("Result: " + result)
+		}
+	});
+}
+
+function showConfirm(title, question, execute) {
+	dhtmlx.confirm({
+		title : title,
+		type : "confirm",
+		text : question,
+		callback : function(result) {
+			if(result)	
+				execute();
+		}
+	});
+}
+
+function showError(msg) {
+	dhtmlx.alert({
+		title : "Error",
+		type : "alert-error",
+		text : msg
+	});
+}
+
+function updateDHTMLXComponents(){
+	reloadDirectlyResponsibleSelect();
+	export_grid.clearAndLoad("myAsset.do?method=getAsset",function(){
+//		showResponseXmlAlert("La tabla se ha refrescado...");
+	});
+}
+
+var downloadFrame;
+function downloadFile(url, params){
+	if(downloadFrame == null){
+		downloadFrame = document.createElement("iframe");
+		downloadFrame.className = "download_iframe";
+		downloadFrame.name = "download_frame";
+		downloadFrame.border = downloadFrame.frameBorder = 0;
+		document.body.appendChild(downloadFrame);		
+	}
+	
+	var downloadForm = document.createElement("FORM");
+	downloadForm.action = url;
+	downloadForm.method = "POST";
+	downloadForm.target = "download_frame";
+	downloadForm.acceptCharset = "utf-8";  
+	downloadForm.enctype = "application/x-www-form-urlencoded";
+	document.body.appendChild(downloadForm);
+	
+	// add params to form
+	for (var a in params) {
+		var input = document.createElement("INPUT");
+		input.type = "hidden";
+		input.name = a;
+		input.value = params[a];
+		downloadForm.appendChild(input);
+		input = null;
+	}
+	
+	// submit form
+	try{
+		downloadForm.submit();
+	}catch(e){
+		showResponseXmlAlertError("Ocurrio un error al enviar el formulario");
+	}
+	
+	// clear form
+	window.setTimeout(function(){
+		document.body.removeChild(downloadForm);
+		downloadForm = null;
+	}, 1);
+}
+
+function replaceAccent(form){
+	var array = ["description", "brand", "model", "serialNumber", "material", "color",
+			"supplier", "generalManager", "directlyResponsible", "bill", "location",
+			"place", "generalLocation", "secure", "start" ];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function replaceGuardAccent(form){
+	var array = ["costCenter", "area", "department"];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function replaceUserAccent(form){
+	var array = ["costCenter", "area", "department"];
+	
+	for (var i = 0, len = array.length; i < len; i++){
+		var value = array[i];
+		var replace = form.getItemValue(value);
+		form.setItemValue(value, stripVowelAccent(replace));
+	}
+}
+
+function stripVowelAccent(str) {
+	if (str != null && str != "") {
+		var rExps = [ {
+			re : /[\xC0-\xC6]/g,
+			ch : 'A'
+		}, {
+			re : /[\xE0-\xE6]/g,
+			ch : 'a'
+		}, {
+			re : /[\xC8-\xCB]/g,
+			ch : 'E'
+		}, {
+			re : /[\xE8-\xEB]/g,
+			ch : 'e'
+		}, {
+			re : /[\xCC-\xCF]/g,
+			ch : 'I'
+		}, {
+			re : /[\xEC-\xEF]/g,
+			ch : 'i'
+		}, {
+			re : /[\xD2-\xD6]/g,
+			ch : 'O'
+		}, {
+			re : /[\xF2-\xF6]/g,
+			ch : 'o'
+		}, {
+			re : /[\xD9-\xDC]/g,
+			ch : 'U'
+		}, {
+			re : /[\xF9-\xFC]/g,
+			ch : 'u'
+		}, {
+			re : /[\xD1]/g,
+			ch : 'N'
+		}, {
+			re : /[\xF1]/g,
+			ch : 'n'
+		} ];
+
+		for (var i = 0, len = rExps.length; i < len; i++)
+			str = str.replace(rExps[i].re, rExps[i].ch);
+
+		return str;
+	} else {
+		return "";
+	}
+}

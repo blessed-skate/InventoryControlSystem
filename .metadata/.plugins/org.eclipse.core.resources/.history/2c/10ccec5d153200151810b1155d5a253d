@@ -1,0 +1,23 @@
+function catUsers(){
+	doCreateCatUserWindow();
+}
+
+function catLedger(){
+	doCreateCatLedger();
+}
+
+function catProperty(){
+	doCreateCatProperty();
+}
+
+function catRole(){
+	doCreateCatRole();
+}
+
+function aboutSystem(){
+	doCreateAboutS'();
+}
+
+function logOut(){
+	showError("Saliendo...");
+}
